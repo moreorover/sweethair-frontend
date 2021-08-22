@@ -30,6 +30,7 @@
 </template>
 
 <script lang="ts">
+import axios from "@/axios/axios";
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({
@@ -38,9 +39,13 @@ export default defineComponent({
     const email = ref("");
     const password = ref("");
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
       // TODO login and redirect
-      console.log("submit");
+      const { data } = await axios.post("/auth/login", {
+        email: email.value,
+        password: password.value,
+      });
+      console.log(data);
     };
 
     return { email, password, onSubmit };
