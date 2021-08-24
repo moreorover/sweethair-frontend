@@ -4,48 +4,32 @@
     <form @submit.prevent="onSubmit">
       <div class="field">
         <div class="control">
-          <input
-            v-model="email"
-            type="email"
-            class="input is-medium"
-            placeholder="email"
-          />
+          <input v-model="email" type="email" class="input is-medium" placeholder="email" />
         </div>
       </div>
       <div class="field">
         <div class="control">
-          <input
-            v-model="password"
-            type="password"
-            class="input is-medium"
-            placeholder="password"
-          />
+          <input v-model="password" type="password" class="input is-medium" placeholder="password" />
         </div>
       </div>
-      <button class="button is-block is-primary is-fullwidth is-medium">
-        Submit
-      </button>
+      <button class="button is-block is-primary is-fullwidth is-medium">Submit</button>
     </form>
   </div>
 </template>
 
 <script lang="ts">
-import axios from "@/axios/axios";
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref } from 'vue';
+import { useStore } from 'vuex';
 
 export default defineComponent({
-  name: "Login",
+  name: 'Login',
   setup() {
-    const email = ref("");
-    const password = ref("");
+    const store = useStore();
+    const email = ref('');
+    const password = ref('');
 
     const onSubmit = async () => {
-      // TODO login and redirect
-      const { data } = await axios.post("/auth/login", {
-        email: email.value,
-        password: password.value,
-      });
-      console.log(data);
+      store.dispatch('user/login', { email: email.value, password: password.value });
     };
 
     return { email, password, onSubmit };
