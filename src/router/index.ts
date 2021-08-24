@@ -1,22 +1,22 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import Home from "@/views/Home.vue";
-import About from "@/views/About.vue";
-import Login from "@/views/Login.vue";
-import Wrapper from "@/views/Wrapper.vue";
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import Home from '@/views/Home.vue';
+import About from '@/views/About.vue';
+import Login from '@/views/Login.vue';
+import Wrapper from '@/views/Wrapper.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/login",
-    name: "Login",
+    path: '/login',
+    name: 'Login',
     component: Login,
   },
   {
-    path: "",
-    name: "Wrapper",
+    path: '',
+    name: 'Wrapper',
     component: Wrapper,
     children: [
-      { path: "", name: "Home", component: Home, meta: { requiresAuth: true } },
-      { path: "/about", name: "About", component: About, meta: { requiresAuth: true } },
+      { path: '', name: 'Home', component: Home, meta: { requiresAuth: true } },
+      { path: '/about', name: 'About', component: About, meta: { requiresAuth: true } },
     ],
   },
 ];
@@ -38,7 +38,7 @@ router.beforeEach((to, from, next) => {
     // } else {
     //   next()
     // }
-    console.log("route requires auth");
+    console.log('route requires auth');
     next();
   } else {
     next(); // make sure to always call next()!
