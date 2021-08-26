@@ -2,14 +2,19 @@
   <nav class="navbar is-white">
     <div class="container">
       <div class="navbar-brand">
-        <router-link class="navbar-item brand-text" to="/">Home</router-link>
-        <div class="navbar-burger burger" data-target="navMenu">
+        <router-link class="navbar-item brand-text" to="/">Sweet Hair</router-link>
+        <div
+          class="navbar-burger burger"
+          data-target="navMenu"
+          :class="{ 'is-active': isOpen }"
+          @click="isOpen = !isOpen"
+        >
           <span></span>
           <span></span>
           <span></span>
         </div>
       </div>
-      <div id="navMenu" class="navbar-menu">
+      <div id="navMenu" class="navbar-menu" :class="{ 'is-active': isOpen }">
         <div class="navbar-start">
           <router-link class="navbar-item" to="/">Home</router-link>
           <router-link class="navbar-item" to="/about">About</router-link>
@@ -21,9 +26,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
   name: 'Navigation',
+  setup() {
+    const isOpen = ref('');
+
+    return { isOpen };
+  },
 });
 </script>
