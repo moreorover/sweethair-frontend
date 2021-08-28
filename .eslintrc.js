@@ -10,7 +10,7 @@ module.exports = {
     '@vue/prettier/@typescript-eslint',
   ],
   parser: 'vue-eslint-parser',
-  plugins: ['prettier'],
+  // plugins: ['prettier'],
   parserOptions: {
     ecmaVersion: 2020,
   },
@@ -20,6 +20,13 @@ module.exports = {
     'prettier/prettier': 'error',
     // "@typescript-eslint/no-unused-vars": ["off"],
     '@typescript-eslint/explicit-module-boundary-types': 'off',
+    'vue/html-closing-bracket-newline': [
+      'error',
+      {
+        singleline: 'never',
+        multiline: 'always',
+      },
+    ],
   },
   ignorePatterns: ['node_modules', 'build', 'dist', 'public'],
 };
