@@ -25,8 +25,8 @@ export default defineComponent({
   name: 'Login',
   setup() {
     const store = useStore();
-    const email = ref('');
-    const password = ref('');
+    const email = ref('test@gmail.com');
+    const password = ref('adminadmin');
 
     const onSubmit = async () => {
       store.dispatch('user/login', { email: email.value, password: password.value });

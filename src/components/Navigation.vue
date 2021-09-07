@@ -18,7 +18,7 @@
         <div class="navbar-start">
           <router-link class="navbar-item" to="/">Home</router-link>
           <router-link class="navbar-item" to="/about">About</router-link>
-          <router-link class="navbar-item" to="/Login">Login</router-link>
+          <router-link class="navbar-item" to="/login">Login</router-link>
         </div>
       </div>
     </div>

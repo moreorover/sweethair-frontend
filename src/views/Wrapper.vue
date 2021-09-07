@@ -22,5 +22,4 @@ export default defineComponent({
   components: { Navigation, SideMenu },
 });
 </script>
-
-Navigation
+<style></style>

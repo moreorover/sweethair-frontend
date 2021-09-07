@@ -1,13 +1,20 @@
-import axios from '@/axios/axios';
+import apiClient from '@/axios/axios';
 
-export async function login(email: string, password: string): Promise<string> {
-  const { data } = await axios.post('/auth/login', { email, password });
-  console.log(data);
+export interface User {
+  id?: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  createdOn: string;
+  modifiedOn: string;
+}
+
+export async function login(email: string, password: string): Promise<User> {
+  const { data } = await apiClient.post('/auth/login', { email, password });
   return data;
 }
 
-export async function me(): Promise<string> {
-  const { data } = await axios.get('/auth/me');
-  console.log(data);
+export async function me(): Promise<User> {
+  const { data } = await apiClient.get('/auth/me');
   return data;
 }
