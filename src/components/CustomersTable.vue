@@ -39,8 +39,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Customer } from '@/services/CustomerService';
-import { computed, defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import { useStore } from '@/store/';
 
 export default defineComponent({
@@ -48,21 +47,11 @@ export default defineComponent({
   async setup() {
     const store = useStore();
 
-    // const cs = ref<Customer[]>([]);
-
     if (!store.getState().customers.loaded) {
       await store.fetchCustomers();
     }
 
-    const cs = computed(() => {
-      return store.getState().customers.ids.map((id) => {
-        const theCustomer = store.getState().customers.all.get(id);
-        if (!theCustomer) {
-          throw Error('This Customer was not found');
-        }
-        return theCustomer;
-      });
-    });
+    const cs = store.getState().customers.all.values();
 
     return { customers: cs };
   },
