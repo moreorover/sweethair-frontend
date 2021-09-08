@@ -9,9 +9,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import CustomerForm from '@/components/CustomerForm.vue';
-import { Customer } from '@/api/customer';
-import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import { useStore } from '@/store/index';
+import { Customer } from '@/services/CustomerService';
 
 export default defineComponent({
   components: {
@@ -21,6 +21,7 @@ export default defineComponent({
     const store = useStore();
     const router = useRouter();
     const newCustomer: Customer = {
+      id: '',
       firstName: '',
       lastName: '',
       email: '',
@@ -28,7 +29,7 @@ export default defineComponent({
     };
 
     const save = async (customer: Customer) => {
-      await store.dispatch('customer/saveCustomer', customer);
+      await store.createCustomer(customer);
       router.push({
         name: 'Customers',
       });

@@ -19,17 +19,15 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { useStore } from 'vuex';
 
 export default defineComponent({
   name: 'Login',
   setup() {
-    const store = useStore();
     const email = ref('test@gmail.com');
     const password = ref('adminadmin');
 
-    const onSubmit = async () => {
-      store.dispatch('user/login', { email: email.value, password: password.value });
+    const onSubmit = () => {
+      // store.dispatch('user/login', { email: email.value, password: password.value });
     };
 
     return { email, password, onSubmit };
