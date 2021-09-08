@@ -32,8 +32,8 @@ export default defineComponent({
       throw Error('Customer was not found.');
     }
 
-    const update = (customer: Customer) => {
-      store.updateCustomer(customer);
+    const update = async (customer: Customer) => {
+      await store.updateCustomer(customer);
       router.push({
         name: 'Customers',
       });
