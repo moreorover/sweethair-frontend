@@ -26,8 +26,8 @@
   </section>
 </template>
 <script lang="ts">
+import { Customer } from '@/services/CustomerService';
 import { defineComponent, ref } from 'vue';
-import { Customer } from '@/api/customer';
 
 export default defineComponent({
   props: {
