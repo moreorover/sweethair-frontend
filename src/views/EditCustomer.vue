@@ -22,18 +22,16 @@ export default defineComponent({
     const router = useRouter();
     const id = useRoute().params.id as string;
 
-    if (!store.getState().customers.loaded) {
-      await store.fetchCustomers();
-    }
+    await store.getCustomers().fetchAll();
 
-    const customer = store.getState().customers.all.get(id);
+    const customer = store.getCustomers().getState().all.get(id);
 
     if (!customer) {
       throw Error('Customer was not found.');
     }
 
     const update = async (customer: Customer) => {
-      await store.updateCustomer(customer);
+      await store.getCustomers().update(customer);
       router.push({
         name: 'Customers',
       });

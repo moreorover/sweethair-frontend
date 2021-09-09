@@ -47,13 +47,11 @@ export default defineComponent({
   async setup() {
     const store = useStore();
 
-    if (!store.getState().customers.loaded) {
-      await store.fetchCustomers();
-    }
+    await store.getCustomers().fetchAll();
 
-    const cs = store.getState().customers.all.values();
+    const customers = store.getCustomers().getState().all.values();
 
-    return { customers: cs };
+    return { customers };
   },
 });
 </script>

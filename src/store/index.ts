@@ -1,73 +1,32 @@
-import { reactive, readonly, inject, App } from 'vue';
-import { Customer } from '../services/CustomerService';
-import CustomerService from '@/services/CustomerService';
-
-interface BaseState<T> {
-  ids: string[];
-  all: Map<string, T>;
-  loaded: boolean;
-}
-
-type CustomersState = BaseState<Customer>;
-
-export interface State {
-  customers: CustomersState;
-}
+import { inject, App } from 'vue';
+import AuthStore from './AuthStore';
+import CustomerStore from './CustomerStore';
 
 export const storeKey = Symbol('store');
 
 export class Store {
-  private state: State;
+  private auth: AuthStore;
+  private customers: CustomerStore;
 
-  constructor(initial: State) {
-    this.state = reactive(initial);
+  constructor() {
+    this.auth = new AuthStore();
+    this.customers = new CustomerStore();
   }
 
   install(app: App) {
     app.provide(storeKey, this);
   }
 
-  getState() {
-    return readonly(this.state);
+  getCustomers() {
+    return this.customers;
   }
 
-  async createCustomer(customer: Customer) {
-    const response = await CustomerService.create(customer);
-    this.state.customers.all.set(response.data.id, response.data);
-    this.state.customers.ids.push(response.data.id);
-  }
-
-  async updateCustomer(customer: Customer) {
-    const response = await CustomerService.update(customer);
-    this.state.customers.all.set(response.data.id, response.data);
-  }
-
-  async fetchCustomers() {
-    const response = await CustomerService.getAll();
-    const customersState: CustomersState = {
-      ids: [],
-      all: new Map(),
-      loaded: true,
-    };
-
-    for (const customer of response.data) {
-      customersState.ids.push(customer.id);
-      customersState.all.set(customer.id, customer);
-    }
-
-    this.state.customers = customersState;
+  getAuth() {
+    return this.auth;
   }
 }
 
-const all = new Map<string, Customer>();
-
-export const store = new Store({
-  customers: {
-    all,
-    ids: [],
-    loaded: false,
-  },
-});
+export const store = new Store();
 
 export function useStore(): Store {
   const _store = inject<Store>(storeKey);

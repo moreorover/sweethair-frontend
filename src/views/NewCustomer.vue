@@ -29,7 +29,7 @@ export default defineComponent({
     };
 
     const save = async (customer: Customer) => {
-      await store.createCustomer(customer);
+      await store.getCustomers().create(customer);
       router.push({
         name: 'Customers',
       });
