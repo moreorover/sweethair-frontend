@@ -20,17 +20,20 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { useStore } from '@/store/';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'Login',
   setup() {
+    const router = useRouter();
     const store = useStore();
 
     const email = ref('test@gmail.com');
     const password = ref('adminadmin');
 
-    const onSubmit = () => {
-      store.getAuth().login(email.value, password.value);
+    const onSubmit = async () => {
+      await store.getAuth().login(email.value, password.value);
+      router.push('/');
     };
 
     return { email, password, onSubmit };

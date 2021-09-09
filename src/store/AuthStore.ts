@@ -20,8 +20,12 @@ export default class AuthStore {
   }
 
   async me() {
-    const response = await AuthService.me();
-    this.state.user = response.data;
+    await AuthService.me()
+      .then((response) => (this.state.user = response.data))
+      .catch(() => {
+        this.state.user = null;
+        console.log('You are unauthenticated.');
+      });
   }
 
   async logout() {
