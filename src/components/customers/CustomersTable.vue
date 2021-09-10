@@ -1,42 +1,40 @@
 <template>
-  <div>
-    <div class="hero is-small welcome is-info">
-      <div class="hero-body">
-        <p class="title">Customers</p>
-        <p class="subtitle">Menage your Customers here...</p>
-      </div>
-      <div class="hero-foot">
-        <nav class="tabs">
-          <div class="container end">
-            <ul>
-              <router-link to="/customers/new">Create Customer</router-link>
-            </ul>
-          </div>
-        </nav>
-      </div>
+  <div class="hero is-small welcome is-info my-3">
+    <div class="hero-body">
+      <p class="title">Customers</p>
+      <p class="subtitle">Menage your Customers here...</p>
     </div>
-    <div class="card-table">
-      <div class="content">
-        <table class="table is-fullwidth is-striped">
-          <tbody>
-            <tr v-for="customer in customers" :key="customer.id">
-              <td>{{ customer.firstName }} {{ customer.lastName }}</td>
-              <td>{{ customer.email }}</td>
-              <td>{{ customer.instagram }}</td>
-              <td class="level-right">
-                <router-link :to="`/customers/${customer.id}/edit`" class="button is-small is-warning">
-                  Edit
-                </router-link>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="hero-foot">
+      <nav class="tabs">
+        <div class="container end">
+          <ul>
+            <router-link to="/customers/new">Create Customer</router-link>
+          </ul>
+        </div>
+      </nav>
     </div>
-    <!-- <footer class="card-footer">
+  </div>
+  <div class="card-table my-3">
+    <div class="content">
+      <table class="table is-fullwidth is-striped">
+        <tbody>
+          <tr v-for="customer in customers" :key="customer.id">
+            <td>{{ customer.firstName }} {{ customer.lastName }}</td>
+            <td>{{ customer.email }}</td>
+            <td>{{ customer.instagram }}</td>
+            <td class="level-right">
+              <router-link :to="`/customers/${customer.id}/edit`" class="button is-small is-warning">
+                Edit
+              </router-link>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- <footer class="card-footer">
             <a href="#" class="card-footer-item">View All</a>
           </footer> -->
-  </div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
