@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="hero is-small is-link">
+    <div class="hero is-small welcome is-info">
       <div class="hero-body">
         <p class="title">Customers</p>
         <p class="subtitle">Menage your Customers here...</p>
