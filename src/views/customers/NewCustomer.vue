@@ -8,7 +8,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import CustomerForm from '@/components/CustomerForm.vue';
+import CustomerForm from '@/components/customers/CustomerForm.vue';
 import { useRouter } from 'vue-router';
 import { useStore } from '@/store/index';
 import { Customer } from '@/services/CustomerService';

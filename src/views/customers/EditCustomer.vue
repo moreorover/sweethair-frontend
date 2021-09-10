@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import EditCustomer from '@/views/EditCustomer.vue';
+import EditCustomer from '@/components/customers/EditCustomer.vue';
 export default defineComponent({
   components: {
     EditCustomer,

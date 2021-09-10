@@ -10,7 +10,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import CustomersTable from '@/components/CustomersTable.vue';
+import CustomersTable from '@/components/customers/CustomersTable.vue';
 
 export default defineComponent({
   components: { CustomersTable },
