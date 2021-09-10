@@ -51,7 +51,7 @@
     <div class="content">
       <table class="table is-fullwidth is-striped">
         <tbody>
-          <tr v-for="customer in customers" :key="customer.id">
+          <tr v-for="customer in customers" :key="customer.id" @click="navigateToCustomer(customer.id)">
             <td>{{ customer.firstName }} {{ customer.lastName }}</td>
             <td>{{ customer.email }}</td>
             <td>{{ customer.instagram }}</td>
@@ -72,11 +72,13 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import { useStore } from '@/store/';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'CustomersTable',
   async setup() {
     const store = useStore();
+    const router = useRouter();
     const searchKey = ref('');
 
     await store.getCustomers().fetchAll();
@@ -101,7 +103,11 @@ export default defineComponent({
       });
     });
 
-    return { customers, searchKey };
+    const navigateToCustomer = (id: string) => {
+      router.push({ name: 'Customer', params: { id } });
+    };
+
+    return { customers, searchKey, navigateToCustomer };
   },
 });
 </script>

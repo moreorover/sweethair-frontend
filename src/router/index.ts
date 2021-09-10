@@ -5,6 +5,7 @@ import Login from '@/views/Login.vue';
 import Wrapper from '@/views/Wrapper.vue';
 import Customers from '@/views/customers/Customers.vue';
 import NewCustomer from '@/views/customers/NewCustomer.vue';
+import Customer from '@/views/customers/Customer.vue';
 import EditCustomer from '@/views/customers/EditCustomer.vue';
 import { Store } from '@/store';
 
@@ -34,6 +35,7 @@ export function routerWithStore(store: Store) {
         children: [
           { path: '', name: 'Home', component: Home, meta: { requiresAuth: true } },
           { path: '/about', name: 'About', component: About, meta: { requiresAuth: true } },
+          { path: '/customers/:id', name: 'Customer', component: Customer, meta: { requiresAuth: true } },
           { path: '/customers/:id/edit', name: 'Edit Customer', component: EditCustomer, meta: { requiresAuth: true } },
           { path: '/customers/new', name: 'New Customer', component: NewCustomer, meta: { requiresAuth: true } },
           { path: '/customers', name: 'Customers', component: Customers, meta: { requiresAuth: true } },
