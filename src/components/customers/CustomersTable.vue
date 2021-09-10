@@ -14,6 +14,39 @@
       </nav>
     </div>
   </div>
+
+  <section class="info-tiles">
+    <div class="tile is-ancestor has-text-centered">
+      <div class="tile is-parent">
+        <article class="tile is-child box">
+          <div class="field">
+            <div class="control">
+              <input v-model="searchKey" type="text" class="input is-medium" placeholder="Search" />
+            </div>
+          </div>
+        </article>
+      </div>
+      <!-- <div class="tile is-parent">
+        <article class="tile is-child box">
+          <p class="title">59k</p>
+          <p class="subtitle">Products</p>
+        </article>
+      </div>
+      <div class="tile is-parent">
+        <article class="tile is-child box">
+          <p class="title">3.4k</p>
+          <p class="subtitle">Open Orders</p>
+        </article>
+      </div> -->
+      <div class="tile is-parent">
+        <article class="tile is-child box">
+          <p class="title">{{ customers.length }}</p>
+          <p class="subtitle">Customers</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <div class="card-table my-3">
     <div class="content">
       <table class="table is-fullwidth is-striped">
@@ -37,19 +70,38 @@
           </footer> -->
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import { useStore } from '@/store/';
 
 export default defineComponent({
   name: 'CustomersTable',
   async setup() {
     const store = useStore();
+    const searchKey = ref('');
 
     await store.getCustomers().fetchAll();
 
-    const customers = store.getCustomers().getState().all.values();
+    const allCustomers = Array.from(store.getCustomers().getState().all.values());
 
-    return { customers };
+    const customers = computed(() => {
+      return allCustomers.filter((customer) => {
+        if (customer.firstName.toLowerCase().includes(searchKey.value)) {
+          return true;
+        }
+        if (customer.lastName.toLowerCase().includes(searchKey.value)) {
+          return true;
+        }
+        if (customer.email.toLowerCase().includes(searchKey.value)) {
+          return true;
+        }
+        if (customer.instagram.toLowerCase().includes(searchKey.value)) {
+          return true;
+        }
+        return false;
+      });
+    });
+
+    return { customers, searchKey };
   },
 });
 </script>
