@@ -12,18 +12,6 @@ body {
   height: 100%;
   background: #ecf0f3;
 }
-nav.navbar {
-  border-top: 4px solid #276cda;
-  margin-bottom: 1rem;
-}
-.navbar-item.brand-text {
-  font-weight: 300;
-}
-.navbar-item,
-.navbar-link {
-  font-size: 14px;
-  font-weight: 700;
-}
 .columns {
   width: 100%;
   height: 100%;
@@ -65,8 +53,8 @@ nav.navbar {
 }
 .hero.welcome.is-info {
   background: #36d1dc;
-  background: -webkit-linear-gradient(to right, #5b86e5, #36d1dc);
-  background: linear-gradient(to right, #5b86e5, #36d1dc);
+  background: -webkit-linear-gradient(to right, #a059a0, #e900a3);
+  background: linear-gradient(to right, #a059a0, #e900a3);
 }
 .hero.welcome .title,
 .hero.welcome .subtitle {

@@ -47,24 +47,28 @@
     </div>
   </section>
 
-  <div class="card-table my-3">
-    <div class="content">
-      <table class="table is-fullwidth is-striped">
-        <tbody>
-          <tr v-for="customer in customers" :key="customer.id" @click="navigateToCustomer(customer.id)">
-            <td>{{ customer.firstName }} {{ customer.lastName }}</td>
-            <td>{{ customer.email }}</td>
-            <td>{{ customer.instagram }}</td>
-            <td class="level-right">
-              <router-link :to="`/customers/${customer.id}/edit`" class="button is-small is-warning">
-                Edit
-              </router-link>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+  <!-- <div class="box"> -->
+  <table class="table is-fullwidth is-striped is-hoverable">
+    <thead>
+      <tr>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>Instagram</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="customer in customers" :key="customer.id" @click="navigateToCustomer(customer.id)">
+        <td>{{ customer.firstName }} {{ customer.lastName }}</td>
+        <td>{{ customer.email }}</td>
+        <td>{{ customer.instagram }}</td>
+        <td class="level-right">
+          <router-link :to="`/customers/${customer.id}/edit`" class="button is-small is-warning"> Edit </router-link>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- </div> -->
   <!-- <footer class="card-footer">
             <a href="#" class="card-footer-item">View All</a>
           </footer> -->

@@ -37,3 +37,9 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+nav.navbar {
+  border-top: 4px solid #ae0cbd;
+  margin-bottom: 1rem;
+}
+</style>
