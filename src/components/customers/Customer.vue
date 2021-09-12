@@ -1,9 +1,15 @@
 <template>
   <div class="hero is-small welcome is-info my-3">
     <div class="hero-body">
-      <p class="title">{{ customer.firstName }} {{ customer.lastName }}</p>
-      <p class="subtitle">{{ customer.email }}</p>
-      <p class="subtitle">{{ customer.instagram }}</p>
+      <div class="columns">
+        <div class="column has-text-left my-auto">
+          <p class="title is-3">{{ customer.firstName }} {{ customer.lastName }}</p>
+        </div>
+        <div class="column has-text-right my-auto">
+          <p class="subtitle">{{ customer.email }}</p>
+          <p class="subtitle">{{ customer.instagram }}</p>
+        </div>
+      </div>
     </div>
     <div class="hero-foot">
       <nav class="tabs">
