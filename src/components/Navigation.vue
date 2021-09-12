@@ -1,24 +1,21 @@
 <template>
-  <nav class="navbar is-white">
+  <nav class="navbar is-white has-shadow">
     <div class="container">
       <div class="navbar-brand">
         <router-link class="navbar-item brand-text" to="/">Sweet Hair</router-link>
-        <div
-          class="navbar-burger burger"
-          data-target="navMenu"
-          :class="{ 'is-active': isOpen }"
-          @click="isOpen = !isOpen"
-        >
+        <a class="navbar-burger" data-target="navMenu" :class="{ 'is-active': isOpen }" @click="isOpen = !isOpen">
           <span></span>
           <span></span>
           <span></span>
-        </div>
+        </a>
       </div>
       <div id="navMenu" class="navbar-menu" :class="{ 'is-active': isOpen }">
-        <div class="navbar-start">
-          <router-link class="navbar-item" to="/">Home</router-link>
-          <router-link class="navbar-item" to="/about">About</router-link>
-          <router-link class="navbar-item" to="/login">Login</router-link>
+        <div class="navbar-start" :class="{ 'is-hidden': !isOpen }">
+          <side-menu />
+        </div>
+        <div class="navbar-end">
+          <div class="navbar-item">Hello {{ user?.firstName }} {{ user?.lastName }}</div>
+          <router-link class="navbar-item" to="/logout">Logout</router-link>
         </div>
       </div>
     </div>
@@ -26,14 +23,21 @@
 </template>
 
 <script lang="ts">
+import { User } from '@/services/AuthService';
 import { defineComponent, ref } from 'vue';
+import { useStore } from '@/store/';
+import SideMenu from '@/components/SideMenu.vue';
 
 export default defineComponent({
   name: 'Navigation',
+  components: { SideMenu },
   setup() {
     const isOpen = ref<boolean>(false);
+    const store = useStore();
 
-    return { isOpen };
+    const user: User | null = store.getAuth().getState().user;
+
+    return { isOpen, user };
   },
 });
 </script>

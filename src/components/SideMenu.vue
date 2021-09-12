@@ -1,5 +1,5 @@
 <template>
-  <aside class="menu is-hidden-mobile">
+  <aside class="menu">
     <p class="menu-label">General</p>
     <ul class="menu-list">
       <li><a>Dashboard</a></li>
@@ -33,8 +33,11 @@
   </aside>
 </template>
 
-<script>
-export default {};
+<script lang="ts">
+import { defineComponent } from 'vue';
+export default defineComponent({
+  name: 'SideMenu',
+});
 </script>
 
 <style></style>
