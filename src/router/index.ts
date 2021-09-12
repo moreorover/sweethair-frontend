@@ -7,6 +7,10 @@ import Customers from '@/views/customers/Customers.vue';
 import NewCustomer from '@/views/customers/NewCustomer.vue';
 import Customer from '@/views/customers/Customer.vue';
 import EditCustomer from '@/views/customers/EditCustomer.vue';
+import Appointments from '@/views/appointments/Appointments.vue';
+import NewAppointment from '@/views/appointments/NewAppointment.vue';
+import Appointment from '@/views/appointments/Appointment.vue';
+import EditAppointment from '@/views/appointments/EditAppointment.vue';
 import { Store } from '@/store';
 
 export function routerWithStore(store: Store) {
@@ -39,6 +43,21 @@ export function routerWithStore(store: Store) {
           { path: '/customers/:id/edit', name: 'Edit Customer', component: EditCustomer, meta: { requiresAuth: true } },
           { path: '/customers/new', name: 'New Customer', component: NewCustomer, meta: { requiresAuth: true } },
           { path: '/customers', name: 'Customers', component: Customers, meta: { requiresAuth: true } },
+
+          { path: '/appointments/:id', name: 'Appointment', component: Appointment, meta: { requiresAuth: true } },
+          {
+            path: '/appointments/:id/edit',
+            name: 'Edit Appointment',
+            component: EditAppointment,
+            meta: { requiresAuth: true },
+          },
+          {
+            path: '/appointments/new',
+            name: 'New Appointment',
+            component: NewAppointment,
+            meta: { requiresAuth: true },
+          },
+          { path: '/appointments', name: 'Appointments', component: Appointments, meta: { requiresAuth: true } },
         ],
       },
     ],

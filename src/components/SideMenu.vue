@@ -4,7 +4,7 @@
     <ul class="menu-list">
       <li><a>Dashboard</a></li>
       <router-link to="/customers">Customers</router-link>
-      <li><a>Other</a></li>
+      <router-link to="/appointments">Appointments</router-link>
     </ul>
     <p class="menu-label">Administration</p>
     <ul class="menu-list">
