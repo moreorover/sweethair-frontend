@@ -1,7 +1,7 @@
 <template>
   <suspense>
     <template #default>
-      <customers-table />
+      <customers />
     </template>
     <template #fallback>
       <progress class="progress is-snall is-info" max="100"></progress>
@@ -10,10 +10,10 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import CustomersTable from '@/components/customers/CustomersTable.vue';
+import Customers from '@/components/customers/Customers.vue';
 
 export default defineComponent({
-  components: { CustomersTable },
+  components: { Customers },
 });
 </script>
 <style scoped></style>
