@@ -9,14 +9,22 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="customer in customers" :key="customer.id" @click="navigateToCustomer(customer.id)">
-        <td>{{ customer.firstName }} {{ customer.lastName }}</td>
-        <td>{{ customer.email }}</td>
-        <td>{{ customer.instagram }}</td>
-        <td class="level-right">
-          <router-link :to="`/customers/${customer.id}/edit`" class="button is-small is-warning"> Edit </router-link>
-        </td>
-      </tr>
+      <router-link
+        v-for="customer in customers"
+        :key="customer.id"
+        v-slot="{ navigate }"
+        :to="`/customers/${customer.id}`"
+        custom
+      >
+        <tr @click="navigate">
+          <td>{{ customer.firstName }} {{ customer.lastName }}</td>
+          <td>{{ customer.email }}</td>
+          <td>{{ customer.instagram }}</td>
+          <td class="level-right">
+            <router-link :to="`/customers/${customer.id}/edit`" class="button is-small is-warning"> Edit </router-link>
+          </td>
+        </tr>
+      </router-link>
     </tbody>
   </table>
 </template>

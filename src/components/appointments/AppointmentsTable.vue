@@ -7,14 +7,22 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="appointment in appointments" :key="appointment.id" @click="navigateToAppointment(appointment.id)">
-        <td>{{ appointment.start }}</td>
-        <td class="level-right">
-          <router-link :to="`/appointments/${appointment.id}/edit`" class="button is-small is-warning">
-            Edit
-          </router-link>
-        </td>
-      </tr>
+      <router-link
+        v-for="appointment in appointments"
+        :key="appointment.id"
+        v-slot="{ navigate }"
+        :to="`/appointments/${appointment.id}`"
+        custom
+      >
+        <tr @click="navigate">
+          <td>{{ appointment.start }}</td>
+          <td class="level-right">
+            <router-link :to="`/appointments/${appointment.id}/edit`" class="button is-small is-warning">
+              Edit
+            </router-link>
+          </td>
+        </tr>
+      </router-link>
     </tbody>
   </table>
 </template>
