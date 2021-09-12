@@ -31,7 +31,7 @@ import { defineComponent, ref } from 'vue';
 export default defineComponent({
   name: 'Navigation',
   setup() {
-    const isOpen = ref('');
+    const isOpen = ref<boolean>(false);
 
     return { isOpen };
   },
