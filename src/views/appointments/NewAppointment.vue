@@ -4,10 +4,10 @@
       <p class="title">Create New Appointment</p>
     </div>
   </section>
-  <appointment-form :appointment="newAppointment" @save="save" />
+  <div class="container"><appointment-form :appointment="newAppointment" @save="save" /></div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import AppointmentForm from '@/components/appointments/AppointmentForm.vue';
 import { useRouter } from 'vue-router';
 import { useStore } from '@/store/index';
@@ -20,10 +20,11 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const router = useRouter();
-    const newAppointment: Appointment = {
+    const newAppointment: Appointment = reactive({
       id: '',
       start: '',
-    };
+      customers: [],
+    });
 
     const save = async (appointment: Appointment) => {
       await store.getAppointments().create(appointment);

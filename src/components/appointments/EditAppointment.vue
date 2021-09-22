@@ -22,9 +22,10 @@ export default defineComponent({
     const router = useRouter();
     const id = useRoute().params.id as string;
 
+    await store.getCustomers().fetchAll();
     await store.getAppointments().fetchAll();
 
-    const appointment = store.getAppointments().getState().all.get(id);
+    const appointment: Appointment | undefined = store.getAppointments().getState().all.get(id);
 
     if (!appointment) {
       throw Error('Appointment was not found.');

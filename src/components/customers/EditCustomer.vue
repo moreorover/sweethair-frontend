@@ -24,7 +24,7 @@ export default defineComponent({
 
     await store.getCustomers().fetchAll();
 
-    const customer = store.getCustomers().getState().all.get(id);
+    const customer: Customer | undefined = store.getCustomers().getState().all.get(id);
 
     if (!customer) {
       throw Error('Customer was not found.');

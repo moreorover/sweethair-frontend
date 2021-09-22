@@ -1,4 +1,4 @@
-import { reactive, readonly } from 'vue';
+import { reactive, shallowReadonly } from 'vue';
 import CustomerService, { Customer } from '@/services/CustomerService';
 
 export default class CustomerStore {
@@ -12,7 +12,7 @@ export default class CustomerStore {
   }
 
   getState() {
-    return readonly(this.state);
+    return shallowReadonly(this.state);
   }
 
   async fetchAll(force = false) {

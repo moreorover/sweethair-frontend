@@ -3,6 +3,7 @@
     <thead>
       <tr>
         <th>Start</th>
+        <th>Customers</th>
         <th></th>
       </tr>
     </thead>
@@ -16,6 +17,7 @@
       >
         <tr @click="navigate">
           <td>{{ appointment.start }}</td>
+          <td>{{ appointment.customers.length }}</td>
           <td class="level-right">
             <router-link :to="`/appointments/${appointment.id}/edit`" class="button is-small is-warning">
               Edit
