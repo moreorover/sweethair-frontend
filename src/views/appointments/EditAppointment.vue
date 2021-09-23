@@ -1,11 +1,12 @@
 <template>
-  <suspense>
+  <edit-appointment />
+  <!-- <suspense>
     <template #default>
       <edit-appointment />
     </template>
 
     <template #fallback> Loading... </template>
-  </suspense>
+  </suspense> -->
 </template>
 
 <script lang="ts">

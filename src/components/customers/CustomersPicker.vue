@@ -25,6 +25,7 @@
         <th>Full Name</th>
         <th>Email</th>
         <th>Instagram</th>
+        <th>Appointments</th>
       </tr>
     </thead>
     <tbody>
@@ -39,6 +40,7 @@
         <td>{{ customer.firstName }} {{ customer.lastName }}</td>
         <td>{{ customer.email }}</td>
         <td>{{ customer.instagram }}</td>
+        <td>{{ customer.appointments?.length }}</td>
       </tr>
     </tbody>
   </table>

@@ -1,3 +1,4 @@
+import { Appointment } from './AppointmentService';
 import apiClient from '@/axios/axios';
 import { AxiosResponse } from 'axios';
 
@@ -9,6 +10,7 @@ export interface Customer {
   instagram: string;
   createdOn?: string;
   modifiedOn?: string;
+  appointments?: Appointment[];
 }
 
 class CustomerService {

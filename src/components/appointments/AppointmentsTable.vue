@@ -30,7 +30,6 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useRouter } from 'vue-router';
 import { Appointment } from '@/services/AppointmentService';
 
 export default defineComponent({
@@ -40,15 +39,6 @@ export default defineComponent({
       type: Object as () => Appointment[],
       required: true,
     },
-  },
-  async setup() {
-    const router = useRouter();
-
-    const navigateToAppointment = (id: string) => {
-      router.push({ name: 'Appointment', params: { id } });
-    };
-
-    return { navigateToAppointment };
   },
 });
 </script>

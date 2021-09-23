@@ -38,38 +38,20 @@
   <appointments-table :appointments="appointments" />
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 import { useStore } from '@/store/';
 import AppointmentsTable from '@/components/appointments/AppointmentsTable.vue';
 
 export default defineComponent({
   name: 'Appointments',
   components: { AppointmentsTable },
-  async setup() {
+  setup() {
     const store = useStore();
     const searchKey = ref('');
 
-    await store.getAppointments().fetchAll();
+    store.getAppointments().fetchAll();
 
-    const allAppointments = Array.from(store.getAppointments().getState().all.values());
-
-    // const customers = computed(() => {
-    //   return allCustomers.filter((customer) => {
-    //     if (customer.firstName.toLowerCase().includes(searchKey.value)) {
-    //       return true;
-    //     }
-    //     if (customer.lastName.toLowerCase().includes(searchKey.value)) {
-    //       return true;
-    //     }
-    //     if (customer.email.toLowerCase().includes(searchKey.value)) {
-    //       return true;
-    //     }
-    //     if (customer.instagram.toLowerCase().includes(searchKey.value)) {
-    //       return true;
-    //     }
-    //     return false;
-    //   });
-    // });
+    const allAppointments = computed(() => Array.from(store.getAppointments().getState().all.values()));
 
     return { appointments: allAppointments, searchKey };
   },

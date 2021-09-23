@@ -7,7 +7,7 @@
   <appointment-form :appointment="appointment" @save="update" />
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import AppointmentForm from '@/components/appointments/AppointmentForm.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from '@/store/index';
@@ -17,21 +17,22 @@ export default defineComponent({
   components: {
     AppointmentForm,
   },
-  async setup() {
+  setup() {
     const store = useStore();
     const router = useRouter();
     const id = useRoute().params.id as string;
 
-    await store.getCustomers().fetchAll();
-    await store.getAppointments().fetchAll();
+    store.getCustomers().fetchAll();
+    store.getAppointments().fetchAll();
 
-    const appointment: Appointment | undefined = store.getAppointments().getState().all.get(id);
+    const appointment = computed<Appointment | undefined>(() => store.getAppointments().getState().all.get(id));
 
-    if (!appointment) {
+    if (!appointment.value) {
       throw Error('Appointment was not found.');
     }
 
     const update = async (appointment: Appointment) => {
+      // appointment.customers.forEach((c) => delete c.appointments);
       await store.getAppointments().update(appointment);
       router.push({
         name: 'Appointments',
