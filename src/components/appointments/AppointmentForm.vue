@@ -42,7 +42,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const customersStore = useCustomersStore();
-    const customers = computed(() => customersStore.getCustomers);
+    const customers = computed(() => customersStore.getAll);
     const newAppointment: Appointment = reactive(props.appointment);
     const onSubmit = () => {
       for (var propName in newAppointment) {

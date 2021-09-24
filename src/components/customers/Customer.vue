@@ -33,7 +33,7 @@ export default defineComponent({
     const store = useCustomersStore();
     const id = useRoute().params.id as string;
 
-    store.fetchCustomers();
+    store.fetchAll();
 
     const customer = computed(() => store.getCustomerById(id));
 

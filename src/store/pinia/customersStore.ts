@@ -3,33 +3,33 @@ import CustomerService from '@/services/CustomerService';
 import { defineStore } from 'pinia';
 
 interface CustomerStore {
-  customers: Customer[];
+  all: Customer[];
   loaded: boolean;
 }
 
 export const useCustomersStore = defineStore({
   id: 'customersStore',
-  state: (): CustomerStore => ({ customers: [] as Customer[], loaded: false }),
+  state: (): CustomerStore => ({ all: [] as Customer[], loaded: false }),
   getters: {
-    getCustomers(state) {
-      return state.customers;
+    getAll(state) {
+      return state.all;
     },
     getIsLoaded(state) {
       return state.loaded;
     },
     getCustomerById: (state) => (id: string) => {
       if (state.loaded) {
-        return state.customers.find((c) => c.id === id);
+        return state.all.find((c) => c.id === id);
       } else {
         console.log('State is not loaded.');
       }
     },
   },
   actions: {
-    async fetchCustomers() {
+    async fetchAll() {
       await CustomerService.getAll()
         .then((response) => {
-          this.customers = response.data;
+          this.all = response.data;
           this.loaded = true;
         })
         .catch(() => {
@@ -37,19 +37,19 @@ export const useCustomersStore = defineStore({
           console.log('Not loaded, something went wrong loading Customers');
         });
     },
-    async createCustomer(customer: Customer) {
+    async create(customer: Customer) {
       await CustomerService.create(customer)
-        .then((response) => this.customers.push(response.data))
+        .then((response) => this.all.push(response.data))
         .catch((err) => console.log('Failed to update Customer', customer, err));
     },
-    async updateCustomer(customer: Customer) {
+    async update(customer: Customer) {
       await CustomerService.update(customer)
         .then((response) => {
-          const i = this.customers.findIndex((c) => c.id === response.data.id);
+          const i = this.all.findIndex((c) => c.id === response.data.id);
           if (i > -1) {
-            this.customers[i] = response.data;
+            this.all[i] = response.data;
           } else {
-            this.customers.push(response.data);
+            this.all.push(response.data);
           }
         })
         .catch((err) => console.log('Failed to update Customer', customer, err));

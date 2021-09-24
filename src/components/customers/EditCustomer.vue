@@ -22,7 +22,7 @@ export default defineComponent({
     const router = useRouter();
     const id = useRoute().params.id as string;
 
-    store.fetchCustomers();
+    store.fetchAll();
 
     const customer = computed(() => store.getCustomerById(id));
 
@@ -31,7 +31,7 @@ export default defineComponent({
     }
 
     const update = async (customer: Customer) => {
-      await store.updateCustomer(customer);
+      await store.update(customer);
       router.push({
         name: 'Customers',
       });

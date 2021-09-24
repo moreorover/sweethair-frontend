@@ -25,7 +25,7 @@ export default defineComponent({
     const id = useRoute().params.id as string;
 
     appointmentStore.fetchAll();
-    customerStore.fetchCustomers();
+    customerStore.fetchAll();
 
     const appointment = computed<Appointment | undefined>(() => appointmentStore.getCustomerById(id));
 

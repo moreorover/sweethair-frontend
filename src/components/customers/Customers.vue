@@ -49,10 +49,10 @@ export default defineComponent({
     const store = useCustomersStore();
     const searchKey = ref('');
 
-    store.fetchCustomers();
+    store.fetchAll();
 
     const customers = computed(() => {
-      return store.customers.filter((customer) => {
+      return store.all.filter((customer) => {
         if (customer.firstName.toLowerCase().includes(searchKey.value)) {
           return true;
         }
