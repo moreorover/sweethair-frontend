@@ -19,20 +19,20 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { useStore } from '@/store/';
 import { useRouter } from 'vue-router';
+import { useLoggedInUserStore } from '@/store/pinia/loggedInUser';
 
 export default defineComponent({
   name: 'Login',
   setup() {
     const router = useRouter();
-    const store = useStore();
+    const store = useLoggedInUserStore();
 
     const email = ref('test@gmail.com');
     const password = ref('adminadmin');
 
     const onSubmit = async () => {
-      await store.getAuth().login(email.value, password.value);
+      await store.login(email.value, password.value);
       router.push('/');
     };
 
