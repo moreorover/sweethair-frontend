@@ -3,11 +3,11 @@
     <div class="hero-body">
       <div class="columns">
         <div class="column has-text-left my-auto">
-          <p class="title is-3">{{ appointment.start }}</p>
+          <p class="title is-3">{{ appointment?.start }}</p>
         </div>
         <div class="column has-text-right my-auto">
-          <p class="subtitle">{{ appointment.start }}</p>
-          <p class="subtitle">{{ appointment.start }}</p>
+          <p class="subtitle">{{ appointment?.start }}</p>
+          <p class="subtitle">{{ appointment?.start }}</p>
         </div>
       </div>
     </div>
@@ -23,21 +23,21 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { useStore } from '@/store/index';
+import { useAppointmentsStore } from '@/store/pinia/appointmentsStore';
 
 export default defineComponent({
   components: {},
-  async setup() {
-    const store = useStore();
+  setup() {
+    const store = useAppointmentsStore();
     const id = useRoute().params.id as string;
 
-    await store.getAppointments().fetchAll();
+    store.fetchAll();
 
-    const appointment = store.getAppointments().getState().all.get(id);
+    const appointment = computed(() => store.getCustomerById(id));
 
-    if (!appointment) {
+    if (!appointment.value) {
       throw Error('Appointment was not found.');
     }
 

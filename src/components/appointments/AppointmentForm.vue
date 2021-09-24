@@ -21,7 +21,7 @@
 </template>
 <script lang="ts">
 import { Appointment } from '@/services/AppointmentService';
-import { useStore } from '@/store';
+import { useCustomersStore } from '@/store/pinia/customersStore';
 import { defineComponent, reactive, computed } from 'vue';
 import CustomersPicker from '@/components/customers/CustomersPicker.vue';
 import { Customer } from '@/services/CustomerService';
@@ -41,8 +41,8 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const store = useStore();
-    const customers = computed(() => Array.from(store.getCustomers().getState().all.values()));
+    const customersStore = useCustomersStore();
+    const customers = computed(() => customersStore.getCustomers);
     const newAppointment: Appointment = reactive(props.appointment);
     const onSubmit = () => {
       for (var propName in newAppointment) {

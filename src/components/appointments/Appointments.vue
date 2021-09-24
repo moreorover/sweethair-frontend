@@ -39,19 +39,19 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue';
-import { useStore } from '@/store/';
+import { useAppointmentsStore } from '@/store/pinia/appointmentsStore';
 import AppointmentsTable from '@/components/appointments/AppointmentsTable.vue';
 
 export default defineComponent({
   name: 'Appointments',
   components: { AppointmentsTable },
   setup() {
-    const store = useStore();
+    const store = useAppointmentsStore();
     const searchKey = ref('');
 
-    store.getAppointments().fetchAll();
+    store.fetchAll();
 
-    const allAppointments = computed(() => Array.from(store.getAppointments().getState().all.values()));
+    const allAppointments = computed(() => store.getAll);
 
     return { appointments: allAppointments, searchKey };
   },
