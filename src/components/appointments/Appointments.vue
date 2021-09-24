@@ -21,7 +21,7 @@
         <article class="tile is-child box">
           <div class="field">
             <div class="control">
-              <input v-model="searchKey" type="text" class="input is-medium" placeholder="Search" />
+              <input v-model="searchKey" type="text" class="input is-medium" placeholder="Search" disabled />
             </div>
           </div>
         </article>
