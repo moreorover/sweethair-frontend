@@ -39,24 +39,20 @@
 </template>
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
-import { useStore } from '@/store/';
-import { useRouter } from 'vue-router';
+import { useCustomersStore } from '@/store/pinia/customersStore';
 import CustomersTable from '@/components/customers/CustomersTable.vue';
 
 export default defineComponent({
   name: 'Customers',
   components: { CustomersTable },
-  async setup() {
-    const store = useStore();
-    const router = useRouter();
+  setup() {
+    const store = useCustomersStore();
     const searchKey = ref('');
 
-    await store.getCustomers().fetchAll();
-
-    const allCustomers = Array.from(store.getCustomers().getState().all.values());
+    store.fetchCustomers();
 
     const customers = computed(() => {
-      return allCustomers.filter((customer) => {
+      return store.customers.filter((customer) => {
         if (customer.firstName.toLowerCase().includes(searchKey.value)) {
           return true;
         }
@@ -73,11 +69,7 @@ export default defineComponent({
       });
     });
 
-    const navigateToCustomer = (id: string) => {
-      router.push({ name: 'Customer', params: { id } });
-    };
-
-    return { customers, searchKey, navigateToCustomer };
+    return { customers, searchKey };
   },
 });
 </script>

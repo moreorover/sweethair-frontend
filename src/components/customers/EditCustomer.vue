@@ -7,31 +7,31 @@
   <customer-form :customer="customer" @save="update" />
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import CustomerForm from '@/components/customers/CustomerForm.vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useStore } from '@/store/index';
 import { Customer } from '@/services/CustomerService';
+import { useCustomersStore } from '@/store/pinia/customersStore';
 
 export default defineComponent({
   components: {
     CustomerForm,
   },
-  async setup() {
-    const store = useStore();
+  setup() {
+    const store = useCustomersStore();
     const router = useRouter();
     const id = useRoute().params.id as string;
 
-    await store.getCustomers().fetchAll();
+    store.fetchCustomers();
 
-    const customer: Customer | undefined = store.getCustomers().getState().all.get(id);
+    const customer = computed(() => store.getCustomerById(id));
 
-    if (!customer) {
+    if (!customer.value) {
       throw Error('Customer was not found.');
     }
 
     const update = async (customer: Customer) => {
-      await store.getCustomers().update(customer);
+      await store.updateCustomer(customer);
       router.push({
         name: 'Customers',
       });

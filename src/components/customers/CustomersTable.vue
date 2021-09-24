@@ -30,7 +30,6 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useRouter } from 'vue-router';
 import { Customer } from '@/services/CustomerService';
 
 export default defineComponent({
@@ -40,15 +39,6 @@ export default defineComponent({
       type: Object as () => Customer[],
       required: true,
     },
-  },
-  async setup() {
-    const router = useRouter();
-
-    const navigateToCustomer = (id: string) => {
-      router.push({ name: 'Customer', params: { id } });
-    };
-
-    return { navigateToCustomer };
   },
 });
 </script>
