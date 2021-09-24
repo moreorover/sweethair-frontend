@@ -37,6 +37,11 @@ export const useCustomersStore = defineStore({
           console.log('Not loaded, something went wrong loading Customers');
         });
     },
+    async createCustomer(customer: Customer) {
+      await CustomerService.create(customer)
+        .then((response) => this.customers.push(response.data))
+        .catch((err) => console.log('Failed to update Customer', customer, err));
+    },
     async updateCustomer(customer: Customer) {
       await CustomerService.update(customer)
         .then((response) => {

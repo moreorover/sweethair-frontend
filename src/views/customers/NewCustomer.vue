@@ -10,7 +10,7 @@
 import { defineComponent } from 'vue';
 import CustomerForm from '@/components/customers/CustomerForm.vue';
 import { useRouter } from 'vue-router';
-import { useStore } from '@/store/index';
+import { useCustomersStore } from '@/store/pinia/customersStore';
 import { Customer } from '@/services/CustomerService';
 
 export default defineComponent({
@@ -18,7 +18,7 @@ export default defineComponent({
     CustomerForm,
   },
   setup() {
-    const store = useStore();
+    const store = useCustomersStore();
     const router = useRouter();
     const newCustomer: Customer = {
       id: '',
@@ -29,7 +29,7 @@ export default defineComponent({
     };
 
     const save = async (customer: Customer) => {
-      await store.getCustomers().create(customer);
+      await store.createCustomer(customer);
       router.push({
         name: 'Customers',
       });
