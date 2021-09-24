@@ -1,17 +1,14 @@
 import { inject, App } from 'vue';
 import AppointmentStore from './AppointmentStore';
-import AuthStore from './AuthStore';
 import CustomerStore from './CustomerStore';
 
 export const storeKey = Symbol('store');
 
 export class Store {
-  private auth: AuthStore;
   private appointments: AppointmentStore;
   private customers: CustomerStore;
 
   constructor() {
-    this.auth = new AuthStore();
     this.appointments = new AppointmentStore();
     this.customers = new CustomerStore();
   }
@@ -22,10 +19,6 @@ export class Store {
 
   getCustomers(): CustomerStore {
     return this.customers;
-  }
-
-  getAuth(): AuthStore {
-    return this.auth;
   }
 
   getAppointments(): AppointmentStore {
