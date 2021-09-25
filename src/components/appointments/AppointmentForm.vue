@@ -8,11 +8,7 @@
           @toggle-customer="toggle"
         />
       </div>
-      <div class="field">
-        <div class="control">
-          <datepicker v-model="dateInput" class="input is-medium" />
-        </div>
-      </div>
+      <datepicker v-model="dateInput" />
       <button class="button is-block is-primary is-fullwidth is-medium">Submit</button>
     </form>
   </section>
@@ -27,7 +23,10 @@ import { useCustomersStore } from '@/store/pinia/customersStore';
 import { defineComponent, reactive, computed, watchEffect, ref } from 'vue';
 import CustomersPicker from '@/components/customers/CustomersPicker.vue';
 import { Customer } from '@/services/CustomerService';
-import Datepicker from 'vue3-datepicker';
+// import Datepicker from 'vue3-datepicker';
+
+import Datepicker from 'vue3-date-time-picker';
+import 'vue3-date-time-picker/dist/main.css';
 
 export default defineComponent({
   components: { CustomersPicker, Datepicker },
