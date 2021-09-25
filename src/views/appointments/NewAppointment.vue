@@ -22,7 +22,7 @@ export default defineComponent({
     const router = useRouter();
     const newAppointment: Appointment = reactive({
       id: '',
-      start: '',
+      start: new Date().toISOString(),
       customers: [],
     });
 

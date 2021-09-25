@@ -10,24 +10,27 @@
       </div>
       <div class="field">
         <div class="control">
-          <input v-model="newAppointment.start" type="date" class="input is-medium" placeholder="Apointment start" />
+          <datepicker v-model="dateInput" class="input is-medium" />
         </div>
       </div>
       <button class="button is-block is-primary is-fullwidth is-medium">Submit</button>
     </form>
   </section>
+
   <div>newAppointment: {{ newAppointment }}</div>
   <div>appointment: {{ appointment }}</div>
+  <div>{{ dateInput }}</div>
 </template>
 <script lang="ts">
 import { Appointment } from '@/services/AppointmentService';
 import { useCustomersStore } from '@/store/pinia/customersStore';
-import { defineComponent, reactive, computed } from 'vue';
+import { defineComponent, reactive, computed, watchEffect, ref } from 'vue';
 import CustomersPicker from '@/components/customers/CustomersPicker.vue';
 import { Customer } from '@/services/CustomerService';
+import Datepicker from 'vue3-datepicker';
 
 export default defineComponent({
-  components: { CustomersPicker },
+  components: { CustomersPicker, Datepicker },
   props: {
     appointment: {
       type: Object as () => Appointment,
@@ -44,6 +47,7 @@ export default defineComponent({
     const customersStore = useCustomersStore();
     const customers = computed(() => customersStore.getAll);
     const newAppointment: Appointment = reactive(props.appointment);
+    const dateInput = ref<Date>(new Date(props.appointment.start));
     const onSubmit = () => {
       for (var propName in newAppointment) {
         if (
@@ -59,6 +63,8 @@ export default defineComponent({
       emit('save', newAppointment);
     };
 
+    watchEffect(() => (newAppointment.start = dateInput.value.toISOString()));
+
     const toggle = (customer: Customer) => {
       if (newAppointment.customers.find((c) => c.id === customer.id)) {
         newAppointment.customers = newAppointment.customers.filter((c) => c.id !== customer.id);
@@ -67,7 +73,7 @@ export default defineComponent({
       }
     };
 
-    return { newAppointment, onSubmit, customers, toggle };
+    return { newAppointment, onSubmit, customers, toggle, dateInput };
   },
 });
 </script>
