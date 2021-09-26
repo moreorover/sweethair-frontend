@@ -2,11 +2,7 @@
   <section class="section card has-text-centered">
     <form @submit.prevent="onSubmit">
       <div class="container">
-        <customers-picker
-          :customers="customers"
-          :customers-selection="newAppointment.customers"
-          @toggle-customer="toggle"
-        />
+        <customers-picker :customers-selection="newAppointment.customers" @selected="toggle" />
       </div>
       <datepicker v-model="dateInput" />
       <button class="button is-block is-primary is-fullwidth is-medium">Submit</button>
@@ -23,8 +19,6 @@ import { useCustomersStore } from '@/store/pinia/customersStore';
 import { defineComponent, reactive, computed, watchEffect, ref } from 'vue';
 import CustomersPicker from '@/components/customers/CustomersPicker.vue';
 import { Customer } from '@/services/CustomerService';
-// import Datepicker from 'vue3-datepicker';
-
 import Datepicker from 'vue3-date-time-picker';
 import 'vue3-date-time-picker/dist/main.css';
 
@@ -45,7 +39,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const customersStore = useCustomersStore();
     const customers = computed(() => customersStore.getAll);
-    const newAppointment: Appointment = reactive(props.appointment);
+    const newAppointment = reactive<Appointment>(props.appointment);
     const dateInput = ref<Date>(new Date(props.appointment.start));
     const onSubmit = () => {
       for (var propName in newAppointment) {
@@ -64,12 +58,8 @@ export default defineComponent({
 
     watchEffect(() => (newAppointment.start = dateInput.value.toISOString()));
 
-    const toggle = (customer: Customer) => {
-      if (newAppointment.customers.find((c) => c.id === customer.id)) {
-        newAppointment.customers = newAppointment.customers.filter((c) => c.id !== customer.id);
-      } else {
-        newAppointment.customers.push(customer);
-      }
+    const toggle = (customers: Customer[]) => {
+      newAppointment.customers = customers;
     };
 
     return { newAppointment, onSubmit, customers, toggle, dateInput };

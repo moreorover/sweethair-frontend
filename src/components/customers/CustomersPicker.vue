@@ -33,7 +33,7 @@
         <td>
           <input
             type="checkbox"
-            :checked="customersSelection.find((c) => c.id === customer.id)"
+            :checked="selection.find((c) => c.id === customer.id) ? true : false"
             @click="toggleCustomer(customer)"
           />
         </td>
@@ -48,26 +48,28 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import { Customer } from '@/services/CustomerService';
+import { useCustomersStore } from '@/store/pinia/customersStore';
 
 export default defineComponent({
   name: 'CustomersPicker',
   // components: { BaseCheckbox },
   props: {
-    customers: {
-      type: Object as () => Customer[],
-      required: true,
-    },
     customersSelection: {
       type: Object as () => Customer[],
       required: true,
     },
   },
-  emits: ['toggleCustomer'],
+  emits: ['selected'],
   setup(props, { emit }) {
+    const customerStore = useCustomersStore();
+    const customers = computed(() => customerStore.getAll);
     const searchKey = ref('');
+    const selection = ref<Customer[]>(props.customersSelection);
+
+    customerStore.fetchAll();
 
     const filteredCustomers = computed(() => {
-      return props.customers.filter((customer) => {
+      return customers.value.filter((customer) => {
         if (
           customer.firstName.toLowerCase().includes(searchKey.value) ||
           customer.lastName.toLowerCase().includes(searchKey.value) ||
@@ -82,10 +84,15 @@ export default defineComponent({
     });
 
     const toggleCustomer = (customer: Customer) => {
-      emit('toggleCustomer', customer);
+      if (selection.value.find((c) => c.id === customer.id)) {
+        selection.value = selection.value.filter((c) => c.id !== customer.id);
+      } else {
+        selection.value.push(customer);
+      }
+      emit('selected', selection.value);
     };
 
-    return { filteredCustomers, searchKey, toggleCustomer };
+    return { filteredCustomers, searchKey, toggleCustomer, customers, selection };
   },
 });
 </script>
