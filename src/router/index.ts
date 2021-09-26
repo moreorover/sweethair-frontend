@@ -11,7 +11,7 @@ import Appointments from '@/views/appointments/Appointments.vue';
 import NewAppointment from '@/views/appointments/NewAppointment.vue';
 import Appointment from '@/views/appointments/Appointment.vue';
 import EditAppointment from '@/views/appointments/EditAppointment.vue';
-import { useLoggedInUserStore } from '@/store/pinia/loggedInUser';
+import { useLoggedInUserStore } from '@/store/loggedInUser
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),

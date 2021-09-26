@@ -10,7 +10,7 @@
 import { defineComponent } from 'vue';
 import CustomerForm from '@/components/customers/CustomerForm.vue';
 import { useRouter } from 'vue-router';
-import { useCustomersStore } from '@/store/pinia/customersStore';
+import { useCustomersStore } from '@/store/customersStore';
 import { Customer } from '@/services/CustomerService';
 
 export default defineComponent({

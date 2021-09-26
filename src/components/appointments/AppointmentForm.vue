@@ -15,7 +15,7 @@
 </template>
 <script lang="ts">
 import { Appointment } from '@/services/AppointmentService';
-import { useCustomersStore } from '@/store/pinia/customersStore';
+import { useCustomersStore } from '@/store/customersStore';
 import { defineComponent, reactive, computed, watchEffect, ref } from 'vue';
 import CustomersPicker from '@/components/customers/CustomersPicker.vue';
 import { Customer } from '@/services/CustomerService';

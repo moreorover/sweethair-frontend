@@ -27,7 +27,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue';
 import SideMenu from '@/components/SideMenu.vue';
-import { useLoggedInUserStore } from '@/store/pinia/loggedInUser';
+import { useLoggedInUserStore } from '@/store/loggedInUser';
 
 export default defineComponent({
   name: 'Navigation',

@@ -48,7 +48,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import { Customer } from '@/services/CustomerService';
-import { useCustomersStore } from '@/store/pinia/customersStore';
+import { useCustomersStore } from '@/store/customersStore';
 
 export default defineComponent({
   name: 'CustomersPicker',

@@ -11,7 +11,7 @@ import { defineComponent, reactive } from 'vue';
 import AppointmentForm from '@/components/appointments/AppointmentForm.vue';
 import { useRouter } from 'vue-router';
 import { Appointment } from '@/services/AppointmentService';
-import { useAppointmentsStore } from '@/store/pinia/appointmentsStore';
+import { useAppointmentsStore } from '@/store/appointmentsStore';
 
 export default defineComponent({
   components: {

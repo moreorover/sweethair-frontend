@@ -20,7 +20,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useLoggedInUserStore } from '@/store/pinia/loggedInUser';
+import { useLoggedInUserStore } from '@/store/loggedInUser';
 
 export default defineComponent({
   name: 'Login',

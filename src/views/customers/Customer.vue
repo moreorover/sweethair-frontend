@@ -25,7 +25,7 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { useCustomersStore } from '@/store/pinia/customersStore';
+import { useCustomersStore } from '@/store/customersStore';
 
 export default defineComponent({
   components: {},

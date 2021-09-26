@@ -39,7 +39,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue';
-import { useAppointmentsStore } from '@/store/pinia/appointmentsStore';
+import { useAppointmentsStore } from '@/store/appointmentsStore';
 import AppointmentsTable from '@/components/appointments/AppointmentsTable.vue';
 
 export default defineComponent({

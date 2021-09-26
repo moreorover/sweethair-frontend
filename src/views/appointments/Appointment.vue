@@ -25,7 +25,7 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { useAppointmentsStore } from '@/store/pinia/appointmentsStore';
+import { useAppointmentsStore } from '@/store/appointmentsStore';
 
 export default defineComponent({
   components: {},

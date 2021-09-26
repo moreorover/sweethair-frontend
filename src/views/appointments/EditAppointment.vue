@@ -10,8 +10,8 @@
 import { defineComponent, computed } from 'vue';
 import AppointmentForm from '@/components/appointments/AppointmentForm.vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useAppointmentsStore } from '@/store/pinia/appointmentsStore';
-import { useCustomersStore } from '@/store/pinia/customersStore';
+import { useAppointmentsStore } from '@/store/appointmentsStore';
+import { useCustomersStore } from '@/store/customersStore';
 import { Appointment } from '@/services/AppointmentService';
 
 export default defineComponent({

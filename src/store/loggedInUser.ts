@@ -1,5 +1,5 @@
 import AuthService from '@/services/AuthService';
-import { User } from './../../services/AuthService';
+import { User } from '@/services/AuthService';
 import { defineStore } from 'pinia';
 
 interface UserStore {
