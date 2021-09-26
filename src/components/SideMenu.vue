@@ -5,6 +5,7 @@
       <li><a>Dashboard</a></li>
       <router-link to="/customers">Customers</router-link>
       <router-link to="/appointments">Appointments</router-link>
+      <router-link to="/transactions">Transactions</router-link>
     </ul>
     <p class="menu-label">Administration</p>
     <ul class="menu-list">
