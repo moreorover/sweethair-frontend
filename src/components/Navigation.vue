@@ -14,8 +14,10 @@
           <side-menu />
         </div>
         <div class="navbar-end">
-          <div class="navbar-item">Hello {{ user?.firstName }} {{ user?.lastName }}</div>
-          <router-link class="navbar-item" to="/logout">Logout</router-link>
+          <div v-if="isLoggedIn" class="navbar-item">Hello {{ user?.firstName }} {{ user?.lastName }}</div>
+          <router-link v-if="isLoggedIn" class="navbar-item" to="/logout">Logout</router-link>
+
+          <router-link v-else class="navbar-item" to="/login">Log In</router-link>
         </div>
       </div>
     </div>
@@ -23,21 +25,18 @@
 </template>
 
 <script lang="ts">
-import { User } from '@/services/AuthService';
-import { defineComponent, ref } from 'vue';
-import { useStore } from '@/store/';
+import { defineComponent, ref, computed } from 'vue';
 import SideMenu from '@/components/SideMenu.vue';
+import { useLoggedInUserStore } from '@/store/loggedInUser';
 
 export default defineComponent({
   name: 'Navigation',
   components: { SideMenu },
   setup() {
     const isOpen = ref<boolean>(false);
-    const store = useStore();
+    const store = useLoggedInUserStore();
 
-    const user: User | null = store.getAuth().getState().user;
-
-    return { isOpen, user };
+    return { isOpen, user: computed(() => store.getUser), isLoggedIn: computed(() => store.getIsLoggedIn) };
   },
 });
 </script>

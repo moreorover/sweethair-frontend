@@ -11,9 +11,9 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
-  createdOn: string;
-  modifiedOn: string;
-  role: Role;
+  createdOn?: string;
+  modifiedOn?: string;
+  role?: Role;
 }
 
 class AuthService {

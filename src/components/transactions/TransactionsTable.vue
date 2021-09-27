@@ -2,24 +2,26 @@
   <table class="table is-fullwidth is-striped is-hoverable">
     <thead>
       <tr>
-        <th>Start</th>
-        <th>Customers</th>
+        <th>Total</th>
+        <th>is Paid</th>
+        <th>Date</th>
         <th></th>
       </tr>
     </thead>
     <tbody>
       <router-link
-        v-for="appointment in appointments"
-        :key="appointment.id"
+        v-for="transaction in transactions"
+        :key="transaction.id"
         v-slot="{ navigate }"
-        :to="`/appointments/${appointment.id}`"
+        :to="`/transactions/${transaction.id}`"
         custom
       >
         <tr @click="navigate">
-          <td>{{ format(new Date(appointment.start), 'dd MMMM yyyy') }}</td>
-          <td>{{ appointment.customers?.length }}</td>
+          <td>{{ transaction.total }}</td>
+          <td>{{ transaction.isPaid }}</td>
+          <td>{{ format(new Date(transaction.date), 'dd MMMM yyyy') }}</td>
           <td class="level-right">
-            <router-link :to="`/appointments/${appointment.id}/edit`" class="button is-small is-warning">
+            <router-link :to="`/transactions/${transaction.id}/edit`" class="button is-small is-warning">
               Edit
             </router-link>
           </td>
@@ -30,14 +32,14 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { Appointment } from '@/services/AppointmentService';
 import { format } from 'date-fns';
+import { Transaction } from '@/services/TransactionService';
 
 export default defineComponent({
   name: 'AppointmentsTable',
   props: {
-    appointments: {
-      type: Object as () => Appointment[],
+    transactions: {
+      type: Object as () => Transaction[],
       required: true,
     },
   },

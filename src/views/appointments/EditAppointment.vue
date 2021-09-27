@@ -1,20 +1,47 @@
 <template>
-  <edit-appointment />
-  <!-- <suspense>
-    <template #default>
-      <edit-appointment />
-    </template>
-
-    <template #fallback> Loading... </template>
-  </suspense> -->
+  <section class="hero is-small is-link">
+    <div class="hero-body">
+      <p class="title">Edit Appointment</p>
+    </div>
+  </section>
+  <appointment-form :appointment="appointment" @save="update" />
 </template>
-
 <script lang="ts">
-import { defineComponent } from 'vue';
-import EditAppointment from '@/components/appointments/EditAppointment.vue';
+import { defineComponent, computed } from 'vue';
+import AppointmentForm from '@/components/appointments/AppointmentForm.vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useAppointmentsStore } from '@/store/appointmentsStore';
+import { useCustomersStore } from '@/store/customersStore';
+import { Appointment } from '@/services/AppointmentService';
+
 export default defineComponent({
   components: {
-    EditAppointment,
+    AppointmentForm,
+  },
+  setup() {
+    const appointmentStore = useAppointmentsStore();
+    const customerStore = useCustomersStore();
+    const router = useRouter();
+    const id = useRoute().params.id as string;
+
+    appointmentStore.fetchAll();
+    customerStore.fetchAll();
+
+    const appointment = computed<Appointment | undefined>(() => appointmentStore.getCustomerById(id));
+
+    if (!appointment.value) {
+      throw Error('Appointment was not found.');
+    }
+
+    const update = async (appointment: Appointment) => {
+      // appointment.customers.forEach((c) => delete c.appointments);
+      await appointmentStore.update(appointment);
+      router.push({
+        name: 'Appointments',
+      });
+    };
+
+    return { appointment, update };
   },
 });
 </script>

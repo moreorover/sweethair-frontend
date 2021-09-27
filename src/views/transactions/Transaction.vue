@@ -3,11 +3,11 @@
     <div class="hero-body">
       <div class="columns">
         <div class="column has-text-left my-auto">
-          <p class="title is-3">{{ customer.firstName }} {{ customer.lastName }}</p>
+          <p class="title is-3">{{ transaction?.id }}</p>
         </div>
         <div class="column has-text-right my-auto">
-          <p class="subtitle">{{ customer.email }}</p>
-          <p class="subtitle">{{ customer.instagram }}</p>
+          <p class="subtitle">{{ transaction?.total }} {{ transaction?.isPaid }}</p>
+          <p class="subtitle">{{ transaction && format(new Date(transaction.date), 'dd MMMM yyyy') }}</p>
         </div>
       </div>
     </div>
@@ -23,25 +23,26 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { useStore } from '@/store/index';
+import { useTransactionsStore } from '@/store/transactionsStore';
+import { format } from 'date-fns';
 
 export default defineComponent({
   components: {},
-  async setup() {
-    const store = useStore();
+  setup() {
+    const store = useTransactionsStore();
     const id = useRoute().params.id as string;
 
-    await store.getCustomers().fetchAll();
+    store.fetchAll();
 
-    const customer = store.getCustomers().getState().all.get(id);
+    const transaction = computed(() => store.getTransactionById(id));
 
-    if (!customer) {
-      throw Error('Customer was not found.');
+    if (!transaction.value) {
+      throw Error('Transaction was not found.');
     }
 
-    return { customer };
+    return { transaction, format };
   },
 });
 </script>

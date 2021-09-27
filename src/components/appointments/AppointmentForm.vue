@@ -2,32 +2,28 @@
   <section class="section card has-text-centered">
     <form @submit.prevent="onSubmit">
       <div class="container">
-        <customers-picker
-          :customers="customers"
-          :customers-selection="newAppointment.customers"
-          @toggle-customer="toggle"
-        />
+        <customers-picker :customers-selection="newAppointment.customers" @selected="toggle" />
       </div>
-      <div class="field">
-        <div class="control">
-          <input v-model="newAppointment.start" type="date" class="input is-medium" placeholder="Apointment start" />
-        </div>
-      </div>
+      <datepicker v-model="dateInput" />
       <button class="button is-block is-primary is-fullwidth is-medium">Submit</button>
     </form>
   </section>
+
   <div>newAppointment: {{ newAppointment }}</div>
   <div>appointment: {{ appointment }}</div>
+  <div>{{ dateInput }}</div>
 </template>
 <script lang="ts">
 import { Appointment } from '@/services/AppointmentService';
-import { useStore } from '@/store';
-import { defineComponent, reactive, computed } from 'vue';
+import { useCustomersStore } from '@/store/customersStore';
+import { defineComponent, reactive, computed, watchEffect, ref } from 'vue';
 import CustomersPicker from '@/components/customers/CustomersPicker.vue';
 import { Customer } from '@/services/CustomerService';
+import Datepicker from 'vue3-date-time-picker';
+import 'vue3-date-time-picker/dist/main.css';
 
 export default defineComponent({
-  components: { CustomersPicker },
+  components: { CustomersPicker, Datepicker },
   props: {
     appointment: {
       type: Object as () => Appointment,
@@ -41,9 +37,10 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const store = useStore();
-    const customers = computed(() => Array.from(store.getCustomers().getState().all.values()));
-    const newAppointment: Appointment = reactive(props.appointment);
+    const customersStore = useCustomersStore();
+    const customers = computed(() => customersStore.getAll);
+    const newAppointment = reactive<Appointment>(props.appointment);
+    const dateInput = ref<Date>(new Date(props.appointment.start));
     const onSubmit = () => {
       for (var propName in newAppointment) {
         if (
@@ -59,15 +56,13 @@ export default defineComponent({
       emit('save', newAppointment);
     };
 
-    const toggle = (customer: Customer) => {
-      if (newAppointment.customers.find((c) => c.id === customer.id)) {
-        newAppointment.customers = newAppointment.customers.filter((c) => c.id !== customer.id);
-      } else {
-        newAppointment.customers.push(customer);
-      }
+    watchEffect(() => (newAppointment.start = dateInput.value.toISOString()));
+
+    const toggle = (customers: Customer[]) => {
+      newAppointment.customers = customers;
     };
 
-    return { newAppointment, onSubmit, customers, toggle };
+    return { newAppointment, onSubmit, customers, toggle, dateInput };
   },
 });
 </script>

@@ -10,24 +10,24 @@
 import { defineComponent, reactive } from 'vue';
 import AppointmentForm from '@/components/appointments/AppointmentForm.vue';
 import { useRouter } from 'vue-router';
-import { useStore } from '@/store/index';
 import { Appointment } from '@/services/AppointmentService';
+import { useAppointmentsStore } from '@/store/appointmentsStore';
 
 export default defineComponent({
   components: {
     AppointmentForm,
   },
   setup() {
-    const store = useStore();
+    const store = useAppointmentsStore();
     const router = useRouter();
     const newAppointment: Appointment = reactive({
       id: '',
-      start: '',
+      start: new Date().toISOString(),
       customers: [],
     });
 
     const save = async (appointment: Appointment) => {
-      await store.getAppointments().create(appointment);
+      await store.create(appointment);
       router.push({
         name: 'Appointments',
       });
