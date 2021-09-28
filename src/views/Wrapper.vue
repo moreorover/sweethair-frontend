@@ -1,16 +1,16 @@
 <template>
   <navigation />
 
-  <div class="container">
-    <div class="columns">
-      <div class="column is-3 is-hidden-mobile">
+  <section class="section">
+    <div class="columns is-tablet">
+      <div class="column is-2 is-hidden-touch">
         <side-menu />
       </div>
-      <div class="column is-9">
+      <div class="column">
         <router-view />
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script lang="ts">

@@ -1,11 +1,11 @@
 <template>
-  <table class="table is-fullwidth is-striped is-hoverable">
+  <table class="table is-fullwidth is-hoverable">
     <thead>
       <tr>
         <th>Full Name</th>
         <th>Email</th>
         <th>Instagram</th>
-        <th></th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -20,8 +20,12 @@
           <td>{{ customer.firstName }} {{ customer.lastName }}</td>
           <td>{{ customer.email }}</td>
           <td>{{ customer.instagram }}</td>
-          <td class="level-right">
-            <router-link :to="`/customers/${customer.id}/edit`" class="button is-small is-warning"> Edit </router-link>
+          <td>
+            <div class="buttons">
+              <router-link :to="`/customers/${customer.id}/edit`" class="button is-small is-warning">
+                Edit
+              </router-link>
+            </div>
           </td>
         </tr>
       </router-link>

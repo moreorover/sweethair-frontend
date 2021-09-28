@@ -1,29 +1,48 @@
 <template>
-  <section class="section card has-text-centered">
+  <div class="column">
     <form @submit.prevent="onSubmit">
       <div class="field">
-        <div class="control">
-          <input v-model="firstName" type="text" class="input is-medium" placeholder="First Name" />
+        <div class="field">
+          <label class="label">First Name</label>
+          <div class="control">
+            <input v-model="firstName" class="input is-large" type="text" placeholder="e.g. Jane" required />
+          </div>
         </div>
       </div>
+
       <div class="field">
-        <div class="control">
-          <input v-model="lastName" type="text" class="input is-medium" placeholder="Last Name" />
+        <div class="field">
+          <label class="label">Last Name</label>
+          <div class="control">
+            <input v-model="lastName" class="input is-large" type="text" placeholder="e.g. Smith" required />
+          </div>
         </div>
       </div>
+
       <div class="field">
-        <div class="control">
-          <input v-model="email" type="email" class="input is-medium" placeholder="email" />
+        <label class="label">Email</label>
+        <div class="control has-icons-left">
+          <input v-model="email" class="input" type="email" placeholder="e.g. janesmith@gmail.com" required />
+          <span class="icon is-small is-left">
+            <i class="fa fa-envelope"></i>
+          </span>
         </div>
       </div>
+
       <div class="field">
+        <label class="label">Instagram</label>
         <div class="control">
-          <input v-model="instagram" type="text" class="input is-medium" placeholder="instgram" />
+          <input v-model="instagram" class="input" type="text" placeholder="janesmith" required />
         </div>
       </div>
-      <button class="button is-block is-primary is-fullwidth is-medium">Submit</button>
+
+      <div class="field">
+        <div class="buttons">
+          <button class="button is-medium is-success">Save</button>
+        </div>
+      </div>
     </form>
-  </section>
+  </div>
 </template>
 <script lang="ts">
 import { Customer } from '@/services/CustomerService';
@@ -36,12 +55,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    save: (customer: Customer) => {
-      return true;
-    },
-  },
+  emits: ['save'],
   setup(props, ctx) {
     const firstName = ref(props.customer.firstName);
     const lastName = ref(props.customer.lastName);

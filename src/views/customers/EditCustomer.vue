@@ -1,9 +1,5 @@
 <template>
-  <section class="hero is-small is-link">
-    <div class="hero-body">
-      <p class="title">Edit Customer</p>
-    </div>
-  </section>
+  <h1 class="title">Edit Customer</h1>
   <customer-form :customer="customer" @save="update" />
 </template>
 <script lang="ts">
