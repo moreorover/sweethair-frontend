@@ -37,54 +37,20 @@
       </div>
     </div> -->
   </nav>
-
-  <div class="columns is-multiline">
-    <router-link
-      v-for="customer in customers"
-      :key="customer.id"
-      v-slot="{ navigate }"
-      :to="`/customers/${customer.id}`"
-      custom
-    >
-      <div class="column is-12-tablet is-6-desktop is-4-widescreen" @click="navigate">
-        <article class="box">
-          <div class="media">
-            <div class="media-content">
-              <p class="title is-5 is-spaced is-marginless">{{ customer.firstName }} {{ customer.lastName }}</p>
-              <p class="subtitle is-marginless">{{ customer.email }}</p>
-              <p class="subtitle is-marginless">{{ customer.instagram }}</p>
-              <div class="content is-small">
-                Created on: {{ customer.createdOn && format(new Date(customer.createdOn), 'dd MMMM yyyy') }}
-                <br />
-                Modified on: {{ customer.modifiedOn && format(new Date(customer.modifiedOn), 'dd MMMM yyyy') }}
-                <br />
-                <router-link :to="`/customers/${customer.id}/edit`" class="subtitle is-marginless"> Edit </router-link>
-                <span class="subtitle is-marginless"> / </span>
-                <router-link :to="`/customers/${customer.id}/edit`" class="subtitle is-marginless">
-                  Book Appointment
-                </router-link>
-                <p></p>
-              </div>
-            </div>
-          </div>
-        </article>
-      </div>
-    </router-link>
-
-    <customers-table :customers="customers" />
-  </div>
-
+  <customers-cards :customers="customers" />
+  <customers-table :customers="customers" />
   <!-- <customers-table :customers="customers" /> -->
 </template>
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import { useCustomersStore } from '@/store/customersStore';
 import CustomersTable from '@/components/customers/CustomersTable.vue';
+import CustomersCards from '@/components/customers/CustomersCards.vue';
 import { format } from 'date-fns';
 
 export default defineComponent({
   name: 'Customers',
-  components: { CustomersTable },
+  components: { CustomersTable, CustomersCards },
   setup() {
     const store = useCustomersStore();
     const searchKey = ref('');
