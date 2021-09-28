@@ -8,6 +8,14 @@
         <th>Actions</th>
       </tr>
     </thead>
+    <tfoot>
+      <tr>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>Instagram</th>
+        <th>Actions</th>
+      </tr>
+    </tfoot>
     <tbody>
       <router-link
         v-for="customer in customers"
