@@ -20,6 +20,7 @@ export default defineComponent({
       id: '',
       start: new Date().toISOString(),
       customers: [],
+      transactions: [],
     });
 
     const save = async (appointment: Appointment) => {

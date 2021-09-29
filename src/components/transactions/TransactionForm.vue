@@ -30,7 +30,6 @@
 import { Transaction } from '@/services/TransactionService';
 import { defineComponent, reactive } from 'vue';
 import Datepicker from 'vue3-date-time-picker';
-import 'vue3-date-time-picker/dist/main.css';
 
 export default defineComponent({
   components: { Datepicker },

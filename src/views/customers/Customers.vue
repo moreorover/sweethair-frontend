@@ -15,7 +15,7 @@
         </router-link>
       </p>
 
-      <div class="level-item is-hidden-tablet-only">
+      <div class="level-item">
         <div class="field has-addons">
           <p class="control">
             <input v-model="searchKey" class="input" type="text" placeholder="Customer name, email..." />

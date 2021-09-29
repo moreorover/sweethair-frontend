@@ -24,7 +24,6 @@ import { defineComponent, reactive, computed, watchEffect, ref } from 'vue';
 import CustomersPicker from '@/components/customers/CustomersPicker.vue';
 import { Customer } from '@/services/CustomerService';
 import Datepicker from 'vue3-date-time-picker';
-import 'vue3-date-time-picker/dist/main.css';
 
 export default defineComponent({
   components: { CustomersPicker, Datepicker },

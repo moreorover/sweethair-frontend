@@ -1,12 +1,21 @@
 <template>
-  <table class="table is-fullwidth is-striped is-hoverable">
+  <table class="table is-fullwidth is-hoverable">
     <thead>
       <tr>
-        <th>Start</th>
-        <th>Customers</th>
-        <th></th>
+        <th>Scheduled At</th>
+        <th>Attendees</th>
+        <th>Transactions No.</th>
+        <th>Actions</th>
       </tr>
     </thead>
+    <tfoot>
+      <tr>
+        <th>Scheduled At</th>
+        <th>Attendees</th>
+        <th>Transactions No.</th>
+        <th>Actions</th>
+      </tr>
+    </tfoot>
     <tbody>
       <router-link
         v-for="appointment in appointments"
@@ -16,9 +25,14 @@
         custom
       >
         <tr @click="navigate">
-          <td>{{ format(new Date(appointment.start), 'dd MMMM yyyy') }}</td>
-          <td>{{ appointment.customers?.length }}</td>
-          <td class="level-right">
+          <td class="has-text-weight-bold">{{ format(new Date(appointment.start), 'dd MMMM yyyy HH:mm') }}</td>
+          <td>
+            <p v-for="customer in appointment.customers" :key="customer.id">
+              {{ customer.firstName }} {{ customer.lastName }}
+            </p>
+          </td>
+          <td>{{ appointment.transactions.length }}</td>
+          <td>
             <router-link :to="`/appointments/${appointment.id}/edit`" class="button is-small is-warning">
               Edit
             </router-link>
