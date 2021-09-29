@@ -15,9 +15,6 @@
         </router-link>
       </p>
       <div v-for="period in periods" :key="period" class="level-item">
-        <!-- <div class="tags has-addons">
-          <span v-if="activePeriod === period" class="tag is-dark">Selected</span> -->
-
         <span
           :class="{ 'is-light': activePeriod !== period }"
           class="tag is-link is-clickable"
@@ -25,8 +22,6 @@
         >
           {{ period }}
         </span>
-        <!-- </div
-> -->
       </div>
     </div>
   </nav>
