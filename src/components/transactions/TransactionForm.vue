@@ -1,7 +1,8 @@
 <template>
-  <section class="section card has-text-centered">
+  <div class="column">
     <form @submit.prevent="onSubmit">
       <div class="field">
+        <label class="label">Total for Transaction</label>
         <div class="control">
           <input
             v-model="newTransaction.total"
@@ -13,9 +14,8 @@
         </div>
       </div>
       <div class="field">
-        <label class="checkbox">
-          <input type="checkbox" />
-          Is Paid
+        <label class="label">
+          <div class="control"><input type="checkbox" /> Is Paid?</div>
         </label>
       </div>
       <div class="field">
@@ -23,8 +23,7 @@
       </div>
       <button class="button is-block is-primary is-fullwidth is-medium">Submit</button>
     </form>
-  </section>
-  {{ newTransaction }}
+  </div>
 </template>
 <script lang="ts">
 import { Transaction } from '@/services/TransactionService';

@@ -2,10 +2,10 @@
   <table class="table is-fullwidth is-striped is-hoverable">
     <thead>
       <tr>
-        <th>Total</th>
+        <th>Scheduled At</th>
         <th>is Paid</th>
-        <th>Date</th>
-        <th></th>
+        <th>Total</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -17,10 +17,13 @@
         custom
       >
         <tr @click="navigate">
-          <td>{{ transaction.total }}</td>
-          <td>{{ transaction.isPaid }}</td>
           <td>{{ format(new Date(transaction.date), 'dd MMMM yyyy') }}</td>
-          <td class="level-right">
+          <td>
+            <div v-if="transaction.isPaid" class="tile notification is-success"></div>
+            <div v-else class="tile notification is-danger"></div>
+          </td>
+          <td>{{ transaction.total }}</td>
+          <td>
             <router-link :to="`/transactions/${transaction.id}/edit`" class="button is-small is-warning">
               Edit
             </router-link>

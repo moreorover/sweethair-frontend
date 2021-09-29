@@ -1,9 +1,5 @@
 <template>
-  <section class="hero is-small is-link">
-    <div class="hero-body">
-      <p class="title">Create New Customer</p>
-    </div>
-  </section>
+  <h1 class="title">Create New Transaction</h1>
   <transaction-form :transaction="newTransaction" @save="save" />
 </template>
 <script lang="ts">
