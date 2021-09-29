@@ -1,13 +1,9 @@
 <template>
-  <section class="hero is-small is-link">
-    <div class="hero-body">
-      <p class="title">Create New Appointment</p>
-    </div>
-  </section>
-  <div class="container"><appointment-form :appointment="newAppointment" @save="save" /></div>
+  <h1 class="title">Create New Appointment</h1>
+  <appointment-form :appointment="newAppointment" @save="save" />
 </template>
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, reactive, computed } from 'vue';
 import AppointmentForm from '@/components/appointments/AppointmentForm.vue';
 import { useRouter } from 'vue-router';
 import { Appointment } from '@/services/AppointmentService';
@@ -28,8 +24,10 @@ export default defineComponent({
 
     const save = async (appointment: Appointment) => {
       await store.create(appointment);
+      const newAppointment = computed<Appointment>(() => store.newAppointment);
       router.push({
-        name: 'Appointments',
+        name: 'Appointment',
+        params: { id: newAppointment.value.id },
       });
     };
 

@@ -33,6 +33,9 @@
               <router-link :to="`/customers/${customer.id}/edit`" class="button is-small is-warning">
                 Edit
               </router-link>
+              <router-link :to="`/customers/${customer.id}/edit`" class="button is-small is-info">
+                Book Appointment
+              </router-link>
             </div>
           </td>
         </tr>

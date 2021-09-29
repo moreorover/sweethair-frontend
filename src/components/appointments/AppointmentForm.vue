@@ -1,17 +1,21 @@
 <template>
-  <section class="section card has-text-centered">
+  <div class="column">
     <form @submit.prevent="onSubmit">
-      <div class="container">
-        <customers-picker :customers-selection="newAppointment.customers" @selected="toggle" />
+      <div class="field">
+        <div class="field">
+          <label class="label">Scheduled Date and Time</label>
+          <datepicker v-model="dateInput" />
+        </div>
       </div>
-      <datepicker v-model="dateInput" />
+      <div class="field">
+        <div class="field">
+          <customers-picker :customers-selection="newAppointment.customers" @selected="toggle" />
+        </div>
+      </div>
+
       <button class="button is-block is-primary is-fullwidth is-medium">Submit</button>
     </form>
-  </section>
-
-  <div>newAppointment: {{ newAppointment }}</div>
-  <div>appointment: {{ appointment }}</div>
-  <div>{{ dateInput }}</div>
+  </div>
 </template>
 <script lang="ts">
 import { Appointment } from '@/services/AppointmentService';

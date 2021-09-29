@@ -37,7 +37,7 @@
       </div>
     </div> -->
   </nav>
-  <customers-cards :customers="customers" />
+  <!-- <customers-cards :customers="customers" /> -->
   <customers-table :customers="customers" />
   <!-- <customers-table :customers="customers" /> -->
 </template>
@@ -45,12 +45,11 @@
 import { computed, defineComponent, ref } from 'vue';
 import { useCustomersStore } from '@/store/customersStore';
 import CustomersTable from '@/components/customers/CustomersTable.vue';
-import CustomersCards from '@/components/customers/CustomersCards.vue';
 import { format } from 'date-fns';
 
 export default defineComponent({
   name: 'Customers',
-  components: { CustomersTable, CustomersCards },
+  components: { CustomersTable },
   setup() {
     const store = useCustomersStore();
     const searchKey = ref('');

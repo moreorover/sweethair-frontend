@@ -1,49 +1,60 @@
 <template>
-  <div class="info-tiles">
-    <div class="tile is-ancestor has-text-centered">
-      <div class="tile is-parent">
-        <article class="tile is-child box">
+  <div class="box">
+    <h1 class="title">Pick Customers</h1>
+    <nav class="level">
+      <div class="level-left">
+        <div class="level-item">
+          <p class="subtitle is-5">
+            <strong>{{ customers.length }}</strong> customers
+          </p>
+        </div>
+
+        <div class="level-item is-hidden-tablet-only">
           <div class="field">
-            <div class="control">
-              <input v-model="searchKey" type="text" class="input is-medium" placeholder="Search" />
-            </div>
+            <p class="control">
+              <input v-model="searchKey" class="input" type="text" placeholder="Customer name, email..." />
+            </p>
           </div>
-        </article>
+        </div>
       </div>
-      <div class="tile is-parent">
-        <article class="tile is-child box">
-          <p class="title">{{ customers.length }}</p>
-          <p class="subtitle">Customers</p>
-        </article>
-      </div>
-    </div>
+    </nav>
+    <table v-if="filteredCustomers.length > 0" class="table is-fullwidth is-hoverable">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Full Name</th>
+          <th>Email</th>
+          <th>Instagram</th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th></th>
+          <th>Full Name</th>
+          <th>Email</th>
+          <th>Instagram</th>
+        </tr>
+      </tfoot>
+      <tbody>
+        <tr v-for="customer in filteredCustomers" :key="customer.id">
+          <td>
+            <input
+              type="checkbox"
+              :checked="selection.find((c) => c.id === customer.id) ? true : false"
+              @click="toggleCustomer(customer)"
+            />
+          </td>
+          <td>{{ customer.firstName }} {{ customer.lastName }}</td>
+          <td>{{ customer.email }}</td>
+          <td>{{ customer.instagram }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <p v-else-if="searchKey === ''" class="title has-text-info has-text-centered">
+      Search Customers by typing in search field.
+    </p>
+    <p v-else class="title has-text-danger has-text-centered">No Customers found, try something else.</p>
   </div>
-  <table class="table is-fullwidth is-striped is-hoverable">
-    <thead>
-      <tr>
-        <th></th>
-        <th>Full Name</th>
-        <th>Email</th>
-        <th>Instagram</th>
-        <th>Appointments</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="customer in filteredCustomers" :key="customer.id">
-        <td>
-          <input
-            type="checkbox"
-            :checked="selection.find((c) => c.id === customer.id) ? true : false"
-            @click="toggleCustomer(customer)"
-          />
-        </td>
-        <td>{{ customer.firstName }} {{ customer.lastName }}</td>
-        <td>{{ customer.email }}</td>
-        <td>{{ customer.instagram }}</td>
-        <td>{{ customer.appointments?.length }}</td>
-      </tr>
-    </tbody>
-  </table>
 </template>
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
@@ -70,6 +81,9 @@ export default defineComponent({
 
     const filteredCustomers = computed(() => {
       return customers.value.filter((customer) => {
+        if (searchKey.value === '' && !props.customersSelection.find((c) => c.id === customer.id)) {
+          return false;
+        }
         if (
           customer.firstName.toLowerCase().includes(searchKey.value) ||
           customer.lastName.toLowerCase().includes(searchKey.value) ||

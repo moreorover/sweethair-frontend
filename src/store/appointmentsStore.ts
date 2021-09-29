@@ -4,11 +4,12 @@ import { defineStore } from 'pinia';
 interface AppointmentStore {
   all: Appointment[];
   loaded: boolean;
+  newAppointment: Appointment;
 }
 
 export const useAppointmentsStore = defineStore({
   id: 'appointmentsStore',
-  state: (): AppointmentStore => ({ all: [] as Appointment[], loaded: false }),
+  state: (): AppointmentStore => ({ all: [] as Appointment[], loaded: false, newAppointment: {} as Appointment }),
   getters: {
     getAll(state) {
       return state.all;
@@ -38,7 +39,10 @@ export const useAppointmentsStore = defineStore({
     },
     async create(appointment: Appointment) {
       await AppointmentService.create(appointment)
-        .then((response) => this.all.push(response.data))
+        .then((response) => {
+          this.all.push(response.data);
+          this.newAppointment = response.data;
+        })
         .catch((err) => console.log('Failed to create Customer', appointment, err));
     },
     async update(appointment: Appointment) {
