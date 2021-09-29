@@ -1,6 +1,11 @@
 <template>
   <router-view />
 </template>
+<script lang="ts">
+import { defineComponent } from '@vue/runtime-core';
+import 'vue3-date-time-picker/dist/main.css';
+export default defineComponent({});
+</script>
 
 <style>
 html,
@@ -11,7 +16,6 @@ body {
 }
 
 .hero.welcome.is-info {
-  background: #36d1dc;
   background: -webkit-linear-gradient(to right, #a059a0, #e900a3);
   background: linear-gradient(to right, #a059a0, #e900a3);
 }
