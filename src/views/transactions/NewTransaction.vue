@@ -3,32 +3,41 @@
   <transaction-form :transaction="newTransaction" @save="save" />
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 import TransactionForm from '@/components/transactions/TransactionForm.vue';
-import { useRouter } from 'vue-router';
+import { onBeforeRouteLeave, useRouter } from 'vue-router';
 import { useTransactionsStore } from '@/store/transactionsStore';
 import { Transaction } from '@/services/TransactionService';
+import { useCustomersStore } from '@/store/customersStore';
+import { Customer } from '@/services/CustomerService';
 
 export default defineComponent({
   components: {
     TransactionForm,
   },
   setup() {
-    const store = useTransactionsStore();
+    const transactionsStore = useTransactionsStore();
+    const customersStore = useCustomersStore();
+    const selectedCustomer = computed<Customer | null>(() => customersStore.getSelectedCustomer);
     const router = useRouter();
     const newTransaction: Transaction = {
       id: '',
       total: 0,
       date: new Date().toISOString(),
       isPaid: false,
+      customer: selectedCustomer.value ? selectedCustomer.value : null,
     };
 
     const save = async (transaction: Transaction) => {
-      await store.create(transaction);
+      await transactionsStore.create(transaction);
       router.push({
         name: 'Transactions',
       });
     };
+
+    onBeforeRouteLeave(() => {
+      selectedCustomer.value && customersStore.selectCustomer(null);
+    });
 
     return { newTransaction, save };
   },

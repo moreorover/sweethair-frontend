@@ -36,6 +36,9 @@
               <router-link :to="'/appointments/new'" class="button is-small is-info" @click="selectCustomer(customer)">
                 Book Appointment
               </router-link>
+              <router-link :to="'/transactions/new'" class="button is-small is-info" @click="selectCustomer(customer)">
+                New Transaction
+              </router-link>
             </div>
           </td>
         </tr>
