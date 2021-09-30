@@ -4,6 +4,7 @@
       <tr>
         <th>Scheduled At</th>
         <th>is Paid</th>
+        <th>Customer</th>
         <th>Total</th>
         <th>Actions</th>
       </tr>
@@ -22,6 +23,7 @@
             <div v-if="transaction.isPaid" class="tile notification is-success"></div>
             <div v-else class="tile notification is-danger"></div>
           </td>
+          <td>{{ transaction.customer?.firstName }} {{ transaction.customer?.lastName }}</td>
           <td>{{ transaction.total }}</td>
           <td>
             <router-link :to="`/transactions/${transaction.id}/edit`" class="button is-small is-warning">

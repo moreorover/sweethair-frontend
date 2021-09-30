@@ -1,3 +1,4 @@
+import { Transaction } from './TransactionService';
 import { Appointment } from './AppointmentService';
 import apiClient from '@/axios/axios';
 import { AxiosResponse } from 'axios';
@@ -11,6 +12,7 @@ export interface Customer {
   createdOn?: string;
   modifiedOn?: string;
   appointments?: Appointment[];
+  transactions?: Transaction[];
 }
 
 class CustomerService {
