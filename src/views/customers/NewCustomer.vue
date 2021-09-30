@@ -10,6 +10,7 @@ import { useCustomersStore } from '@/store/customersStore';
 import { Customer } from '@/services/CustomerService';
 
 export default defineComponent({
+  name: 'NewCustomer',
   components: {
     CustomerForm,
   },
