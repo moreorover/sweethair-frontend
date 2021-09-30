@@ -5,11 +5,12 @@ import { defineStore } from 'pinia';
 interface CustomerStore {
   all: Customer[];
   loaded: boolean;
+  selectedCustomer: Customer | null;
 }
 
 export const useCustomersStore = defineStore({
   id: 'customersStore',
-  state: (): CustomerStore => ({ all: [] as Customer[], loaded: false }),
+  state: (): CustomerStore => ({ all: [] as Customer[], loaded: false, selectedCustomer: null }),
   getters: {
     getAll(state) {
       return state.all;
@@ -23,6 +24,9 @@ export const useCustomersStore = defineStore({
       } else {
         console.log('State is not loaded.');
       }
+    },
+    getSelectedCustomer(state) {
+      return state.selectedCustomer;
     },
   },
   actions: {
@@ -53,6 +57,9 @@ export const useCustomersStore = defineStore({
           }
         })
         .catch((err) => console.log('Failed to update Customer', customer, err));
+    },
+    selectCustomer(customer: Customer | null) {
+      this.selectedCustomer = customer;
     },
   },
 });
