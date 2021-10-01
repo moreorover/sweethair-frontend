@@ -30,10 +30,10 @@ export default defineComponent({
 
     const save = async (appointment: Appointment) => {
       await appointmentsStore.create(appointment);
-      const newAppointment = computed<Appointment>(() => appointmentsStore.getNew);
+      const newAppointment = computed<Appointment | null>(() => appointmentsStore.getNew);
       router.push({
         name: 'Appointment',
-        params: { id: newAppointment.value.id },
+        params: { id: newAppointment.value?.id },
       });
     };
 

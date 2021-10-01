@@ -4,12 +4,13 @@ import { defineStore } from 'pinia';
 interface AppointmentStore {
   all: Appointment[];
   loaded: boolean;
-  new: Appointment;
+  new: Appointment | null;
+  selected: Appointment | null;
 }
 
 export const useAppointmentsStore = defineStore({
   id: 'appointmentsStore',
-  state: (): AppointmentStore => ({ all: [] as Appointment[], loaded: false, new: {} as Appointment }),
+  state: (): AppointmentStore => ({ all: [] as Appointment[], loaded: false, new: null, selected: null }),
   getters: {
     getAll(state) {
       return state.all;
@@ -26,6 +27,9 @@ export const useAppointmentsStore = defineStore({
     },
     getNew(state) {
       return state.new;
+    },
+    getSelected(state) {
+      return state.selected;
     },
   },
   actions: {
@@ -59,6 +63,9 @@ export const useAppointmentsStore = defineStore({
           }
         })
         .catch((err) => console.log('Failed to update Appointment', appointment, err));
+    },
+    setSelected(appointment: Appointment | null) {
+      this.selected = appointment;
     },
   },
 });
