@@ -1,3 +1,4 @@
+import { Appointment } from './../services/AppointmentService';
 import { Customer } from '@/services/CustomerService';
 import CustomerService from '@/services/CustomerService';
 import { defineStore } from 'pinia';
@@ -27,6 +28,13 @@ export const useCustomersStore = defineStore({
     },
     getSelectedCustomer(state) {
       return state.selectedCustomer;
+    },
+    getCustomersByAppointment: (state) => (appointment: Appointment | undefined) => {
+      if (appointment) {
+        const customerIds: string[] = appointment.customers.map((customers) => customers.id);
+        return state.all.filter((customer) => customerIds.includes(customer.id));
+      }
+      return [];
     },
   },
   actions: {
