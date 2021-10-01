@@ -19,12 +19,25 @@
                 <br />
                 Modified on: {{ customer.modifiedOn && format(new Date(customer.modifiedOn), 'dd MMMM yyyy') }}
                 <br />
-                <router-link :to="`/customers/${customer.id}/edit`" class="subtitle is-marginless"> Edit </router-link>
-                <span class="subtitle is-marginless"> / </span>
-                <router-link :to="`/customers/${customer.id}/edit`" class="subtitle is-marginless">
-                  Book Appointment
-                </router-link>
-                <p></p>
+                <div class="buttons">
+                  <router-link :to="`/customers/${customer.id}/edit`" class="button is-small is-warning">
+                    Edit
+                  </router-link>
+                  <router-link
+                    :to="'/appointments/new'"
+                    class="button is-small is-info"
+                    @click="selectCustomer(customer)"
+                  >
+                    Book Appointment
+                  </router-link>
+                  <router-link
+                    :to="'/transactions/new'"
+                    class="button is-small is-info"
+                    @click="selectCustomer(customer)"
+                  >
+                    New Transaction
+                  </router-link>
+                </div>
               </div>
             </div>
           </div>
@@ -37,6 +50,7 @@
 import { defineComponent } from 'vue';
 import { Customer } from '@/services/CustomerService';
 import { format } from 'date-fns';
+import { useCustomersStore } from '@/store/customersStore';
 
 export default defineComponent({
   name: 'CustomersCards',
@@ -47,7 +61,11 @@ export default defineComponent({
     },
   },
   setup() {
-    return { format };
+    const customersStore = useCustomersStore();
+    const selectCustomer = (customer: Customer) => {
+      customersStore.selectCustomer(customer);
+    };
+    return { format, selectCustomer };
   },
 });
 </script>
