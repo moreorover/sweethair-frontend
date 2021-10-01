@@ -22,7 +22,7 @@
       <div class="field">
         <label class="label">Email</label>
         <div class="control has-icons-left">
-          <input v-model="email" class="input" type="email" placeholder="e.g. janesmith@gmail.com" required />
+          <input v-model="email" class="input" type="email" placeholder="e.g. janesmith@gmail.com" />
           <span class="icon is-small is-left">
             <i class="fa fa-envelope"></i>
           </span>
@@ -32,7 +32,7 @@
       <div class="field">
         <label class="label">Instagram</label>
         <div class="control">
-          <input v-model="instagram" class="input" type="text" placeholder="janesmith" required />
+          <input v-model="instagram" class="input" type="text" placeholder="janesmith" />
         </div>
       </div>
 
