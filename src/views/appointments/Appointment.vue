@@ -1,34 +1,19 @@
 <template>
-  <div class="hero is-small welcome is-info my-3">
-    <div class="hero-body">
-      <div class="columns">
-        <div class="column has-text-left my-auto">
-          <p class="title is-3">{{ appointment?.start }}</p>
-        </div>
-        <div class="column has-text-right my-auto">
-          <p class="subtitle">{{ appointment?.start }}</p>
-          <p class="subtitle">{{ appointment?.start }}</p>
-        </div>
-      </div>
-    </div>
-    <div class="hero-foot">
-      <nav class="tabs">
-        <div class="container end">
-          <ul>
-            <!-- <router-link to="/customers/new">Create Customer</router-link> -->
-          </ul>
-        </div>
-      </nav>
-    </div>
-  </div>
+  <h1 class="title">Appointment</h1>
+  <h1 class="subtitle">{{ appointment?.start && format(new Date(appointment?.start), 'dd MMMM yyyy HH:mm') }}</h1>
+  <section class="section">
+    <customers-cards :customers="appointment?.customers" />
+  </section>
 </template>
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAppointmentsStore } from '@/store/appointmentsStore';
+import { format } from 'date-fns';
+import CustomersCards from '@/components/customers/CustomersCards.vue';
 
 export default defineComponent({
-  components: {},
+  components: { CustomersCards },
   setup() {
     const store = useAppointmentsStore();
     const id = useRoute().params.id as string;
@@ -41,7 +26,9 @@ export default defineComponent({
       throw Error('Appointment was not found.');
     }
 
-    return { appointment };
+    store.setSelected(appointment.value);
+
+    return { appointment, format };
   },
 });
 </script>
