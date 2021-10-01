@@ -26,23 +26,32 @@
     </div>
   </nav>
 
+  <div class="columns is-desktop">
+    <div class="column">
+      <div class="container box"><line-chart :data="objData" /></div>
+    </div>
+  </div>
+
   <transactions-table :transactions="transactions" />
 </template>
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref, watch } from 'vue';
 import TransactionsTable from '@/components/transactions/TransactionsTable.vue';
 import { useTransactionsStore } from '@/store/transactionsStore';
 import { isAfter, isBefore, nextSunday, addDays, startOfMonth, endOfMonth, getMonth, setMonth } from 'date-fns';
+import LineChart from '@/components/common/LineChart.vue';
 
 type TimePeriod = 'Today' | 'This Week' | 'Next Week' | 'This Month' | 'Next Month' | 'All';
 
 export default defineComponent({
   name: 'Transactions',
-  components: { TransactionsTable },
+  components: { TransactionsTable, LineChart },
   setup() {
     const periods: TimePeriod[] = ['Today', 'This Week', 'Next Week', 'This Month', 'Next Month', 'All'];
     const activePeriod = ref<TimePeriod>('All');
     const store = useTransactionsStore();
+
+    const objData = ref<unknown>([]);
 
     store.fetchAll();
 
@@ -101,7 +110,27 @@ export default defineComponent({
       });
     });
 
-    return { transactions, periods, activePeriod };
+    watch(transactions, (newTransactions) => {
+      const projected = { name: 'Projected', data: {} };
+      const actual = { name: 'Actual', data: {} };
+
+      let rP = 0;
+      let rA = 0;
+
+      newTransactions.forEach((t) => {
+        if (t.isPaid) {
+          rA = +(rA + t.total).toFixed(2);
+        }
+        rP = +(rP + t.total).toFixed(2);
+
+        projected.data[t.date] = rP;
+        actual.data[t.date] = rA;
+      });
+
+      objData.value = [projected, actual];
+    });
+
+    return { transactions, periods, activePeriod, objData };
   },
 });
 </script>
