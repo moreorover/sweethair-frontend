@@ -17,32 +17,24 @@
       </tr>
     </tfoot>
     <tbody>
-      <router-link
-        v-for="customer in customers"
-        :key="customer.id"
-        v-slot="{ navigate }"
-        :to="`/customers/${customer.id}`"
-        custom
-      >
-        <tr @click="navigate">
-          <td>{{ customer.firstName }} {{ customer.lastName }}</td>
-          <td>{{ customer.email }}</td>
-          <td>{{ customer.instagram }}</td>
-          <td>
-            <div class="buttons">
-              <router-link :to="`/customers/${customer.id}/edit`" class="button is-small is-warning">
-                Edit
-              </router-link>
-              <router-link :to="'/appointments/new'" class="button is-small is-info" @click="selectCustomer(customer)">
-                Book Appointment
-              </router-link>
-              <router-link :to="'/transactions/new'" class="button is-small is-info" @click="selectCustomer(customer)">
-                New Transaction
-              </router-link>
-            </div>
-          </td>
-        </tr>
-      </router-link>
+      <tr v-for="customer in customers" :key="customer.id">
+        <router-link v-slot="{ navigate }" :to="`/customers/${customer.id}`" custom>
+          <td @click="navigate()">{{ customer.firstName }} {{ customer.lastName }}</td>
+          <td @click="navigate()">{{ customer.email }}</td>
+          <td @click="navigate()">{{ customer.instagram }}</td>
+        </router-link>
+        <td>
+          <div class="buttons">
+            <customer-modal title="Edit Customer" action="Edit" :customer="customer" />
+            <router-link :to="'/appointments/new'" class="button is-small is-info" @click="selectCustomer(customer)">
+              Book Appointment
+            </router-link>
+            <router-link :to="'/transactions/new'" class="button is-small is-info" @click="selectCustomer(customer)">
+              New Transaction
+            </router-link>
+          </div>
+        </td>
+      </tr>
     </tbody>
   </table>
 </template>
@@ -50,9 +42,11 @@
 import { defineComponent } from 'vue';
 import { Customer } from '@/services/CustomerService';
 import { useCustomersStore } from '@/store/customersStore';
+import CustomerModal from '@/components/customers/CustomerModal.vue';
 
 export default defineComponent({
   name: 'CustomersTable',
+  components: { CustomerModal },
   props: {
     customers: {
       type: Object as () => Customer[],

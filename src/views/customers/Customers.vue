@@ -10,17 +10,7 @@
       </div>
 
       <p class="level-item">
-        <router-link to="/customers/new">
-          <a class="button is-success">New</a>
-        </router-link>
-      </p>
-
-      <p class="level-item">
-        <a class="button is-success" @click="showNew = true">Show Modal</a>
-        <modal :show="showNew" @close="showNew = false">
-          <template #title> New Customer </template>
-          <new-customer />
-        </modal>
+        <customer-modal title="Create New Customer" action="New" />
       </p>
 
       <div class="level-item">
@@ -53,18 +43,14 @@
 import { computed, defineComponent, ref } from 'vue';
 import { useCustomersStore } from '@/store/customersStore';
 import CustomersTable from '@/components/customers/CustomersTable.vue';
-import { format } from 'date-fns';
-import Modal from '@/components/common/Modal.vue';
-import NewCustomer from './NewCustomer.vue';
+import CustomerModal from '../../components/customers/CustomerModal.vue';
 
 export default defineComponent({
   name: 'Customers',
-  components: { CustomersTable, Modal, NewCustomer },
+  components: { CustomersTable, CustomerModal },
   setup() {
     const store = useCustomersStore();
     const searchKey = ref('');
-
-    const showNew = ref<boolean>(false);
 
     store.fetchAll();
 
@@ -76,17 +62,17 @@ export default defineComponent({
         if (customer.lastName.toLowerCase().includes(searchKey.value)) {
           return true;
         }
-        if (customer.email.toLowerCase().includes(searchKey.value)) {
+        if (customer.email?.toLowerCase().includes(searchKey.value)) {
           return true;
         }
-        if (customer.instagram.toLowerCase().includes(searchKey.value)) {
+        if (customer.instagram?.toLowerCase().includes(searchKey.value)) {
           return true;
         }
         return false;
       });
     });
 
-    return { customers, searchKey, format, showNew };
+    return { customers, searchKey };
   },
 });
 </script>

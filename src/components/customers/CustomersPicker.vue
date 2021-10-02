@@ -87,8 +87,8 @@ export default defineComponent({
         if (
           customer.firstName.toLowerCase().includes(searchKey.value) ||
           customer.lastName.toLowerCase().includes(searchKey.value) ||
-          customer.email.toLowerCase().includes(searchKey.value) ||
-          customer.instagram.toLowerCase().includes(searchKey.value) ||
+          customer.email?.toLowerCase().includes(searchKey.value) ||
+          customer.instagram?.toLowerCase().includes(searchKey.value) ||
           props.customersSelection.find((c) => c.id === customer.id)
         ) {
           return true;
