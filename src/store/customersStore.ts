@@ -2,6 +2,7 @@ import { Appointment } from './../services/AppointmentService';
 import { Customer } from '@/services/CustomerService';
 import CustomerService from '@/services/CustomerService';
 import { defineStore } from 'pinia';
+import _ from 'lodash';
 
 interface CustomerStore {
   all: Customer[];
@@ -31,7 +32,7 @@ export const useCustomersStore = defineStore({
     },
     getCustomersByAppointment: (state) => (appointment: Appointment | undefined) => {
       if (appointment) {
-        const customerIds: string[] = appointment.customers.map((customers) => customers.id);
+        const customerIds: (string | undefined)[] = appointment.customers.map((customer) => customer.id);
         const transactionIds: string[] = appointment.transactions.map((transactions) => transactions.id);
         const customers: Customer[] = state.all.filter((customer) => customerIds.includes(customer.id));
         customers.forEach(
@@ -56,7 +57,10 @@ export const useCustomersStore = defineStore({
     },
     async create(customer: Customer) {
       await CustomerService.create(customer)
-        .then((response) => this.all.push(response.data))
+        .then((response) => {
+          this.all.push(response.data);
+          this.all = _.sortBy(this.all, ['firstName', 'lastName']);
+        })
         .catch((err) => console.log('Failed to update Customer', customer, err));
     },
     async update(customer: Customer) {
