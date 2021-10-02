@@ -15,6 +15,14 @@
         </router-link>
       </p>
 
+      <p class="level-item">
+        <a class="button is-success" @click="showNew = true">Show Modal</a>
+        <modal :show="showNew" @close="showNew = false">
+          <template #title> New Customer </template>
+          <new-customer />
+        </modal>
+      </p>
+
       <div class="level-item">
         <div class="field has-addons">
           <p class="control">
@@ -46,13 +54,17 @@ import { computed, defineComponent, ref } from 'vue';
 import { useCustomersStore } from '@/store/customersStore';
 import CustomersTable from '@/components/customers/CustomersTable.vue';
 import { format } from 'date-fns';
+import Modal from '@/components/common/Modal.vue';
+import NewCustomer from './NewCustomer.vue';
 
 export default defineComponent({
   name: 'Customers',
-  components: { CustomersTable },
+  components: { CustomersTable, Modal, NewCustomer },
   setup() {
     const store = useCustomersStore();
     const searchKey = ref('');
+
+    const showNew = ref<boolean>(false);
 
     store.fetchAll();
 
@@ -74,7 +86,7 @@ export default defineComponent({
       });
     });
 
-    return { customers, searchKey, format };
+    return { customers, searchKey, format, showNew };
   },
 });
 </script>
