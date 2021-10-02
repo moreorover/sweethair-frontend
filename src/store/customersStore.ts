@@ -32,7 +32,12 @@ export const useCustomersStore = defineStore({
     getCustomersByAppointment: (state) => (appointment: Appointment | undefined) => {
       if (appointment) {
         const customerIds: string[] = appointment.customers.map((customers) => customers.id);
-        return state.all.filter((customer) => customerIds.includes(customer.id));
+        const transactionIds: string[] = appointment.transactions.map((transactions) => transactions.id);
+        const customers: Customer[] = state.all.filter((customer) => customerIds.includes(customer.id));
+        customers.forEach(
+          (customer) => (customer.transactions = customer.transactions?.filter((t) => transactionIds.includes(t.id)))
+        );
+        return customers;
       }
       return [];
     },
