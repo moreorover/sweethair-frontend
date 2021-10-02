@@ -1,5 +1,6 @@
 import AppointmentService, { Appointment } from '@/services/AppointmentService';
 import { defineStore } from 'pinia';
+import _ from 'lodash';
 
 interface AppointmentStore {
   all: Appointment[];
@@ -48,7 +49,7 @@ export const useAppointmentsStore = defineStore({
       await AppointmentService.create(appointment)
         .then((response) => {
           this.all.push(response.data);
-          this.new = response.data;
+          this.all = _.sortBy(this.all, ['start']);
         })
         .catch((err) => console.log('Failed to create Customer', appointment, err));
     },

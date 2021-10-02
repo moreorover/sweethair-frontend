@@ -5,7 +5,12 @@ const emptyCustomer: Customer = { firstName: '', lastName: '', email: '', instag
 export const useCustomerModal = function () {
   const cleanCustomer = (customer: Customer): Customer => {
     for (const propName in customer) {
-      if (customer[propName] === null || customer[propName] === undefined || customer[propName] === '') {
+      if (
+        customer[propName] === null ||
+        customer[propName] === undefined ||
+        customer[propName] === '' ||
+        customer[propName] === []
+      ) {
         delete customer[propName];
       }
       delete customer.createdOn;

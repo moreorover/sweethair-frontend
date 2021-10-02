@@ -26,12 +26,13 @@
         <td>
           <div class="buttons">
             <customer-modal title="Edit Customer" action="Edit" :customer="customer" />
-            <router-link :to="'/appointments/new'" class="button is-small is-info" @click="selectCustomer(customer)">
+            <appointment-modal title="Book Appointment" action="Book Appointment" :customers="[customer]" />
+            <!-- <router-link :to="'/appointments/new'" class="button is-small is-info" @click="selectCustomer(customer)">
               Book Appointment
             </router-link>
             <router-link :to="'/transactions/new'" class="button is-small is-info" @click="selectCustomer(customer)">
               New Transaction
-            </router-link>
+            </router-link> -->
           </div>
         </td>
       </tr>
@@ -43,10 +44,11 @@ import { defineComponent } from 'vue';
 import { Customer } from '@/services/CustomerService';
 import { useCustomersStore } from '@/store/customersStore';
 import CustomerModal from '@/components/customers/CustomerModal.vue';
+import AppointmentModal from '../appointments/AppointmentModal.vue';
 
 export default defineComponent({
   name: 'CustomersTable',
-  components: { CustomerModal },
+  components: { AppointmentModal, CustomerModal },
   props: {
     customers: {
       type: Object as () => Customer[],

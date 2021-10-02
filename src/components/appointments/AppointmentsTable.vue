@@ -17,28 +17,24 @@
       </tr>
     </tfoot>
     <tbody>
-      <router-link
-        v-for="appointment in appointments"
-        :key="appointment.id"
-        v-slot="{ navigate }"
-        :to="`/appointments/${appointment.id}`"
-        custom
-      >
-        <tr @click="navigate">
-          <td class="has-text-weight-bold">{{ format(new Date(appointment.start), 'dd MMMM yyyy HH:mm') }}</td>
-          <td>
+      <tr v-for="appointment in appointments" :key="appointment.id">
+        <router-link v-slot="{ navigate }" :to="`/appointments/${appointment.id}`" custom>
+          <td class="has-text-weight-bold" @click="navigate">
+            {{ format(new Date(appointment.start), 'dd MMMM yyyy HH:mm') }}
+          </td>
+          <td @click="navigate">
             <p v-for="customer in appointment.customers" :key="customer.id">
               {{ customer.firstName }} {{ customer.lastName }}
             </p>
           </td>
-          <td>{{ appointment.transactions.length }}</td>
-          <td>
-            <router-link :to="`/appointments/${appointment.id}/edit`" class="button is-small is-warning">
-              Edit
-            </router-link>
-          </td>
-        </tr>
-      </router-link>
+          <td @click="navigate">{{ appointment.transactions?.length }}</td>
+        </router-link>
+        <td>
+          <div class="buttons">
+            <appointment-modal title="Edit Appointment" action="Edit Appointment" :appointment="appointment" />
+          </div>
+        </td>
+      </tr>
     </tbody>
   </table>
 </template>
@@ -46,9 +42,11 @@
 import { defineComponent } from 'vue';
 import { Appointment } from '@/services/AppointmentService';
 import { format } from 'date-fns';
+import AppointmentModal from './AppointmentModal.vue';
 
 export default defineComponent({
   name: 'AppointmentsTable',
+  components: { AppointmentModal },
   props: {
     appointments: {
       type: Object as () => Appointment[],

@@ -65,23 +65,26 @@ export default defineComponent({
   name: 'CustomersPicker',
   // components: { BaseCheckbox },
   props: {
-    customersSelection: {
+    customersValue: {
       type: Object as () => Customer[],
       required: true,
     },
   },
-  emits: ['selected'],
+  emits: ['update:customersValue'],
   setup(props, { emit }) {
     const customerStore = useCustomersStore();
     const customers = computed(() => customerStore.getAll);
     const searchKey = ref('');
-    const selection = ref<Customer[]>(props.customersSelection);
+    const selection = computed({
+      get: () => props.customersValue,
+      set: (val) => emit('update:customersValue', val),
+    });
 
     customerStore.fetchAll();
 
     const filteredCustomers = computed(() => {
       return customers.value.filter((customer) => {
-        if (searchKey.value === '' && !props.customersSelection.find((c) => c.id === customer.id)) {
+        if (searchKey.value === '' && !selection.value.find((c) => c.id === customer.id)) {
           return false;
         }
         if (
@@ -89,7 +92,7 @@ export default defineComponent({
           customer.lastName.toLowerCase().includes(searchKey.value) ||
           customer.email?.toLowerCase().includes(searchKey.value) ||
           customer.instagram?.toLowerCase().includes(searchKey.value) ||
-          props.customersSelection.find((c) => c.id === customer.id)
+          selection.value.find((c) => c.id === customer.id)
         ) {
           return true;
         }
@@ -103,7 +106,6 @@ export default defineComponent({
       } else {
         selection.value.push(customer);
       }
-      emit('selected', selection.value);
     };
 
     return { filteredCustomers, searchKey, toggleCustomer, customers, selection };

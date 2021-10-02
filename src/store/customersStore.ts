@@ -1,6 +1,5 @@
 import { Appointment } from './../services/AppointmentService';
-import { Customer } from '@/services/CustomerService';
-import CustomerService from '@/services/CustomerService';
+import CustomerService, { Customer } from '@/services/CustomerService';
 import { defineStore } from 'pinia';
 import _ from 'lodash';
 
