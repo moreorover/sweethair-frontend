@@ -4,11 +4,11 @@ import apiClient from '@/axios/axios';
 import { AxiosResponse } from 'axios';
 
 export interface Customer {
-  id: string;
+  id?: string;
   firstName: string;
   lastName: string;
-  email: string;
-  instagram: string;
+  email: string | null;
+  instagram: string | null;
   createdOn?: string;
   modifiedOn?: string;
   appointments?: Appointment[];
