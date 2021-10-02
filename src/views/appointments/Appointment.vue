@@ -5,7 +5,7 @@
   <router-link :to="`/appointments/${appointment?.id}/edit`" class="button is-small is-warning block">
     Edit
   </router-link>
-  <div class="columns is-desktop">
+  <div class="columns is-desktop block">
     <div v-for="customer in customers" :key="customer.id" class="column">
       <customer-card :customer="customer" />
     </div>
