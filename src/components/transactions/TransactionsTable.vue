@@ -39,6 +39,7 @@
 import { defineComponent } from 'vue';
 import { format } from 'date-fns';
 import { Transaction } from '@/services/TransactionService';
+import { useTransactionsStore } from '@/store/transactionsStore';
 
 export default defineComponent({
   name: 'AppointmentsTable',
@@ -49,6 +50,8 @@ export default defineComponent({
     },
   },
   setup() {
+    const transactionsStore = useTransactionsStore();
+    transactionsStore.fetchAll();
     return { format };
   },
 });
