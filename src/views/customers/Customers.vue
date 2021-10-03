@@ -35,9 +35,7 @@
       </div>
     </div> -->
   </nav>
-  <!-- <customers-cards :customers="customers" /> -->
   <customers-table :customers="customers" />
-  <!-- <customers-table :customers="customers" /> -->
 </template>
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
