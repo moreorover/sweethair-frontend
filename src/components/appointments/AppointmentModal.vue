@@ -62,12 +62,9 @@ export default defineComponent({
 
     const submit = () => {
       const a: Appointment = appointmentModal.cleanAppointment(newAppointment);
-      console.log(a);
       if (!a.id) {
-        console.log('save');
         appointmentsStore.create(a);
       } else {
-        console.log('update');
         appointmentsStore.update(a);
       }
       show.value = false;
