@@ -19,15 +19,15 @@
     <tbody>
       <tr v-for="appointment in appointments" :key="appointment.id">
         <router-link v-slot="{ navigate }" :to="`/appointments/${appointment.id}`" custom>
-          <td class="has-text-weight-bold" @click="navigate">
+          <td class="has-text-weight-bold" @click="navigate()">
             {{ format(new Date(appointment.start), 'dd MMMM yyyy HH:mm') }}
           </td>
-          <td @click="navigate">
+          <td @click="navigate()">
             <p v-for="customer in appointment.customers" :key="customer.id">
               {{ customer.firstName }} {{ customer.lastName }}
             </p>
           </td>
-          <td @click="navigate">{{ appointment.transactions?.length }}</td>
+          <td @click="navigate()">{{ appointment.transactions?.length }}</td>
         </router-link>
         <td>
           <div class="buttons">
