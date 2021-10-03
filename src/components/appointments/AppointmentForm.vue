@@ -1,18 +1,19 @@
 <template>
-  <div class="column">
-    <form @submit.prevent="">
-      <div class="field">
+  <div class="columns is-centered">
+    <div class="column">
+      <div class="block">
         <div class="field">
           <label class="label">Scheduled Date and Time</label>
-          <datepicker v-model="appointment.start" />
+          <datepicker
+            v-model="appointment.start"
+            :uid="Date.now().toString(36) + Math.random().toString(36).substring(2)"
+          />
         </div>
       </div>
       <div class="field">
-        <div class="field">
-          <customers-picker :customers-value="appointment.customers" />
-        </div>
+        <customers-picker :customers-value="appointment.customers" />
       </div>
-    </form>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -35,10 +36,6 @@ export default defineComponent({
       get: () => props.appointmentValue,
       set: (val) => emit('update:appointmentValue', val),
     });
-
-    // const toggle = (customers: Customer[]) => {
-
-    // }
 
     return { appointment };
   },

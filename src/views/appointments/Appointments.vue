@@ -10,9 +10,7 @@
       </div>
 
       <p class="level-item">
-        <router-link to="/appointments/new">
-          <a class="button is-success">New</a>
-        </router-link>
+        <appointment-modal title="New Appointment" action="New" />
       </p>
       <div v-for="period in periods" :key="period" class="level-item">
         <span
@@ -32,12 +30,13 @@ import { defineComponent, ref, computed } from 'vue';
 import { useAppointmentsStore } from '@/store/appointmentsStore';
 import AppointmentsTable from '@/components/appointments/AppointmentsTable.vue';
 import { isAfter, isBefore, nextSunday, addDays, startOfMonth, endOfMonth, getMonth, setMonth } from 'date-fns';
+import AppointmentModal from '@/components/appointments/AppointmentModal.vue';
 
 type TimePeriod = 'Today' | 'This Week' | 'Next Week' | 'This Month' | 'Next Month' | 'All';
 
 export default defineComponent({
   name: 'Appointments',
-  components: { AppointmentsTable },
+  components: { AppointmentsTable, AppointmentModal },
   setup() {
     const periods: TimePeriod[] = ['Today', 'This Week', 'Next Week', 'This Month', 'Next Month', 'All'];
     const activePeriod = ref<TimePeriod>('All');
