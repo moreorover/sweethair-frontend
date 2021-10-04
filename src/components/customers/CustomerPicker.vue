@@ -58,7 +58,7 @@
   </div>
 </template>
 <script lang="ts">
-import { computed, defineComponent, PropType, ref, watch } from 'vue';
+import { computed, defineComponent, PropType, ref } from 'vue';
 import { Customer } from '@/services/CustomerService';
 import { useCustomersStore } from '@/store/customersStore';
 
