@@ -38,14 +38,12 @@
       <tbody>
         <tr v-for="customer in filteredCustomers" :key="customer.id">
           <td>
-            <input :id="customer.id" v-model="selection" type="radio" :value="customer.id" />
-            <!-- <input
+            <input
               :id="customer.id"
-              v-model="selection"
-              :value="customer"
-              :checked="selection.id? == customer.id"
+              :checked="selectedId === customer.id"
               type="radio"
-            /> -->
+              @click="onSelect(customer.id)"
+            />
           </td>
           <td>{{ customer.firstName }} {{ customer.lastName }}</td>
           <td>{{ customer.email }}</td>
@@ -58,14 +56,9 @@
     </p>
     <p v-else class="title has-text-danger has-text-centered">No Customers found, try something else.</p>
   </div>
-  <div class="section">
-    <h1 class="title">Selection</h1>
-    {{ customerValue }}
-    <!-- {{ sel }} -->
-  </div>
 </template>
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, PropType, ref, watch } from 'vue';
 import { Customer } from '@/services/CustomerService';
 import { useCustomersStore } from '@/store/customersStore';
 
@@ -73,7 +66,7 @@ export default defineComponent({
   name: 'CustomerPicker',
   props: {
     customerValue: {
-      type: Object as () => Customer,
+      type: Object as PropType<Customer | null>,
       required: false,
       default: null,
     },
@@ -84,14 +77,21 @@ export default defineComponent({
     const customers = computed(() => customerStore.getAll);
     const searchKey = ref('');
 
-    const selection = computed({
-      get: () => props.customerValue.id,
-      set: (val) => {
-        emit(
-          'update:customerValue',
-          customers.value.find((c) => c.id === val)
-        );
-      },
+    const selectedId = ref(props.customerValue ? props.customerValue.id : '');
+
+    const onSelect = (customerId: string | undefined) => {
+      if (customerId === selectedId.value) {
+        selectedId.value = '';
+      } else {
+        selectedId.value = customerId;
+      }
+    };
+
+    watch(selectedId, (s) => {
+      emit(
+        'update:customerValue',
+        customers.value.find((c) => c.id === s)
+      );
     });
 
     customerStore.fetchAll();
@@ -114,7 +114,7 @@ export default defineComponent({
       });
     });
 
-    return { filteredCustomers, searchKey, customers, selection };
+    return { filteredCustomers, searchKey, customers, onSelect, selectedId };
   },
 });
 </script>
