@@ -1,15 +1,16 @@
 <template>
   <h1 class="title">Create New Transaction</h1>
-  <transaction-form :transaction="newTransaction" @save="save" />
+  <transaction-form :transaction-value="newTransaction" />
+  <section class="section">
+    <h1 class="title">New Transaction</h1>
+    {{ newTransaction }}
+  </section>
 </template>
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import TransactionForm from '@/components/transactions/TransactionForm.vue';
-import { onBeforeRouteLeave, useRouter } from 'vue-router';
 import { useTransactionsStore } from '@/store/transactionsStore';
 import { Transaction } from '@/services/TransactionService';
-import { useCustomersStore } from '@/store/customersStore';
-import { Customer } from '@/services/CustomerService';
 
 export default defineComponent({
   components: {
@@ -17,29 +18,31 @@ export default defineComponent({
   },
   setup() {
     const transactionsStore = useTransactionsStore();
-    const customersStore = useCustomersStore();
-    const selectedCustomer = computed<Customer | null>(() => customersStore.getSelectedCustomer);
-    const router = useRouter();
-    const newTransaction: Transaction = {
+    const newTransaction = reactive<Transaction>({
       id: '',
       total: 0,
       date: new Date().toISOString(),
       isPaid: false,
-      customer: selectedCustomer.value ? selectedCustomer.value : null,
-    };
-
-    const save = async (transaction: Transaction) => {
-      await transactionsStore.create(transaction);
-      router.push({
-        name: 'Transactions',
-      });
-    };
-
-    onBeforeRouteLeave(() => {
-      selectedCustomer.value && customersStore.selectCustomer(null);
+      customer: {
+        id: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        instagram: '',
+      },
     });
 
-    return { newTransaction, save };
+    const submit = () => {
+      // const t: Transaction = transactionModal.cleanTransaction(newTransaction);
+      if (!newTransaction.id) {
+        transactionsStore.create(newTransaction);
+      } else {
+        transactionsStore.update(newTransaction);
+      }
+      // show.value = false;
+    };
+
+    return { newTransaction, submit };
   },
 });
 </script>

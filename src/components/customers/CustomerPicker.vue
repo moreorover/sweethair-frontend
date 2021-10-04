@@ -38,7 +38,14 @@
       <tbody>
         <tr v-for="customer in filteredCustomers" :key="customer.id">
           <td>
-            <input type="checkbox" :checked="selection?.id === customer.id" @click="toggleCustomer(customer)" />
+            <input :id="customer.id" v-model="selection" type="radio" :value="customer.id" />
+            <!-- <input
+              :id="customer.id"
+              v-model="selection"
+              :value="customer"
+              :checked="selection.id? == customer.id"
+              type="radio"
+            /> -->
           </td>
           <td>{{ customer.firstName }} {{ customer.lastName }}</td>
           <td>{{ customer.email }}</td>
@@ -51,6 +58,11 @@
     </p>
     <p v-else class="title has-text-danger has-text-centered">No Customers found, try something else.</p>
   </div>
+  <div class="section">
+    <h1 class="title">Selection</h1>
+    {{ customerValue }}
+    <!-- {{ sel }} -->
+  </div>
 </template>
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
@@ -59,25 +71,34 @@ import { useCustomersStore } from '@/store/customersStore';
 
 export default defineComponent({
   name: 'CustomerPicker',
-  // components: { BaseCheckbox },
   props: {
-    customerSelection: {
+    customerValue: {
       type: Object as () => Customer,
-      required: true,
+      required: false,
+      default: null,
     },
   },
-  emits: ['selected'],
+  emits: ['update:customerValue'],
   setup(props, { emit }) {
     const customerStore = useCustomersStore();
     const customers = computed(() => customerStore.getAll);
     const searchKey = ref('');
-    const selection = ref<Customer | null>(props.customerSelection);
+
+    const selection = computed({
+      get: () => props.customerValue.id,
+      set: (val) => {
+        emit(
+          'update:customerValue',
+          customers.value.find((c) => c.id === val)
+        );
+      },
+    });
 
     customerStore.fetchAll();
 
     const filteredCustomers = computed(() => {
       return customers.value.filter((customer) => {
-        if (searchKey.value === '' && !(props.customerSelection?.id === customer.id)) {
+        if (searchKey.value === '' && !(props.customerValue?.id === customer.id)) {
           return false;
         }
         if (
@@ -85,7 +106,7 @@ export default defineComponent({
           customer.lastName.toLowerCase().includes(searchKey.value) ||
           customer.email?.toLowerCase().includes(searchKey.value) ||
           customer.instagram?.toLowerCase().includes(searchKey.value) ||
-          props.customerSelection?.id === customer.id
+          props.customerValue?.id === customer.id
         ) {
           return true;
         }
@@ -93,16 +114,7 @@ export default defineComponent({
       });
     });
 
-    const toggleCustomer = (customer: Customer) => {
-      if (selection.value?.id === customer.id) {
-        selection.value = null;
-      } else {
-        selection.value = customer;
-      }
-      emit('selected', selection.value);
-    };
-
-    return { filteredCustomers, searchKey, toggleCustomer, customers, selection };
+    return { filteredCustomers, searchKey, customers, selection };
   },
 });
 </script>

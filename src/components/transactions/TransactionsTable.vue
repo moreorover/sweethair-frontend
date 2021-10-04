@@ -10,28 +10,22 @@
       </tr>
     </thead>
     <tbody>
-      <router-link
-        v-for="transaction in transactions"
-        :key="transaction.id"
-        v-slot="{ navigate }"
-        :to="`/transactions/${transaction.id}`"
-        custom
-      >
-        <tr @click="navigate">
-          <td>{{ format(new Date(transaction.date), 'dd MMMM yyyy') }}</td>
-          <td>
-            <div v-if="transaction.isPaid" class="tile notification is-success"></div>
-            <div v-else class="tile notification is-danger"></div>
-          </td>
-          <td>{{ transaction.customer?.firstName }} {{ transaction.customer?.lastName }}</td>
-          <td>{{ transaction.total }}</td>
-          <td>
-            <router-link :to="`/transactions/${transaction.id}/edit`" class="button is-small is-warning">
-              Edit
-            </router-link>
-          </td>
-        </tr>
-      </router-link>
+      <tr v-for="transaction in transactions" :key="transaction.id">
+        <router-link v-slot="{ navigate }" :to="`/transactions/${transaction.id}`" custom>
+          <td @click="navigate">{{ format(new Date(transaction.date), 'dd MMMM yyyy') }}</td>
+        </router-link>
+        <td>
+          <div v-if="transaction.isPaid" class="tile notification is-success"></div>
+          <div v-else class="tile notification is-danger"></div>
+        </td>
+        <td>{{ transaction.customer?.firstName }} {{ transaction.customer?.lastName }}</td>
+        <td>{{ transaction.total }}</td>
+        <td>
+          <router-link :to="`/transactions/${transaction.id}/edit`" class="button is-small is-warning">
+            Edit
+          </router-link>
+        </td>
+      </tr>
     </tbody>
   </table>
 </template>
