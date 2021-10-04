@@ -4,14 +4,14 @@ import apiClient from '@/axios/axios';
 import { AxiosResponse } from 'axios';
 
 export interface Transaction {
-  id: string;
+  id?: string;
   total: number;
   date: string;
   isPaid: boolean;
   createdOn?: string;
   modifiedOn?: string;
   customer?: Customer | null;
-  appointment?: Appointment;
+  appointment?: Appointment | null;
 }
 
 class TransactionService {

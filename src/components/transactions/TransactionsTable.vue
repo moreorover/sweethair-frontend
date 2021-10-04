@@ -21,9 +21,7 @@
         <td>{{ transaction.customer?.firstName }} {{ transaction.customer?.lastName }}</td>
         <td>{{ transaction.total }}</td>
         <td>
-          <router-link :to="`/transactions/${transaction.id}/edit`" class="button is-small is-warning">
-            Edit
-          </router-link>
+          <transaction-modal title="Create New Transaction" action="Edit" :transaction="transaction" />
         </td>
       </tr>
     </tbody>
@@ -34,9 +32,11 @@ import { defineComponent } from 'vue';
 import { format } from 'date-fns';
 import { Transaction } from '@/services/TransactionService';
 import { useTransactionsStore } from '@/store/transactionsStore';
+import TransactionModal from '@/components/transactions/TransactionModal.vue';
 
 export default defineComponent({
   name: 'AppointmentsTable',
+  components: { TransactionModal },
   props: {
     transactions: {
       type: Object as () => Transaction[],

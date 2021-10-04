@@ -10,9 +10,7 @@
       </div>
 
       <p class="level-item">
-        <router-link to="/transactions/new">
-          <a class="button is-success">New</a>
-        </router-link>
+        <transaction-modal title="Create New Transaction" action="New" />
       </p>
       <div v-for="period in periods" :key="period" class="level-item">
         <span
@@ -35,23 +33,22 @@
   <transactions-table :transactions="transactions" />
 </template>
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import TransactionsTable from '@/components/transactions/TransactionsTable.vue';
 import { useTransactionsStore } from '@/store/transactionsStore';
 import { isAfter, isBefore, nextSunday, addDays, startOfMonth, endOfMonth, getMonth, setMonth } from 'date-fns';
 import LineChart from '@/components/common/LineChart.vue';
+import TransactionModal from '@/components/transactions/TransactionModal.vue';
 
 type TimePeriod = 'Today' | 'This Week' | 'Next Week' | 'This Month' | 'Next Month' | 'All';
 
 export default defineComponent({
   name: 'Transactions',
-  components: { TransactionsTable, LineChart },
+  components: { TransactionsTable, LineChart, TransactionModal },
   setup() {
     const periods: TimePeriod[] = ['Today', 'This Week', 'Next Week', 'This Month', 'Next Month', 'All'];
     const activePeriod = ref<TimePeriod>('All');
     const store = useTransactionsStore();
-
-    const objData = ref<unknown>([]);
 
     store.fetchAll();
 
@@ -110,24 +107,28 @@ export default defineComponent({
       });
     });
 
-    watch(transactions, (newTransactions) => {
+    // const objData = computed(() => store.getChartData);
+
+    const objData = computed(() => {
       const projected = { name: 'Projected', data: {} };
       const actual = { name: 'Actual', data: {} };
 
       let rP = 0;
       let rA = 0;
 
-      newTransactions.forEach((t) => {
-        if (t.isPaid) {
-          rA = +(rA + t.total).toFixed(2);
-        }
-        rP = +(rP + t.total).toFixed(2);
+      transactions.value.forEach((t) => {
+        if (t) {
+          if (t.isPaid) {
+            rA = +(rA + t.total).toFixed(2);
+          }
+          rP = +(rP + t.total).toFixed(2);
 
-        projected.data[t.date] = rP;
-        actual.data[t.date] = rA;
+          projected.data[t.date] = rP;
+          actual.data[t.date] = rA;
+        }
       });
 
-      objData.value = [projected, actual];
+      return [projected, actual];
     });
 
     return { transactions, periods, activePeriod, objData };

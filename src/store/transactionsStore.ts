@@ -4,13 +4,14 @@ import { defineStore } from 'pinia';
 interface TransactionStore {
   all: Transaction[];
   loaded: boolean;
-  new: Transaction | null;
-  selected: Transaction | null;
 }
 
 export const useTransactionsStore = defineStore({
   id: 'transactionsStore',
-  state: (): TransactionStore => ({ all: [] as Transaction[], loaded: false, selected: null, new: null }),
+  state: (): TransactionStore => ({
+    all: [] as Transaction[],
+    loaded: false,
+  }),
   getters: {
     getAll(state) {
       return state.all;
@@ -24,12 +25,6 @@ export const useTransactionsStore = defineStore({
       } else {
         console.log('State is not loaded.');
       }
-    },
-    getNew(state) {
-      return state.new;
-    },
-    getSelected(state) {
-      return state.selected;
     },
   },
   actions: {
@@ -48,7 +43,6 @@ export const useTransactionsStore = defineStore({
       await TransactionService.create(transaction)
         .then((response) => {
           this.all.push(response.data);
-          this.new = response.data;
         })
         .catch((err) => console.log('Failed to update Transaction', transaction, err));
     },
@@ -63,9 +57,6 @@ export const useTransactionsStore = defineStore({
           }
         })
         .catch((err) => console.log('Failed to update Transaction', transaction, err));
-    },
-    setSelect(transaction: Transaction | null) {
-      this.selected = transaction;
     },
   },
 });

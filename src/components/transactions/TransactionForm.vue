@@ -25,11 +25,10 @@
       <div class="field">
         <customer-picker v-model:customer-value="transaction.customer" />
       </div>
+      <!-- <div class="field">
+        <appointment-picker v-model:appointment-value="transaction.appointment" />
+      </div> -->
     </div>
-  </div>
-  <div class="section">
-    <h1 class="title">transaction form</h1>
-    <div>{{ transaction }}</div>
   </div>
 </template>
 <script lang="ts">
