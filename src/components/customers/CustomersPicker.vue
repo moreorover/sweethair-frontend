@@ -63,7 +63,6 @@ import { useCustomersStore } from '@/store/customersStore';
 
 export default defineComponent({
   name: 'CustomersPicker',
-  // components: { BaseCheckbox },
   props: {
     customersValue: {
       type: Object as () => Customer[],
@@ -101,8 +100,9 @@ export default defineComponent({
     });
 
     const toggleCustomer = (customer: Customer) => {
-      if (selection.value.find((c) => c.id === customer.id)) {
-        selection.value = selection.value.filter((c) => c.id !== customer.id);
+      const index: number = selection.value.findIndex((c) => c.id === customer.id);
+      if (index > -1) {
+        selection.value.splice(index, 1);
       } else {
         selection.value.push(customer);
       }
