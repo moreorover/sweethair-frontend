@@ -1,11 +1,11 @@
 <template>
-  <div class="column">
-    <form @submit.prevent="onSubmit">
+  <div class="columns is-centered">
+    <div class="column">
       <div class="field">
         <label class="label">Total for Transaction</label>
         <div class="control">
           <input
-            v-model.number="newTransaction.total"
+            v-model.number="transaction.total"
             type="number"
             step="0.01"
             class="input is-medium"
@@ -15,70 +15,47 @@
       </div>
       <div class="field">
         <label class="label">
-          <div class="control"><input v-model="newTransaction.isPaid" type="checkbox" /> Is Paid?</div>
+          <div class="control"><input v-model="transaction.isPaid" type="checkbox" /> Is Paid?</div>
         </label>
       </div>
       <div class="field">
         <label class="label">Scheduled Date</label>
-        <datepicker v-model="newTransaction.date" />
+        <datepicker v-model="transaction.date" />
       </div>
       <div class="field">
-        <div class="field">
-          <customer-picker :customer-selection="newTransaction.customer" @selected="toggle" />
-        </div>
+        <customer-picker v-model:customer-value="transaction.customer" />
       </div>
-      <button class="button is-block is-primary is-fullwidth is-medium">Submit</button>
-    </form>
+    </div>
+  </div>
+  <div class="section">
+    <h1 class="title">transaction form</h1>
+    <div>{{ transaction }}</div>
   </div>
 </template>
 <script lang="ts">
 import { Transaction } from '@/services/TransactionService';
-import { defineComponent, reactive, watchEffect, ref } from 'vue';
+import { defineComponent, computed } from 'vue';
 import Datepicker from 'vue3-date-time-picker';
 import CustomerPicker from '@/components/customers/CustomerPicker.vue';
-import { Customer } from '@/services/CustomerService';
 
 export default defineComponent({
   components: { Datepicker, CustomerPicker },
   props: {
-    transaction: {
+    transactionValue: {
       type: Object as () => Transaction,
       required: true,
     },
   },
-  emits: {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    save: (transaction: Transaction) => {
-      return true;
-    },
-  },
+  emits: ['update:transactionValue'],
   setup(props, { emit }) {
-    const newTransaction = reactive<Transaction>(props.transaction);
-    const dateInput = ref<Date>(new Date(props.transaction.date));
+    const transaction = computed({
+      get: () => props.transactionValue,
+      set: (val) => emit('update:transactionValue', val),
+    });
 
-    const onSubmit = () => {
-      for (var propName in newTransaction) {
-        if (
-          newTransaction[propName] === null ||
-          newTransaction[propName] === undefined ||
-          newTransaction[propName] === '' ||
-          newTransaction[propName] === []
-        ) {
-          delete newTransaction[propName];
-        }
-      }
-      // delete newTransaction.customer?.appointments;
-      // delete newTransaction.customer?.transactions;
-      emit('save', newTransaction);
-    };
+    // watchEffect(() => (newTransaction.date = dateInput.value.toISOString()));
 
-    watchEffect(() => (newTransaction.date = dateInput.value.toISOString()));
-
-    const toggle = (customer: Customer) => {
-      newTransaction.customer = customer;
-    };
-
-    return { onSubmit, newTransaction, toggle };
+    return { transaction };
   },
 });
 </script>
