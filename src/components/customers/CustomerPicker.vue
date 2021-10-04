@@ -85,14 +85,11 @@ export default defineComponent({
       } else {
         selectedId.value = customerId;
       }
-    };
-
-    watch(selectedId, (s) => {
       emit(
         'update:customerValue',
-        customers.value.find((c) => c.id === s)
+        customers.value.find((c) => c.id === selectedId.value)
       );
-    });
+    };
 
     customerStore.fetchAll();
 
