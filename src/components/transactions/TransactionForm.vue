@@ -20,7 +20,10 @@
       </div>
       <div class="field">
         <label class="label">Scheduled Date</label>
-        <datepicker v-model="transaction.date" />
+        <datepicker
+          v-model="transaction.date"
+          :uid="Date.now().toString(36) + Math.random().toString(36).substring(2)"
+        />
       </div>
       <div class="field">
         <customer-picker v-model:customer-value="transaction.customer" />
