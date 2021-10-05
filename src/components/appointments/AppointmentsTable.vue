@@ -32,6 +32,7 @@
         <td>
           <div class="buttons">
             <appointment-modal title="Edit Appointment" action="Edit Appointment" :appointment="appointment" />
+            <transaction-modal title="Book New Transaction" action="New Transaction" :appointment="appointment" />
           </div>
         </td>
       </tr>
@@ -43,10 +44,11 @@ import { defineComponent } from 'vue';
 import { Appointment } from '@/services/AppointmentService';
 import { format } from 'date-fns';
 import AppointmentModal from './AppointmentModal.vue';
+import TransactionModal from '@/components/transactions/TransactionModal.vue';
 
 export default defineComponent({
   name: 'AppointmentsTable',
-  components: { AppointmentModal },
+  components: { AppointmentModal, TransactionModal },
   props: {
     appointments: {
       type: Object as () => Appointment[],
