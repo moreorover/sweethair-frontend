@@ -23,7 +23,7 @@ export default defineComponent({
     appointmentStore.fetchAll();
     customerStore.fetchAll();
 
-    const appointment = computed<Appointment | undefined>(() => appointmentStore.getCustomerById(id));
+    const appointment = computed<Appointment | undefined>(() => appointmentStore.getAppointmentById(id));
 
     if (!appointment.value) {
       throw Error('Appointment was not found.');

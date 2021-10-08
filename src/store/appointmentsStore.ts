@@ -19,7 +19,7 @@ export const useAppointmentsStore = defineStore({
     getIsLoaded(state) {
       return state.loaded;
     },
-    getCustomerById: (state) => (id: string) => {
+    getAppointmentById: (state) => (id: string) => {
       if (state.loaded) {
         return state.all.find((x) => x.id === id);
       } else {
