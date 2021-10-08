@@ -1,5 +1,6 @@
 import TransactionService, { Transaction } from './../services/TransactionService';
 import { defineStore } from 'pinia';
+import { Appointment } from '@/services/AppointmentService';
 
 interface TransactionStore {
   all: Transaction[];
@@ -25,6 +26,18 @@ export const useTransactionsStore = defineStore({
       } else {
         console.log('State is not loaded.');
       }
+    },
+    getTransactionsByAppointment: (state) => (appointment: Appointment | undefined) => {
+      if (appointment) {
+        const customerIds: (string | undefined)[] = appointment.customers.map((customer) => customer.id);
+        const appointmentId: string | undefined = appointment.id;
+
+        const transactions: Transaction[] = state.all.filter(
+          (transaction) => transaction.appointment?.id === appointmentId //&& customerIds.includes(transaction.customer?.id)
+        );
+        return transactions;
+      }
+      return [];
     },
   },
   actions: {
