@@ -22,17 +22,35 @@
           <td class="has-text-weight-bold" @click="navigate()">
             {{ format(new Date(appointment.start), 'dd MMMM yyyy HH:mm') }}
           </td>
-          <td @click="navigate()">
-            <p v-for="customer in appointment.customers" :key="customer.id">
-              {{ customer.firstName }} {{ customer.lastName }}
-            </p>
-          </td>
-          <td @click="navigate()">{{ appointment.transactions?.length }}</td>
         </router-link>
+        <td>
+          <div v-for="customer in appointment.customers" :key="customer.id" class="level">
+            <div class="level-left">
+              <div class="level-item">{{ customer.firstName }} {{ customer.lastName }}</div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                <transaction-modal
+                  title="Book New Transaction"
+                  action="New Transaction"
+                  :appointment="appointment"
+                  :customer="customer"
+                />
+              </div>
+            </div>
+          </div>
+        </td>
+        <td>{{ appointment.transactions?.length }}</td>
+
         <td>
           <div class="buttons">
             <appointment-modal title="Edit Appointment" action="Edit Appointment" :appointment="appointment" />
-            <transaction-modal title="Book New Transaction" action="New Transaction" :appointment="appointment" />
+            <transaction-modal
+              v-if="appointment.customers.length === 0"
+              title="Book New Transaction"
+              action="New Transaction"
+              :appointment="appointment"
+            />
           </div>
         </td>
       </tr>
