@@ -18,8 +18,41 @@
     <div v-for="customer in customers" :key="customer.id" class="column is-full">
       <div class="box">
         <h1 class="title">{{ customer.firstName }} {{ customer.lastName }}</h1>
-
-        <div v-for="transaction in customer.transactions" :key="transaction.id"></div>
+        <div class="columns is-multiline">
+          <div class="column is-one-fifth">
+            <div>Transactions</div>
+            <div>
+              <transaction-modal
+                title="Book New Transaction"
+                action="New Transaction"
+                :appointment="appointment"
+                :customer="customer"
+              />
+            </div>
+          </div>
+          <div class="column content">
+            <div
+              v-for="transaction in transactions"
+              :key="transaction.id"
+              class="columns"
+              :class="{
+                'has-background-success-light': transaction.isPaid,
+                'has-background-danger-light': !transaction.isPaid,
+              }"
+            >
+              <div v-if="transaction.customer?.id === customer.id" class="column">
+                {{ transaction.date }}
+              </div>
+              <div v-if="transaction.customer?.id === customer.id" class="column">{{ transaction.total }}</div>
+              <div class="column">
+                <transaction-modal title="Edit Transaction" action="Edit Transaction" :transaction="transaction" />
+              </div>
+              <div class="column">
+                <transaction-modal title="Delete Transaction" action="Delete" :transaction="transaction" />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -32,9 +65,10 @@ import { format } from 'date-fns';
 import { useCustomersStore } from '@/store/customersStore';
 import AppointmentModal from '@/components/appointments/AppointmentModal.vue';
 import { useTransactionsStore } from '@/store/transactionsStore';
+import TransactionModal from '@/components/transactions/TransactionModal.vue';
 
 export default defineComponent({
-  components: { AppointmentModal },
+  components: { AppointmentModal, TransactionModal },
   setup() {
     const appointmentsStore = useAppointmentsStore();
     const customersStore = useCustomersStore();
@@ -52,8 +86,6 @@ export default defineComponent({
     if (!appointment.value) {
       throw Error('Appointment was not found.');
     }
-
-    appointmentsStore.setSelected(appointment.value);
 
     return { appointment, format, customers, transactions };
   },
