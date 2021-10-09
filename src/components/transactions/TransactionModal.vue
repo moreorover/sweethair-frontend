@@ -1,5 +1,5 @@
 <template>
-  <button class="button is-small is-warning" @click="show = true">{{ action }}</button>
+  <button class="button is-small is-warning" @click="open()">{{ action }}</button>
   <div class="modal" :class="{ 'is-active': show }">
     <div class="modal-background" @click="show = false"></div>
     <div class="modal-card">
@@ -58,7 +58,7 @@ export default defineComponent({
     const transactionsStore = useTransactionsStore();
     const show = ref<boolean>(false);
     const transactionModal = useTransactionModal();
-    const { transaction, customer, appointment } = toRefs(props);
+    const { transaction, customer, appointment, action } = toRefs(props);
     const newTransaction = transaction.value
       ? reactive<Transaction>(transaction.value)
       : reactive<Transaction>({
@@ -69,7 +69,6 @@ export default defineComponent({
 
     const submit = () => {
       const a: Transaction = transactionModal.cleanTransaction(newTransaction);
-      console.log('a', a);
       if (!a.id) {
         transactionsStore.create(a);
       } else {
@@ -77,7 +76,15 @@ export default defineComponent({
       }
       show.value = false;
     };
-    return { show, submit, newTransaction };
+
+    const open = () => {
+      if (action.value === 'Delete') {
+        transaction.value && transactionsStore.delete(transaction.value);
+      } else {
+        show.value = true;
+      }
+    };
+    return { show, submit, newTransaction, open };
   },
 });
 </script>
