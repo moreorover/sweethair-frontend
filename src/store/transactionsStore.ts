@@ -27,18 +27,18 @@ export const useTransactionsStore = defineStore({
         console.log('State is not loaded.');
       }
     },
-    getTransactionsByAppointment: (state) => (appointment: Appointment | undefined) => {
-      if (appointment) {
-        const customerIds: (string | undefined)[] = appointment.customers.map((customer) => customer.id);
-        const appointmentId: string | undefined = appointment.id;
-
-        const transactions: Transaction[] = state.all.filter(
-          (transaction) => transaction.appointment?.id === appointmentId //&& customerIds.includes(transaction.customer?.id)
-        );
-        return transactions;
-      }
-      return [];
-    },
+    getTransactionsByAppointment:
+      (state) =>
+      (appointment: Appointment | undefined): Transaction[] => {
+        if (appointment) {
+          const appointmentId: string | undefined = appointment.id;
+          const transactions: Transaction[] = state.all.filter(
+            (transaction) => transaction.appointment?.id === appointmentId
+          );
+          return transactions;
+        }
+        return [];
+      },
   },
   actions: {
     async fetchAll() {
