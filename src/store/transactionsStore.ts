@@ -71,5 +71,9 @@ export const useTransactionsStore = defineStore({
         })
         .catch((err) => console.log('Failed to update Transaction', transaction, err));
     },
+    async delete(transaction: Transaction) {
+      TransactionService.delete(transaction.id ? transaction.id : '');
+      this.all = this.all.filter((t) => t.id !== transaction.id);
+    },
   },
 });
