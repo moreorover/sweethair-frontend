@@ -1,6 +1,7 @@
 import AppointmentService, { Appointment } from '@/services/AppointmentService';
 import { defineStore } from 'pinia';
 import _ from 'lodash';
+import router from '@/router';
 
 interface AppointmentStore {
   all: Appointment[];
@@ -50,6 +51,7 @@ export const useAppointmentsStore = defineStore({
         .then((response) => {
           this.all.push(response.data);
           this.all = _.sortBy(this.all, ['start']);
+          router.push({ name: 'Appointment', params: { id: response.data.id } });
         })
         .catch((err) => console.log('Failed to create Customer', appointment, err));
     },
