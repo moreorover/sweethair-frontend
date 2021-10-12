@@ -15,6 +15,7 @@ import StyleClass from 'primevue/styleclass';
 
 import Badge from 'primevue/badge';
 import Button from 'primevue/button';
+import Dialog from 'primevue/dialog';
 import InputText from 'primevue/inputtext';
 
 const app = createApp(App);
@@ -27,6 +28,7 @@ app.directive('styleclass', StyleClass);
 
 app.component('Badge', Badge);
 app.component('Button', Button);
+app.component('Dialog', Dialog);
 app.component('InputText', InputText);
 
 app.mount('#app');

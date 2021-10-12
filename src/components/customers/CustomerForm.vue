@@ -1,62 +1,29 @@
 <template>
-  <h5>Horizontal and Fluid</h5>
   <div class="p-fluid">
     <div class="p-field p-grid">
       <label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Firstname</label>
       <div class="p-col-12 p-md-10">
-        <InputText id="firstname4" type="text" />
+        <InputText id="firstname4" v-model="customer.firstName" type="text" />
       </div>
     </div>
     <div class="p-field p-grid">
       <label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Lastname</label>
       <div class="p-col-12 p-md-10">
-        <InputText id="lastname4" type="text" />
+        <InputText id="lastname4" v-model="customer.lastName" type="text" />
       </div>
     </div>
-  </div>
-  <div class="column">
-    <form @submit.prevent="">
-      <div class="field">
-        <div class="field">
-          <label class="label">First Name</label>
-          <div class="control">
-            <input v-model="customer.firstName" class="input is-large" type="text" placeholder="e.g. Jane" required />
-          </div>
-        </div>
+    <div class="p-field p-grid">
+      <label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Email</label>
+      <div class="p-col-12 p-md-10">
+        <InputText id="lastname4" v-model="customer.email" type="text" />
       </div>
-
-      <div class="field">
-        <div class="field">
-          <label class="label">Last Name</label>
-          <div class="control">
-            <input v-model="customer.lastName" class="input is-large" type="text" placeholder="e.g. Smith" required />
-          </div>
-        </div>
+    </div>
+    <div class="p-field p-grid">
+      <label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Instagram</label>
+      <div class="p-col-12 p-md-10">
+        <InputText id="lastname4" v-model="customer.instagram" type="text" />
       </div>
-
-      <div class="field">
-        <label class="label">Email</label>
-        <div class="control has-icons-left">
-          <input v-model="customer.email" class="input" type="email" placeholder="e.g. janesmith@gmail.com" />
-          <span class="icon is-small is-left">
-            <i class="fa fa-envelope"></i>
-          </span>
-        </div>
-      </div>
-
-      <div class="field">
-        <label class="label">Instagram</label>
-        <div class="control">
-          <input v-model="customer.instagram" class="input" type="text" placeholder="janesmith" />
-        </div>
-      </div>
-
-      <!-- <div class="field">
-        <div class="buttons">
-          <button class="button is-medium is-success">Save</button>
-        </div>
-      </div> -->
-    </form>
+    </div>
   </div>
 </template>
 <script lang="ts">

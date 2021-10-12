@@ -1,21 +1,26 @@
 <template>
-  <button class="button is-small is-warning" @click="show = true">{{ action }}</button>
-  <div class="modal" :class="{ 'is-active': show }">
-    <div class="modal-background" @click="show = false"></div>
-    <div class="modal-card">
-      <header class="modal-card-head">
-        <p class="modal-card-title">{{ title }}</p>
-        <button class="delete" aria-label="close" @click="show = false" />
-      </header>
-      <section class="modal-card-body">
-        <!-- Content ... -->
-        <customer-form :customer-value="newCustomer" />
-      </section>
-      <footer class="modal-card-foot">
-        <button class="button is-primary" @click="submit">Submit</button>
-      </footer>
-    </div>
-  </div>
+  <Button :label="action" @click="show = true"></Button>
+
+  <Dialog
+    v-model:visible="show"
+    :dismissable-mask="true"
+    :modal="true"
+    :breakpoints="{ '960px': '75vw', '640px': '100vw' }"
+    :style="{ width: '80%' }"
+  >
+    <template #header>
+      <div class="flex align-items-center">
+        <span class="font-medium text-2xl text-900">{{ title }}</span>
+      </div>
+    </template>
+    <customer-form :customer-value="newCustomer" />
+    <template #footer>
+      <div class="border-top-1 surface-border pt-3">
+        <Button icon="pi pi-times" label="Cancel" class="p-button-text" @click="show = false"></Button>
+        <Button icon="pi pi-check" label="Save" @click="submit"></Button>
+      </div>
+    </template>
+  </Dialog>
 </template>
 <script lang="ts">
 import { defineComponent, PropType, reactive, ref, toRefs } from 'vue';
