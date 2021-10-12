@@ -11,8 +11,8 @@ export function updateTheme(themeName: string, themeColor: string) {
 export const useThemeStore = defineStore('theme', {
     // a function that returns a fresh state
     state: () => ({
-        themeName: 'vela',
-        themeColor: 'blue',
+        themeName: 'saga',
+        themeColor: 'purple',
     }),
     // optional getters
     getters: {
