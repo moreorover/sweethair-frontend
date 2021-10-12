@@ -1,7 +1,7 @@
 <template>
   <div class="layout-topbar">
     <router-link to="/" class="layout-topbar-logo">
-      <span>Vite PrimeVue Starter</span>
+      <span>Sweet Hair</span>
     </router-link>
     <button class="p-link layout-menu-button layout-topbar-button" @click="onMenuToggle">
       <i class="pi pi-bars"></i>
