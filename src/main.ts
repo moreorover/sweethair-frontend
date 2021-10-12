@@ -6,15 +6,12 @@ import VueChartkick from 'vue-chartkick';
 import 'chartkick/chart.js';
 import PrimeVue from 'primevue/config';
 
-// import 'primeflex/primeflex.css';
-// import 'primevue/resources/themes/saga-purple/theme.css';
-// import 'primevue/resources/primevue.min.css';
-// import 'primeicons/primeicons.css';
-
-// import 'primevue/resources/primevue.min.css';
+import 'primevue/resources/primevue.min.css';
 import 'primevue/resources/themes/saga-purple/theme.css';
 import 'primeicons/primeicons.css';
-// import 'primeflex/primeflex.css';
+import 'primeflex/primeflex.css';
+
+import StyleClass from 'primevue/styleclass';
 
 import Badge from 'primevue/badge';
 import Button from 'primevue/button';
@@ -25,6 +22,8 @@ app.use(PrimeVue, { ripple: true });
 app.use(VueChartkick);
 app.use(createPinia());
 app.use(router);
+
+app.directive('styleclass', StyleClass);
 
 app.component('Badge', Badge);
 app.component('Button', Button);
