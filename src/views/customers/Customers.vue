@@ -1,54 +1,52 @@
 <template>
-  <h1 class="title">Customers</h1>
-
-  <nav class="level">
-    <div class="level-left">
-      <div class="level-item">
-        <p class="subtitle is-5">
-          <strong>{{ customers.length }}</strong> customers
-        </p>
+  <div class="surface-section">
+    <div
+      class="
+        flex
+        md:align-items-center md:justify-content-between
+        flex-column
+        md:flex-row
+        pb-2
+        pt-2
+        border-bottom-1
+        surface-border
+      "
+    >
+      <div class="flex align-items-center">
+        <i class="pi pi-users text-2xl mr-3 text-500"></i>
+        <span class="text-3xl font-medium text-900 mr-3">{{ customers.length }}</span>
+        <span class="text-3xl font-medium text-900 mr-3">Customers</span>
       </div>
-
-      <p class="level-item">
-        <customer-modal title="Create New Customer" action="New" />
-      </p>
-
-      <div class="level-item">
-        <div class="field has-addons">
-          <p class="control">
-            <input v-model="searchKey" class="input" type="text" placeholder="Customer name, email..." />
-          </p>
-        </div>
+      <div class="mt-3 md:mt-0">
+        <modal title="Create New" action="New" @submit="submit">
+          <template #content>
+            <customer-form :customer-value="customerModal.emptyCustomer" />
+          </template>
+        </modal>
+        <span class="ml-2 p-input-icon-left">
+          <i class="pi pi-search" />
+          <InputText v-model="searchKey" type="text" placeholder="Search" />
+        </span>
       </div>
     </div>
-
-    <!-- <div class="level-right">
-      <div class="level-item">Order by</div>
-      <div class="level-item">
-        <div class="select">
-          <select>
-            <option>Publish date</option>
-            <option>Price</option>
-            <option>Page count</option>
-          </select>
-        </div>
-      </div>
-    </div> -->
-  </nav>
+  </div>
   <customers-table :customers="customers" />
 </template>
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import { useCustomersStore } from '@/store/customersStore';
 import CustomersTable from '@/components/customers/CustomersTable.vue';
-import CustomerModal from '../../components/customers/CustomerModal.vue';
+import Modal from '@/components/common/Modal.vue';
+import useCustomerModal from '@/composables/customerModal';
+import CustomerForm from '@/components/customers/CustomerForm.vue';
 
 export default defineComponent({
   name: 'Customers',
-  components: { CustomersTable, CustomerModal },
+  components: { CustomersTable, Modal, CustomerForm },
   setup() {
     const store = useCustomersStore();
     const searchKey = ref('');
+    const customerModal = useCustomerModal();
 
     store.fetchAll();
 
@@ -70,7 +68,11 @@ export default defineComponent({
       });
     });
 
-    return { customers, searchKey };
+    const submit = () => {
+      console.log('submited');
+    };
+
+    return { customers, searchKey, customerModal, submit };
   },
 });
 </script>
