@@ -45,22 +45,6 @@ export default defineComponent({
     });
 
     return { customer };
-
-    // const onSubmit = () => {
-    //   const newCustomer: Customer = {
-    //     ...props.customer,
-    //     firstName: firstName.value,
-    //     lastName: lastName.value,
-    //     email: email.value,
-    //     instagram: instagram.value,
-    //   };
-
-    //   for (var propName in newCustomer) {
-    //     if (newCustomer[propName] === null || newCustomer[propName] === undefined || newCustomer[propName] === '') {
-    //       delete newCustomer[propName];
-    //     }
-    //   }
-    // };
   },
 });
 </script>
