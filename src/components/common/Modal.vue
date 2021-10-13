@@ -13,7 +13,7 @@
         <span class="font-medium text-2xl text-900">{{ title }}</span>
       </div>
     </template>
-    <slot name="content"></slot>
+    <slot />
     <template #footer>
       <div class="border-top-1 surface-border pt-3">
         <Button icon="pi pi-times" label="Cancel" class="p-button-text" @click="show = false"></Button>

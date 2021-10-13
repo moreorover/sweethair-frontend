@@ -19,9 +19,7 @@
       </div>
       <div class="mt-3 md:mt-0">
         <modal title="Create New" action="New" @submit="submit">
-          <template #content>
-            <customer-form :customer-value="customerModal.emptyCustomer" />
-          </template>
+          <customer-form :customer-value="customerModal.emptyCustomer" />
         </modal>
         <span class="ml-2 p-input-icon-left">
           <i class="pi pi-search" />
