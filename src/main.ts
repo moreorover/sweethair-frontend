@@ -15,6 +15,7 @@ import StyleClass from 'primevue/styleclass';
 
 import Badge from 'primevue/badge';
 import Button from 'primevue/button';
+import DataTable from 'primevue/datatable';
 import Dialog from 'primevue/dialog';
 import InputText from 'primevue/inputtext';
 
@@ -28,6 +29,7 @@ app.directive('styleclass', StyleClass);
 
 app.component('Badge', Badge);
 app.component('Button', Button);
+app.component('DataTable', DataTable);
 app.component('Dialog', Dialog);
 app.component('InputText', InputText);
 
