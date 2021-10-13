@@ -18,9 +18,7 @@
         <span class="text-3xl font-medium text-900 mr-3">Customers</span>
       </div>
       <div class="mt-3 md:mt-0">
-        <modal title="Create New" action="New" @submit="submit">
-          <customer-form :customer-value="customerModal.emptyCustomer" />
-        </modal>
+        <new-customer />
         <span class="ml-2 p-input-icon-left">
           <i class="pi pi-search" />
           <InputText v-model="searchKey" type="text" placeholder="Search" />
@@ -28,19 +26,42 @@
       </div>
     </div>
   </div>
-  <customers-table :customers="customers" />
+  <!-- <customers-table :customers="customers" /> -->
+
+  <div class="grid grid-nogutter">
+    <div v-for="customer in customers" :key="customer.id" class="col-12 md:col-6 xl:col-3 p-3">
+      <div class="surface-card shadow-2 border-rounded p-3">
+        <div class="flex flex-column align-items-center border-bottom-1 surface-border pb-3">
+          <!-- <img src="images/blocks/burgers/1.png" style="width: 70px; height: 70px" class="mb-3" /> -->
+          <span class="text-lg text-900 font-medium mb-2"> {{ customer.firstName }} {{ customer.lastName }} </span>
+          <span v-if="customer.email" class="text-600 font-medium mb-2">Email: {{ customer.email }}</span>
+          <div>
+            <!-- <span class="inline-block text-sm text-pink-500 mr-1">$</span> -->
+            <span v-if="customer.instagram" class="text-sm text-900">Instagram: {{ customer.instagram }}</span>
+          </div>
+        </div>
+        <div class="flex pt-3">
+          <div class="w-6 pr-2">
+            <edit-customer :customer-value="customer" />
+          </div>
+          <div class="w-6 pl-2">
+            <Button icon="pi pi-shopping-cart" class="p-button-outlined p-button-secondary w-full"></Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import { useCustomersStore } from '@/store/customersStore';
-import CustomersTable from '@/components/customers/CustomersTable.vue';
-import Modal from '@/components/common/Modal.vue';
 import useCustomerModal from '@/composables/customerModal';
-import CustomerForm from '@/components/customers/CustomerForm.vue';
+import NewCustomer from '@/components/customers/NewCustomer.vue';
+import EditCustomer from '@/components/customers/EditCustomer.vue';
 
 export default defineComponent({
   name: 'Customers',
-  components: { CustomersTable, Modal, CustomerForm },
+  components: { NewCustomer, EditCustomer },
   setup() {
     const store = useCustomersStore();
     const searchKey = ref('');
