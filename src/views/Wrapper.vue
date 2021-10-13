@@ -33,9 +33,9 @@
         </div>
       </div>
       <div class="flex flex-column flex-auto">
-        <div class="px-4 py-5 md:px-6 lg:px-8">
-          <router-view />
-        </div>
+        <!-- <div class="px-4 py-5 md:px-6 lg:px-8"> -->
+        <router-view />
+        <!-- </div> -->
       </div>
     </div>
   </div>
