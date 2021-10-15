@@ -1,97 +1,72 @@
 <template>
-  <div class="surface-section">
-    <div
-      class="
-        flex
-        md:align-items-center md:justify-content-between
-        flex-column
-        md:flex-row
-        pb-2
-        pt-2
-        border-bottom-1
-        surface-border
-      "
-    >
-      <div class="flex align-items-center">
-        <i class="pi pi-users text-2xl mr-3 text-500"></i>
-        <span class="text-3xl font-medium text-900 mr-3">{{ customers.length }}</span>
-        <span class="text-3xl font-medium text-900 mr-3">Customers</span>
-      </div>
-      <div class="mt-3 md:mt-0">
-        <new-customer />
-        <span class="ml-2 p-input-icon-left">
-          <i class="pi pi-search" />
-          <InputText v-model="searchKey" type="text" placeholder="Search" />
-        </span>
-      </div>
-    </div>
-  </div>
-  <!-- <customers-table :customers="customers" /> -->
+  <div class="px-0 py-4 md:px-4">
+    <div class="border-2 surface-border border-round surface-card">
+      <DataTable
+        v-model:filters="filters"
+        :value="customers"
+        responsive-layout="scroll"
+        class="p-datatable-sm"
+        :paginator="true"
+        :rows="10"
+        filter-display="menu"
+        :global-filter-fields="['firstName', 'lastName', 'email', 'instagram']"
+        paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+        :rows-per-page-options="[10, 25, 50]"
+        current-page-report-template="Showing {first} to {last} of {totalRecords} entries"
+      >
+        <template #header>
+          <div class="p-d-flex p-jc-between p-ai-center">
+            <h5 class="p-m-0">Customers</h5>
 
-  <div class="grid grid-nogutter">
-    <div v-for="customer in customers" :key="customer.id" class="col-12 md:col-6 xl:col-3 p-3">
-      <div class="surface-card shadow-2 border-rounded p-3">
-        <div class="flex flex-column align-items-center border-bottom-1 surface-border pb-3">
-          <!-- <img src="images/blocks/burgers/1.png" style="width: 70px; height: 70px" class="mb-3" /> -->
-          <span class="text-lg text-900 font-medium mb-2"> {{ customer.firstName }} {{ customer.lastName }} </span>
-          <span v-if="customer.email" class="text-600 font-medium mb-2">Email: {{ customer.email }}</span>
-          <div>
-            <!-- <span class="inline-block text-sm text-pink-500 mr-1">$</span> -->
-            <span v-if="customer.instagram" class="text-sm text-900">Instagram: {{ customer.instagram }}</span>
+            <div class="flex">
+              <new-customer />
+              <span class="p-input-icon-left">
+                <i class="pi pi-search" />
+                <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
+              </span>
+            </div>
           </div>
-        </div>
-        <div class="flex pt-3">
-          <div class="w-6 pr-2">
-            <edit-customer :customer-value="customer" />
-          </div>
-          <div class="w-6 pl-2">
-            <Button icon="pi pi-shopping-cart" class="p-button-outlined p-button-secondary w-full"></Button>
-          </div>
-        </div>
-      </div>
+        </template>
+        <template #empty> No customers found. </template>
+        <Column field="firstName" header="First Name" :sortable="true"></Column>
+        <Column field="lastName" header="Last Name" :sortable="true"></Column>
+        <Column field="email" header="Email"></Column>
+        <Column field="instagram" header="Instagram"></Column>
+        <Column header-style="width: 4rem; text-align: center" body-style="text-align: center; overflow: visible">
+          <template #body="slotProps">
+            <edit-customer :customer-value="slotProps.data" />
+          </template>
+        </Column>
+      </DataTable>
     </div>
   </div>
 </template>
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import { useCustomersStore } from '@/store/customersStore';
-import useCustomerModal from '@/composables/customerModal';
 import NewCustomer from '@/components/customers/NewCustomer.vue';
 import EditCustomer from '@/components/customers/EditCustomer.vue';
+import { FilterMatchMode, FilterOperator } from 'primevue/api';
 
 export default defineComponent({
   name: 'Customers',
   components: { NewCustomer, EditCustomer },
   setup() {
     const store = useCustomersStore();
-    const searchKey = ref('');
-    const customerModal = useCustomerModal();
 
     store.fetchAll();
 
-    const customers = computed(() => {
-      return store.all.filter((customer) => {
-        if (customer.firstName.toLowerCase().includes(searchKey.value)) {
-          return true;
-        }
-        if (customer.lastName.toLowerCase().includes(searchKey.value)) {
-          return true;
-        }
-        if (customer.email?.toLowerCase().includes(searchKey.value)) {
-          return true;
-        }
-        if (customer.instagram?.toLowerCase().includes(searchKey.value)) {
-          return true;
-        }
-        return false;
-      });
+    const filters = ref({
+      global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+      name: {
+        operator: FilterOperator.AND,
+        constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }],
+      },
     });
 
-    const submit = () => {
-      console.log('submited');
-    };
+    const customers = computed(() => store.getAll);
 
-    return { customers, searchKey, customerModal, submit };
+    return { customers, filters };
   },
 });
 </script>
