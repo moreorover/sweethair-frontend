@@ -1,5 +1,5 @@
 <template>
-  <Button :label="action" @click="show = true"></Button>
+  <Button class="p-button-sm" :label="action" @click="show = true"></Button>
 
   <Dialog
     v-model:visible="show"
