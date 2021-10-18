@@ -4,7 +4,7 @@
   </modal>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import { useCustomersStore } from '@/store/customersStore';
 import Modal from '@/components/common/Modal.vue';
 import CustomerForm from '@/components/customers/CustomerForm.vue';
@@ -24,7 +24,7 @@ export default defineComponent({
     const store = useCustomersStore();
     const entityCleaner = useEntityCleaner();
 
-    const customer: Customer = { ...props.customerValue };
+    const customer: Customer = reactive({ ...props.customerValue });
 
     const submit = () => {
       const cleanCustomer: Customer = entityCleaner.clean(customer);

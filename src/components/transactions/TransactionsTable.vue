@@ -1,52 +1,48 @@
 <template>
-  <table class="table is-fullwidth is-striped is-hoverable">
-    <thead>
-      <tr>
-        <th>Scheduled At</th>
-        <th>is Paid</th>
-        <th>Customer</th>
-        <th>Total</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="transaction in transactions" :key="transaction.id">
-        <router-link v-slot="{ navigate }" :to="`/transactions/${transaction.id}`" custom>
-          <td @click="navigate">{{ format(new Date(transaction.date), 'dd MMMM yyyy') }}</td>
-        </router-link>
-        <td>
-          <div v-if="transaction.isPaid" class="tile notification is-success"></div>
-          <div v-else class="tile notification is-danger"></div>
-        </td>
-        <td>{{ transaction.customer?.firstName }} {{ transaction.customer?.lastName }}</td>
-        <td>{{ transaction.total }}</td>
-        <td>
-          <transaction-modal title="Create New Transaction" action="Edit" :transaction="transaction" />
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <DataTable
+    :value="transactions"
+    responsive-layout="stack"
+    class="p-datatable-sm"
+    :paginator="true"
+    :rows="10"
+    paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+    :rows-per-page-options="[10, 25, 50]"
+    current-page-report-template="Showing {first} to {last} of {totalRecords} entries"
+  >
+    <template #header>
+      <div class="p-d-flex p-jc-between p-ai-center">
+        <h5 class="p-m-0">Transactions</h5>
+
+        <div class="flex">
+          <new-transaction />
+        </div>
+      </div>
+    </template>
+    <template #empty> No transactions found. </template>
+    <Column field="date" header="Scheduled" :sortable="true"></Column>
+    <Column field="isPaid" header="Paid" :sortable="true"></Column>
+    <Column field="total" header="Total"></Column>
+    <Column header-style="width: 4rem; text-align: center" body-style="text-align: center; overflow: visible">
+      <template #body="slotProps">
+        <edit-transaction :transaction-value="slotProps.data" />
+      </template>
+    </Column>
+  </DataTable>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { format } from 'date-fns';
+import NewTransaction from '@/views/transactions/NewTransaction.vue';
+import EditTransaction from '@/views/transactions/EditTransaction.vue';
 import { Transaction } from '@/services/TransactionService';
-import { useTransactionsStore } from '@/store/transactionsStore';
-import TransactionModal from '@/components/transactions/TransactionModal.vue';
 
 export default defineComponent({
-  name: 'AppointmentsTable',
-  components: { TransactionModal },
+  name: 'TransactionsTable',
+  components: { NewTransaction, EditTransaction },
   props: {
     transactions: {
       type: Object as () => Transaction[],
       required: true,
     },
-  },
-  setup() {
-    const transactionsStore = useTransactionsStore();
-    transactionsStore.fetchAll();
-    return { format };
   },
 });
 </script>

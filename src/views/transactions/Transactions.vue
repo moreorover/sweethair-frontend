@@ -1,50 +1,27 @@
 <template>
-  <h1 class="title">Transactions</h1>
-
-  <nav class="level">
-    <div class="level-left">
-      <div class="level-item">
-        <p class="subtitle is-5">
-          <strong>{{ transactions.length }}</strong> transactions
-        </p>
-      </div>
-
-      <p class="level-item">
-        <transaction-modal title="Create New Transaction" action="New" />
-      </p>
-      <div v-for="period in periods" :key="period" class="level-item">
-        <span
-          :class="{ 'is-light': activePeriod !== period }"
-          class="tag is-link is-clickable"
-          @click="activePeriod = period"
-        >
-          {{ period }}
-        </span>
-      </div>
-    </div>
-  </nav>
-
-  <div class="columns is-desktop">
-    <div class="column">
-      <div class="container box"><line-chart :data="objData" /></div>
+  <div class="px-0 py-4 md:px-4">
+    <div class="border-2 surface-border border-round surface-card">
+      <transactions-table :transactions="transactions" />
     </div>
   </div>
-
-  <transactions-table :transactions="transactions" />
+  <div class="px-0 py-4 md:px-4">
+    <div class="border-2 surface-border border-round surface-card">
+      <line-chart :data="objData" />
+    </div>
+  </div>
 </template>
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
-import TransactionsTable from '@/components/transactions/TransactionsTable.vue';
 import { useTransactionsStore } from '@/store/transactionsStore';
 import { isAfter, isBefore, nextSunday, addDays, startOfMonth, endOfMonth, getMonth, setMonth } from 'date-fns';
 import LineChart from '@/components/common/LineChart.vue';
-import TransactionModal from '@/components/transactions/TransactionModal.vue';
+import TransactionsTable from '@/components/transactions/TransactionsTable.vue';
 
 type TimePeriod = 'Today' | 'This Week' | 'Next Week' | 'This Month' | 'Next Month' | 'All';
 
 export default defineComponent({
   name: 'Transactions',
-  components: { TransactionsTable, LineChart, TransactionModal },
+  components: { LineChart, TransactionsTable },
   setup() {
     const periods: TimePeriod[] = ['Today', 'This Week', 'Next Week', 'This Month', 'Next Month', 'All'];
     const activePeriod = ref<TimePeriod>('All');

@@ -1,27 +1,27 @@
 <template>
   <div class="p-fluid">
     <div class="p-field p-grid">
-      <label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Firstname</label>
+      <label for="firstName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Firstname</label>
       <div class="p-col-12 p-md-10">
-        <InputText id="firstname4" v-model="customer.firstName" type="text" />
+        <InputText id="firstName" v-model="customer.firstName" type="text" />
       </div>
     </div>
     <div class="p-field p-grid">
-      <label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Lastname</label>
+      <label for="lastName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Lastname</label>
       <div class="p-col-12 p-md-10">
-        <InputText id="lastname4" v-model="customer.lastName" type="text" />
+        <InputText id="lastName" v-model="customer.lastName" type="text" />
       </div>
     </div>
     <div class="p-field p-grid">
-      <label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Email</label>
+      <label for="email" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Email</label>
       <div class="p-col-12 p-md-10">
-        <InputText id="lastname4" v-model="customer.email" type="text" />
+        <InputText id="email" v-model="customer.email" type="text" />
       </div>
     </div>
     <div class="p-field p-grid">
-      <label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Instagram</label>
+      <label for="instagram" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Instagram</label>
       <div class="p-col-12 p-md-10">
-        <InputText id="lastname4" v-model="customer.instagram" type="text" />
+        <InputText id="instagram" v-model="customer.instagram" type="text" />
       </div>
     </div>
   </div>

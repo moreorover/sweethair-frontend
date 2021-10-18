@@ -1,23 +1,26 @@
 <template>
-  <h1 class="title">Create New Transaction</h1>
-  <transaction-form :transaction-value="newTransaction" />
-  <section class="section">
-    <h1 class="title">New Transaction</h1>
+  <modal title="Create New" action="New" @submit="submit">
+    <transaction-form :transaction-value="newTransaction" />
     {{ newTransaction }}
-  </section>
+  </modal>
 </template>
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
 import TransactionForm from '@/components/transactions/TransactionForm.vue';
 import { useTransactionsStore } from '@/store/transactionsStore';
 import { Transaction } from '@/services/TransactionService';
+import Modal from '@/components/common/Modal.vue';
+import useEntityCleaner from '@/composables/entityCleaner';
 
 export default defineComponent({
   components: {
     TransactionForm,
+    Modal,
   },
   setup() {
     const transactionsStore = useTransactionsStore();
+    const entityCleaner = useEntityCleaner();
+
     const newTransaction = reactive<Transaction>({
       id: '',
       total: 0,
@@ -28,13 +31,14 @@ export default defineComponent({
     });
 
     const submit = () => {
-      // const t: Transaction = transactionModal.cleanTransaction(newTransaction);
-      if (!newTransaction.id) {
-        transactionsStore.create(newTransaction);
-      } else {
-        transactionsStore.update(newTransaction);
-      }
-      // show.value = false;
+      const cleanTransaction: Transaction = entityCleaner.clean(newTransaction);
+      transactionsStore.create(cleanTransaction);
+      newTransaction.id = '';
+      newTransaction.total = 0;
+      newTransaction.date = new Date().toISOString();
+      newTransaction.isPaid = false;
+      newTransaction.customer = null;
+      newTransaction.appointment = null;
     };
 
     return { newTransaction, submit };

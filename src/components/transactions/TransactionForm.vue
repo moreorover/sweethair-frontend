@@ -1,47 +1,37 @@
 <template>
-  <div class="columns is-centered">
-    <div class="column">
-      <div class="field">
-        <label class="label">Total for Transaction</label>
-        <div class="control">
-          <input
-            v-model.number="transaction.total"
-            type="number"
-            step="0.01"
-            class="input is-medium"
-            placeholder="Amount"
-          />
-        </div>
+  <div class="p-fluid py-2">
+    <div class="p-field p-grid">
+      <label for="total" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Total</label>
+      <div class="p-col-12 p-md-10">
+        <InputNumber id="total" v-model="transaction.total" mode="currency" currency="GBP" locale="en-UK" />
       </div>
-      <div class="field">
-        <label class="label">
-          <div class="control"><input v-model="transaction.isPaid" type="checkbox" /> Is Paid?</div>
-        </label>
+    </div>
+    <div class="p-field p-grid">
+      <label for="isPaid" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Paid</label>
+      <div class="p-col-12 p-md-10">
+        <InputSwitch id="isPaid" v-model="transaction.isPaid" />
       </div>
-      <div class="field">
-        <label class="label">Scheduled Date</label>
-        <datepicker
+    </div>
+    <div class="p-field p-grid">
+      <label for="scheduled" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Scheduled at</label>
+      <div class="p-col-12 p-md-10">
+        <Calendar
+          id="scheduled"
           v-model="transaction.date"
-          :uid="Date.now().toString(36) + Math.random().toString(36).substring(2)"
+          :touch-u-i="true"
+          :show-time="true"
+          date-format="mm-dd-yy"
         />
       </div>
-      <div class="field">
-        <customer-picker v-model:customer-value="transaction.customer" />
-      </div>
-      <!-- <div class="field">
-        <appointment-picker v-model:appointment-value="transaction.appointment" />
-      </div> -->
     </div>
   </div>
 </template>
 <script lang="ts">
 import { Transaction } from '@/services/TransactionService';
 import { defineComponent, computed } from 'vue';
-import Datepicker from 'vue3-date-time-picker';
-import CustomerPicker from '@/components/customers/CustomerPicker.vue';
 
 export default defineComponent({
-  components: { Datepicker, CustomerPicker },
+  name: 'TransactionForm',
   props: {
     transactionValue: {
       type: Object as () => Transaction,
