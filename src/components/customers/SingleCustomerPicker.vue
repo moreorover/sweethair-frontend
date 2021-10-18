@@ -1,78 +1,74 @@
 <template>
-  <div class="card">
-    <h5>Single</h5>
-    <DataTable
-      v-model:selection="selectedProduct1"
-      :value="products"
-      selection-mode="single"
-      data-key="id"
-      responsive-layout="scroll"
-    >
-      <Column field="code" header="Code"></Column>
-      <Column field="name" header="Name"></Column>
-      <Column field="category" header="Category"></Column>
-      <Column field="quantity" header="Quantity"></Column>
-    </DataTable>
-  </div>
+  <DataTable
+    v-model:filters="filters"
+    v-model:selection="selected"
+    :value="customers"
+    :meta-key-selection="false"
+    responsive-layout="scroll"
+    selection-mode="single"
+    data-key="id"
+    class="p-datatable-sm"
+    :paginator="true"
+    :rows="10"
+    filter-display="menu"
+    :global-filter-fields="['firstName', 'lastName', 'email', 'instagram']"
+    paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+    :rows-per-page-options="[10, 25, 50]"
+    current-page-report-template="Showing {first} to {last} of {totalRecords} entries"
+  >
+    <template #header>
+      <div class="p-d-flex p-jc-between p-ai-center">
+        <h5 class="p-m-0">Customers</h5>
+        <div class="flex">
+          <span class="p-input-icon-left">
+            <i class="pi pi-search" />
+            <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
+          </span>
+        </div>
+      </div>
+    </template>
+    <template #empty> No customers found. </template>
+    <Column field="firstName" header="First Name" :sortable="true"></Column>
+    <Column field="lastName" header="Last Name" :sortable="true"></Column>
+    <Column field="email" header="Email"></Column>
+    <Column field="instagram" header="Instagram"></Column>
+  </DataTable>
 </template>
 <script lang="ts">
 import { computed, defineComponent, PropType, ref } from 'vue';
-import { Customer } from '@/services/CustomerService';
 import { useCustomersStore } from '@/store/customersStore';
+import { FilterMatchMode, FilterOperator } from 'primevue/api';
+import { Customer } from '@/services/CustomerService';
 
 export default defineComponent({
   name: 'SingleCustomerPicker',
   props: {
-    customersValue: {
-      type: Object as PropType<Customer[]>,
-      required: true,
-    },
     selectionValue: {
-      type: Object as PropType<Customer>,
+      type: Object as PropType<Customer | null | undefined>,
       required: true,
+      default: () => null,
     },
   },
-  emits: ['update:customerValue'],
+  emits: ['update:selectionValue'],
   setup(props, { emit }) {
     const customerStore = useCustomersStore();
     const customers = computed(() => customerStore.getAll);
-    const searchKey = ref('');
-
-    const selectedId = ref(props.customerValue ? props.customerValue.id : '');
-
-    const onSelect = (customerId: string | undefined) => {
-      if (customerId === selectedId.value) {
-        selectedId.value = '';
-      } else {
-        selectedId.value = customerId;
-      }
-      emit(
-        'update:customerValue',
-        customers.value.find((c) => c.id === selectedId.value)
-      );
-    };
+    const selected = computed({
+      get: () => props.selectionValue,
+      set: (val) => emit('update:selectionValue', val),
+    });
 
     customerStore.fetchAll();
 
-    const filteredCustomers = computed(() => {
-      return customers.value.filter((customer) => {
-        if (searchKey.value === '' && !(props.customerValue?.id === customer.id)) {
-          return false;
-        }
-        if (
-          customer.firstName.toLowerCase().includes(searchKey.value) ||
-          customer.lastName.toLowerCase().includes(searchKey.value) ||
-          customer.email?.toLowerCase().includes(searchKey.value) ||
-          customer.instagram?.toLowerCase().includes(searchKey.value) ||
-          props.customerValue?.id === customer.id
-        ) {
-          return true;
-        }
-        return false;
-      });
+    const filters = ref({
+      global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+      name: {
+        operator: FilterOperator.AND,
+        constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }],
+      },
     });
 
-    return { filteredCustomers, searchKey, customers, onSelect, selectedId };
+    return { customers, filters, selected };
   },
 });
 </script>
