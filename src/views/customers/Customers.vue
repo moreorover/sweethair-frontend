@@ -13,6 +13,7 @@
         paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rows-per-page-options="[10, 25, 50]"
         current-page-report-template="Showing {first} to {last} of {totalRecords} entries"
+        @row-click="rowClicked"
       >
         <template #header>
           <div class="p-d-flex p-jc-between p-ai-center">
@@ -47,6 +48,7 @@ import { useCustomersStore } from '@/store/customersStore';
 import NewCustomer from '@/components/customers/NewCustomer.vue';
 import EditCustomer from '@/components/customers/EditCustomer.vue';
 import { FilterMatchMode, FilterOperator } from 'primevue/api';
+import router from '@/router';
 
 export default defineComponent({
   name: 'Customers',
@@ -66,7 +68,11 @@ export default defineComponent({
 
     const customers = computed(() => store.getAll);
 
-    return { customers, filters };
+    const rowClicked = (data) => {
+      router.push({ name: 'Customer', params: { id: data.data.id } });
+    };
+
+    return { customers, filters, rowClicked };
   },
 });
 </script>
