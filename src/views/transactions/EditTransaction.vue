@@ -1,7 +1,6 @@
 <template>
   <modal title="Edit Transaction" action="Edit" @submit="submit">
     <transaction-form :transaction-value="transaction" />
-    {{ transaction }}
   </modal>
 </template>
 <script lang="ts">
