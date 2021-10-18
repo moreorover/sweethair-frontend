@@ -1,24 +1,33 @@
 <template>
-  <div class="hero is-small welcome is-info my-3">
-    <div class="hero-body">
-      <div class="columns">
-        <div class="column has-text-left my-auto">
-          <p class="title is-3">{{ customer?.firstName }} {{ customer?.lastName }}</p>
-        </div>
-        <div class="column has-text-right my-auto">
-          <p class="subtitle">{{ customer?.email }}</p>
-          <p class="subtitle">{{ customer?.instagram }}</p>
+  <div class="px-0 py-4 md:px-4">
+    <div class="border-2 surface-border border-round surface-card">
+      <div class="surface-section p-5">
+        <div class="flex align-items-start flex-column lg:flex-row lg:justify-content-between">
+          <div class="flex align-items-start flex-column md:flex-row">
+            <div>
+              <span class="text-900 font-medium text-3xl">{{ customer?.firstName }} {{ customer?.lastName }}</span>
+              <div class="flex align-items-center flex-wrap text-sm">
+                <div class="mr-5 mt-3">
+                  <span class="font-medium text-500">EMAIL</span>
+                  <div class="text-700 mt-2">{{ customer?.email }}</div>
+                </div>
+                <div class="mr-5 mt-3">
+                  <span class="font-medium text-500">INSTAGRAM</span>
+                  <div class="text-700 mt-2">{{ customer?.instagram }}</div>
+                </div>
+                <div class="mr-5 mt-3">
+                  <span class="font-medium text-500">Transactions</span>
+                  <div class="text-700 mt-2">{{ customer?.transactions?.length }}</div>
+                </div>
+                <div class="mr-5 mt-3">
+                  <span class="font-medium text-500">Appointments</span>
+                  <div class="text-700 mt-2">{{ customer?.appointments?.length }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="hero-foot">
-      <nav class="tabs">
-        <div class="container end">
-          <ul>
-            <!-- <router-link to="/customers/new">Create Customer</router-link> -->
-          </ul>
-        </div>
-      </nav>
     </div>
   </div>
 </template>
