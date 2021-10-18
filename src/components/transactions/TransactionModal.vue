@@ -63,8 +63,8 @@ export default defineComponent({
       ? reactive<Transaction>(transaction.value)
       : reactive<Transaction>({
           ...transactionModal.emptyTransaction,
-          customer: customer.value && customer.value,
-          appointment: appointment.value && appointment.value,
+          customer: customer.value,
+          appointment: appointment.value,
         });
 
     const submit = () => {

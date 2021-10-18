@@ -1,13 +1,19 @@
 import { Transaction } from '@/services/TransactionService';
 
-const emptyTransaction: Transaction = { total: 0, date: new Date().toISOString(), isPaid: false };
+const emptyTransaction: Transaction = {
+  total: 0,
+  date: new Date().toISOString(),
+  isPaid: false,
+  customer: null,
+  appointment: null,
+};
 
 export const useTransactionModal = function () {
   const cleanTransaction = (transaction: Transaction): Transaction => {
     for (const propName in transaction) {
       if (
-        transaction[propName] === null ||
-        transaction[propName] === undefined ||
+        transaction[propName] == null ||
+        transaction[propName] == undefined ||
         transaction[propName] === '' ||
         transaction[propName] === []
       ) {

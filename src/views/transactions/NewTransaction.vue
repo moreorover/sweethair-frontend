@@ -23,6 +23,8 @@ export default defineComponent({
       total: 0,
       date: new Date().toISOString(),
       isPaid: false,
+      customer: null,
+      appointment: null,
     });
 
     const submit = () => {
