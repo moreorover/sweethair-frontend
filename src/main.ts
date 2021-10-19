@@ -24,6 +24,7 @@ import Dialog from 'primevue/dialog';
 import InputNumber from 'primevue/inputnumber';
 import InputSwitch from 'primevue/inputswitch';
 import InputText from 'primevue/inputtext';
+import Tag from 'primevue/tag';
 
 const app = createApp(App);
 app.use(PrimeVue, { ripple: true });
@@ -44,5 +45,6 @@ app.component('Dialog', Dialog);
 app.component('InputNumber', InputNumber);
 app.component('InputSwitch', InputSwitch);
 app.component('InputText', InputText);
+app.component('Tag', Tag);
 
 app.mount('#app');
