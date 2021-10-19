@@ -1,59 +1,26 @@
 <template>
-  <h1 class="title block">Appointment</h1>
-
-  <nav class="level">
-    <div class="level-left">
-      <div class="level-item">
-        <h1 class="subtitle block">
-          {{ appointment?.start && format(new Date(appointment?.start), 'dd MMMM yyyy HH:mm') }}
-        </h1>
-      </div>
-      <div class="level-item">
-        <appointment-modal title="Edit Appointment" action="Edit" :appointment="appointment" />
-      </div>
-    </div>
-  </nav>
-  <!-- <customers-table :customers="customers" /> -->
-  <div class="columns is-multiline content">
-    <div v-for="customer in customers" :key="customer.id" class="column is-full">
-      <div class="box">
-        <h1 class="title">{{ customer.firstName }} {{ customer.lastName }}</h1>
-        <div class="columns is-multiline">
-          <div class="column is-one-fifth">
-            <div>Transactions</div>
+  <div class="px-0 py-4 md:px-4">
+    <div class="border-2 surface-border border-round surface-card">
+      <div class="surface-section p-5">
+        <div class="flex align-items-start flex-column lg:flex-row lg:justify-content-between">
+          <div class="flex align-items-start flex-column md:flex-row">
             <div>
-              <transaction-modal
-                title="Book New Transaction"
-                action="New Transaction"
-                :appointment="appointment"
-                :customer="customer"
-              />
+              <span class="text-900 font-medium text-3xl">
+                {{ appointment?.start && format(new Date(appointment?.start), 'dd/MMMM/yyy hh:mm') }}
+              </span>
             </div>
           </div>
-          <div class="column content">
-            <div
-              v-for="transaction in transactions"
-              :key="transaction.id"
-              class="columns"
-              :class="{
-                'has-background-success-light': transaction.isPaid,
-                'has-background-danger-light': !transaction.isPaid,
-              }"
-            >
-              <div v-if="transaction.customer?.id === customer.id" class="column">
-                {{ transaction.date }}
-              </div>
-              <div v-if="transaction.customer?.id === customer.id" class="column">{{ transaction.total }}</div>
-              <div class="column">
-                <transaction-modal title="Edit Transaction" action="Edit Transaction" :transaction="transaction" />
-              </div>
-              <div class="column">
-                <transaction-modal title="Delete Transaction" action="Delete" :transaction="transaction" />
-              </div>
-            </div>
+          <div class="flex align-items-end">
+            <edit-appointment :appointment-value="appointment" />
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div v-for="customer in customers" :key="customer.id" class="px-0 py-4 md:px-4">
+    <div class="border-2 surface-border border-round surface-card">
+      <customer :id="customer.id" :appointment-id="appointment?.id" />
     </div>
   </div>
 </template>
@@ -63,12 +30,12 @@ import { useRoute } from 'vue-router';
 import { useAppointmentsStore } from '@/store/appointmentsStore';
 import { format } from 'date-fns';
 import { useCustomersStore } from '@/store/customersStore';
-import AppointmentModal from '@/components/appointments/AppointmentModal.vue';
 import { useTransactionsStore } from '@/store/transactionsStore';
-import TransactionModal from '@/components/transactions/TransactionModal.vue';
+import Customer from '../customers/Customer.vue';
+import EditAppointment from '@/views/appointments/EditAppointment.vue';
 
 export default defineComponent({
-  components: { AppointmentModal, TransactionModal },
+  components: { Customer, EditAppointment },
   setup() {
     const appointmentsStore = useAppointmentsStore();
     const customersStore = useCustomersStore();

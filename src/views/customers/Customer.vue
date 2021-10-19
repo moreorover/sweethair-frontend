@@ -49,7 +49,7 @@
             <h5 class="p-m-0">Transactions</h5>
 
             <div class="flex">
-              <new-transaction :customer="customer" />
+              <new-transaction :customer="customer" :appoointment="appointment" />
             </div>
           </div>
         </template>
@@ -62,7 +62,7 @@
           </template>
         </Column>
         <Column header="Scheduled">
-          <template #body="slotProps"> {{ format(new Date(slotProps.data.date), 'dd/mm/yyyy') }} </template>
+          <template #body="slotProps"> {{ format(new Date(slotProps.data.date), 'dd MMMM yyyy') }} </template>
         </Column>
         <Column>
           <template #body="slotProps">
@@ -75,31 +75,45 @@
 </template>
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
-import { useRoute } from 'vue-router';
 import { useCustomersStore } from '@/store/customersStore';
 import { format } from 'date-fns';
 import NewTransaction from '../transactions/NewTransaction.vue';
 import EditTransaction from '../transactions/EditTransaction.vue';
 import { useTransactionsStore } from '@/store/transactionsStore';
+import { useAppointmentsStore } from '@/store/appointmentsStore';
 
 export default defineComponent({
   components: { NewTransaction, EditTransaction },
-  setup() {
+  props: {
+    id: {
+      type: String,
+      required: true,
+    },
+    appointmentId: {
+      type: String,
+      required: false,
+      default: null,
+    },
+  },
+  setup(props) {
     const customersStore = useCustomersStore();
     const transactionsStore = useTransactionsStore();
-    const id = useRoute().params.id as string;
+    const appointmentsStore = useAppointmentsStore();
 
     customersStore.fetchAll();
     transactionsStore.fetchAll();
 
-    const customer = computed(() => customersStore.getCustomerById(id));
-    const customerTransactions = computed(() => transactionsStore.getTransactionsByCustomer(customer.value));
+    const customer = computed(() => customersStore.getCustomerById(props.id));
+    const appointment = computed(() => appointmentsStore.getAppointmentById(props.appointmentId));
+    const customerTransactions = computed(() =>
+      transactionsStore.getTransactionsByCustomerAndAppointmentId(customer.value, appointment.value)
+    );
 
     if (!customer.value) {
       throw Error('Customer was not found.');
     }
 
-    return { customer, customerTransactions, format };
+    return { customer, appointment, customerTransactions, format };
   },
 });
 </script>

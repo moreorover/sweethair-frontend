@@ -1,76 +1,75 @@
 <template>
-  <table class="table is-fullwidth is-hoverable">
-    <thead>
-      <tr>
-        <th>Scheduled At</th>
-        <th>Attendees</th>
-        <th>Transactions No.</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tfoot>
-      <tr>
-        <th>Scheduled At</th>
-        <th>Attendees</th>
-        <th>Transactions No.</th>
-        <th>Actions</th>
-      </tr>
-    </tfoot>
-    <tbody>
-      <tr v-for="appointment in appointments" :key="appointment.id">
-        <router-link v-slot="{ navigate }" :to="`/appointments/${appointment.id}`" custom>
-          <td class="has-text-weight-bold" @click="navigate()">
-            {{ format(new Date(appointment.start), 'dd MMMM yyyy HH:mm') }}
-          </td>
-        </router-link>
-        <td>
-          <div v-for="customer in appointment.customers" :key="customer.id" class="level">
-            <div class="level-left">
-              <div class="level-item">{{ customer.firstName }} {{ customer.lastName }}</div>
-            </div>
-            <div class="level-right">
-              <div class="level-item">
-                <transaction-modal
-                  title="Book New Transaction"
-                  action="New Transaction"
-                  :appointment="appointment"
-                  :customer="customer"
-                />
-              </div>
-            </div>
-          </div>
-        </td>
-        <td>{{ appointment.transactions?.length }}</td>
+  <DataTable
+    :value="appointments"
+    responsive-layout="stack"
+    class="p-datatable-sm"
+    :paginator="true"
+    :rows="10"
+    paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+    :rows-per-page-options="[10, 25, 50]"
+    current-page-report-template="Showing {first} to {last} of {totalRecords} entries"
+  >
+    <template #header>
+      <div class="p-d-flex p-jc-between p-ai-center">
+        <h5 class="p-m-0">Appointments</h5>
 
-        <td>
-          <div class="buttons">
-            <appointment-modal title="Edit Appointment" action="Edit Appointment" :appointment="appointment" />
-            <transaction-modal
-              v-if="appointment.customers.length === 0"
-              title="Book New Transaction"
-              action="New Transaction"
-              :appointment="appointment"
-            />
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        <div class="flex">
+          <new-appointment />
+        </div>
+      </div>
+    </template>
+    <template #empty> No appointments found. </template>
+    <Column header="Scheduled">
+      <template #body="slotProps"> {{ format(new Date(slotProps.data.start), 'dd/MMMM/yyyy hh:mm') }} </template>
+    </Column>
+    <Column header="Customers">
+      <template #body="slotProps">
+        <p v-for="customer in slotProps.data.customers" :key="customer.id">
+          {{ customer.firstName }} {{ customer.lastName }}
+        </p>
+      </template>
+    </Column>
+    <Column header="Transactions">
+      <template #body="slotProps">
+        <p>{{ slotProps.data.transactions.length }}</p>
+      </template>
+    </Column>
+    <Column>
+      <template #body="slotProps">
+        <edit-appointment :appointment-value="slotProps.data" />
+      </template>
+    </Column>
+    <Column
+      v-if="viewAppointment"
+      header-style="width: 4rem; text-align: center"
+      body-style="text-align: center; overflow: visible"
+    >
+      <template #body="slotProps">
+        <router-link v-slot="{ navigate }" :to="{ name: `Appointment`, params: { id: slotProps.data.id } }" custom>
+          <Button class="p-button-sm" type="button" icon="pi pi-search" @click="navigate" />
+        </router-link>
+      </template>
+    </Column>
+  </DataTable>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { Appointment } from '@/services/AppointmentService';
 import { format } from 'date-fns';
-import AppointmentModal from './AppointmentModal.vue';
-import TransactionModal from '@/components/transactions/TransactionModal.vue';
+import NewAppointment from '@/views/appointments/NewAppointment.vue';
+import EditAppointment from '@/views/appointments/EditAppointment.vue';
 
 export default defineComponent({
   name: 'AppointmentsTable',
-  components: { AppointmentModal, TransactionModal },
+  components: { NewAppointment, EditAppointment },
   props: {
     appointments: {
       type: Object as () => Appointment[],
       required: true,
+    },
+    viewAppointment: {
+      type: Boolean,
+      default: false,
     },
   },
   setup() {

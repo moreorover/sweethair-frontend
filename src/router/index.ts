@@ -44,7 +44,7 @@ const router = createRouter({
       children: [
         { path: '', name: 'Home', component: Home, meta: { requiresAuth: true } },
         { path: '/about', name: 'About', component: About, meta: { requiresAuth: true } },
-        { path: '/customers/:id', name: 'Customer', component: Customer, meta: { requiresAuth: true } },
+        { path: '/customers/:id', name: 'Customer', component: Customer, meta: { requiresAuth: true }, props: true },
         { path: '/customers', name: 'Customers', component: Customers, meta: { requiresAuth: true } },
         { path: '/appointments/:id', name: 'Appointment', component: Appointment, meta: { requiresAuth: true } },
         {

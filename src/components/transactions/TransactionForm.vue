@@ -3,7 +3,7 @@
     <div class="p-field p-grid">
       <label for="total" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Total</label>
       <div class="p-col-12 p-md-10">
-        <InputNumber id="total" v-model="transaction.total" mode="currency" currency="GBP" locale="en-UK" />
+        <InputNumber id="total" v-model="transaction.total" mode="decimal" :min-fraction-digits="2" />
       </div>
     </div>
     <div class="p-field p-grid">

@@ -52,6 +52,25 @@ export const useTransactionsStore = defineStore({
         }
         return [];
       },
+    getTransactionsByCustomerAndAppointmentId:
+      (state) =>
+      (customer: Customer | undefined, appointment: Appointment | undefined): Transaction[] => {
+        if (customer && appointment) {
+          const customerId: string | undefined = customer.id;
+          const transactions: Transaction[] = state.all.filter(
+            (transaction) => transaction.customer?.id === customerId && transaction.appointment?.id === appointment.id
+          );
+          return transactions;
+        }
+        if (customer) {
+          const customerId: string | undefined = customer.id;
+          const transactions: Transaction[] = state.all.filter(
+            (transaction) => transaction.customer?.id === customerId
+          );
+          return transactions;
+        }
+        return [];
+      },
   },
   actions: {
     async fetchAll() {

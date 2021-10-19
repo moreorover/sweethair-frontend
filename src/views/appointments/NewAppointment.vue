@@ -1,47 +1,62 @@
 <template>
-  <h1 class="title">Create New Appointment</h1>
-  <appointment-form :appointment="newAppointment" @save="save" />
+  <modal title="Create New" :action="action" @submit="submit">
+    <appointment-form :appointment-value="newAppointment" />
+  </modal>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, computed } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import AppointmentForm from '@/components/appointments/AppointmentForm.vue';
-import { onBeforeRouteLeave, useRouter } from 'vue-router';
 import { Appointment } from '@/services/AppointmentService';
 import { useAppointmentsStore } from '@/store/appointmentsStore';
+import { useEntityCleaner } from '@/composables/entityCleaner';
 import { Customer } from '@/services/CustomerService';
-import { useCustomersStore } from '@/store/customersStore';
+import { Transaction } from '@/services/TransactionService';
+import Modal from '@/components/common/Modal.vue';
 
 export default defineComponent({
   name: 'NewAppointment',
   components: {
     AppointmentForm,
+    Modal,
   },
-  setup() {
+  props: {
+    action: {
+      type: String,
+      required: false,
+      default: 'New',
+    },
+    customers: {
+      type: Object as () => Customer[],
+      required: false,
+      default: () => [] as Customer[],
+    },
+    transactions: {
+      type: Object as () => Transaction[],
+      required: false,
+      default: () => [] as Transaction[],
+    },
+  },
+  setup(props) {
     const appointmentsStore = useAppointmentsStore();
-    const customersStore = useCustomersStore();
-    const selectedCustomer = computed<Customer | null>(() => customersStore.getSelectedCustomer);
-    const router = useRouter();
-    const newAppointment: Appointment = reactive({
+    const entityCleaner = useEntityCleaner();
+
+    const newAppointment = reactive<Appointment>({
       id: '',
       start: new Date().toISOString(),
-      customers: selectedCustomer.value ? [selectedCustomer.value] : [],
-      transactions: [],
+      customers: props.customers,
+      transactions: props.transactions,
     });
 
-    const save = async (appointment: Appointment) => {
-      await appointmentsStore.create(appointment);
-      const newAppointment = computed<Appointment | null>(() => appointmentsStore.getNew);
-      router.push({
-        name: 'Appointment',
-        params: { id: newAppointment.value?.id },
-      });
+    const submit = () => {
+      const cleanAppointment: Appointment = entityCleaner.clean(newAppointment);
+      appointmentsStore.create(cleanAppointment);
+      newAppointment.id = '';
+      newAppointment.start = new Date().toISOString();
+      newAppointment.customers = null;
+      newAppointment.transactions = null;
     };
 
-    onBeforeRouteLeave(() => {
-      selectedCustomer.value && customersStore.selectCustomer(null);
-    });
-
-    return { newAppointment, save };
+    return { newAppointment, submit };
   },
 });
 </script>

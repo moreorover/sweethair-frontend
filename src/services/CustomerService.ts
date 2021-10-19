@@ -4,7 +4,7 @@ import apiClient from '@/axios/axios';
 import { AxiosResponse } from 'axios';
 
 export interface Customer {
-  id?: string;
+  id: string;
   firstName: string;
   lastName: string;
   email: string | null;

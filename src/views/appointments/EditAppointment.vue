@@ -1,43 +1,39 @@
 <template>
-  <h1 class="title">Edit Appointment</h1>
-  <appointment-form :appointment="appointment" @save="update" />
+  <modal title="Edit Appointment" action="Edit" @submit="submit">
+    <appointment-form :appointment-value="appointment" />
+  </modal>
 </template>
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import AppointmentForm from '@/components/appointments/AppointmentForm.vue';
-import { useRoute, useRouter } from 'vue-router';
 import { useAppointmentsStore } from '@/store/appointmentsStore';
-import { useCustomersStore } from '@/store/customersStore';
 import { Appointment } from '@/services/AppointmentService';
+import Modal from '@/components/common/Modal.vue';
+import { useEntityCleaner } from '@/composables/entityCleaner';
 
 export default defineComponent({
   components: {
     AppointmentForm,
+    Modal,
   },
-  setup() {
+  props: {
+    appointmentValue: {
+      type: Object as () => Appointment,
+      required: true,
+    },
+  },
+  setup(props) {
     const appointmentStore = useAppointmentsStore();
-    const customerStore = useCustomersStore();
-    const router = useRouter();
-    const id = useRoute().params.id as string;
+    const entityCleaner = useEntityCleaner();
 
-    appointmentStore.fetchAll();
-    customerStore.fetchAll();
+    const appointment: Appointment = reactive({ ...props.appointmentValue });
 
-    const appointment = computed<Appointment | undefined>(() => appointmentStore.getAppointmentById(id));
-
-    if (!appointment.value) {
-      throw Error('Appointment was not found.');
-    }
-
-    const update = async (appointment: Appointment) => {
-      // appointment.customers.forEach((c) => delete c.appointments);
-      await appointmentStore.update(appointment);
-      router.push({
-        name: 'Appointments',
-      });
+    const submit = () => {
+      const cleanAppointment: Appointment = entityCleaner.clean(appointment);
+      appointmentStore.update(cleanAppointment);
     };
 
-    return { appointment, update };
+    return { appointment, submit };
   },
 });
 </script>

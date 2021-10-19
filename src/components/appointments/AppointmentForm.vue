@@ -1,17 +1,28 @@
 <template>
-  <div class="columns is-centered">
-    <div class="column">
-      <div class="block">
-        <div class="field">
-          <label class="label">Scheduled Date and Time</label>
-          <datepicker
-            v-model="appointment.start"
-            :uid="Date.now().toString(36) + Math.random().toString(36).substring(2)"
-          />
-        </div>
+  <div class="p-fluid py-2">
+    <div class="p-field p-grid">
+      <label for="scheduled" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Scheduled at</label>
+      <div class="p-col-12 p-md-10">
+        <Calendar
+          id="scheduled"
+          v-model="appointment.start"
+          :touch-u-i="true"
+          :show-time="true"
+          date-format="mm-dd-yy"
+        />
       </div>
-      <div class="field">
-        <customers-picker :customers-value="appointment.customers" />
+    </div>
+    <div class="p-field p-grid">
+      <label for="isPaid" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Customers</label>
+      <div v-if="appointment.customers" class="p-col-2">
+        <p v-for="customer in appointment.customers" :key="customer.id">
+          {{ customer?.firstName }} {{ customer.lastName }}
+        </p>
+      </div>
+      <div class="p-col-10 p-md-8">
+        <modal title="Select Customers" action="Select Customers">
+          <multiple-customer-picker v-model:selection-value="appointment.customers" />
+        </modal>
       </div>
     </div>
   </div>
@@ -19,11 +30,11 @@
 <script lang="ts">
 import { Appointment } from '@/services/AppointmentService';
 import { defineComponent, computed } from 'vue';
-import CustomersPicker from '@/components/customers/CustomersPicker.vue';
-import Datepicker from 'vue3-date-time-picker';
+import Modal from '@/components/common/Modal.vue';
+import MultipleCustomerPicker from '../customers/MultipleCustomerPicker.vue';
 
 export default defineComponent({
-  components: { CustomersPicker, Datepicker },
+  components: { Modal, MultipleCustomerPicker },
   props: {
     appointmentValue: {
       type: Object as () => Appointment,

@@ -19,9 +19,16 @@
       </div>
     </template>
     <template #empty> No transactions found. </template>
-    <Column field="date" header="Scheduled" :sortable="true"></Column>
+    <Column header="Scheduled">
+      <template #body="slotProps"> {{ format(new Date(slotProps.data.date), 'dd/MM/yyyy') }} </template>
+    </Column>
     <Column field="isPaid" header="Paid" :sortable="true"></Column>
     <Column field="total" header="Total"></Column>
+    <Column header="Customer">
+      <template #body="slotProps">
+        {{ slotProps.data.customer.firstName }} {{ slotProps.data.customer.lastName }}
+      </template>
+    </Column>
     <Column header-style="width: 4rem; text-align: center" body-style="text-align: center; overflow: visible">
       <template #body="slotProps">
         <edit-transaction :transaction-value="slotProps.data" />
@@ -34,6 +41,7 @@ import { defineComponent } from 'vue';
 import NewTransaction from '@/views/transactions/NewTransaction.vue';
 import EditTransaction from '@/views/transactions/EditTransaction.vue';
 import { Transaction } from '@/services/TransactionService';
+import { format } from 'date-fns';
 
 export default defineComponent({
   name: 'TransactionsTable',
@@ -43,6 +51,9 @@ export default defineComponent({
       type: Object as () => Transaction[],
       required: true,
     },
+  },
+  setup() {
+    return { format };
   },
 });
 </script>
