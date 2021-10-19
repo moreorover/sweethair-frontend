@@ -32,7 +32,12 @@
     <Column field="instagram" header="Instagram"></Column>
     <Column header-style="width: 4rem; text-align: center" body-style="text-align: center; overflow: visible">
       <template #body="slotProps">
-        <edit-customer :customer-value="slotProps.data" />
+        <edit-customer :customer-value="slotProps.data" action="Edit" />
+      </template>
+    </Column>
+    <Column header-style="width: 4rem; text-align: center" body-style="text-align: center; overflow: visible">
+      <template #body="slotProps">
+        <new-transaction :customer="slotProps.data" action="+Transaction" />
       </template>
     </Column>
     <Column
@@ -54,10 +59,11 @@ import { Customer } from '@/services/CustomerService';
 import NewCustomer from '@/components/customers/NewCustomer.vue';
 import EditCustomer from '@/components/customers/EditCustomer.vue';
 import { FilterMatchMode, FilterOperator } from 'primevue/api';
+import NewTransaction from '@/views/transactions/NewTransaction.vue';
 
 export default defineComponent({
   name: 'CustomersTable',
-  components: { NewCustomer, EditCustomer },
+  components: { NewCustomer, EditCustomer, NewTransaction },
   props: {
     customers: {
       type: Object as () => Customer[],
