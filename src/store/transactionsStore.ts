@@ -1,3 +1,4 @@
+import { Customer } from './../services/CustomerService';
 import TransactionService, { Transaction } from './../services/TransactionService';
 import { defineStore } from 'pinia';
 import { Appointment } from '@/services/AppointmentService';
@@ -34,6 +35,18 @@ export const useTransactionsStore = defineStore({
           const appointmentId: string | undefined = appointment.id;
           const transactions: Transaction[] = state.all.filter(
             (transaction) => transaction.appointment?.id === appointmentId
+          );
+          return transactions;
+        }
+        return [];
+      },
+    getTransactionsByCustomer:
+      (state) =>
+      (customer: Customer | undefined): Transaction[] => {
+        if (customer) {
+          const customerId: string | undefined = customer.id;
+          const transactions: Transaction[] = state.all.filter(
+            (transaction) => transaction.customer?.id === customerId
           );
           return transactions;
         }
