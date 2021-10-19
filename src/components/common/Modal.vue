@@ -26,7 +26,7 @@
 import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
-  name: 'CustomerModal',
+  name: 'Modal',
   props: {
     title: {
       type: String,
