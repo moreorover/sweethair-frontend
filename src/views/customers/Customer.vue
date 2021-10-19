@@ -30,27 +30,76 @@
       </div>
     </div>
   </div>
+
+  <div class="px-0 py-4 md:px-4">
+    <div class="border-2 surface-border border-round surface-card">
+      <DataTable
+        :value="customerTransactions"
+        responsive-layout="scroll"
+        class="p-datatable-sm"
+        :paginator="true"
+        :rows="10"
+        filter-display="menu"
+        paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+        :rows-per-page-options="[10, 25, 50]"
+        current-page-report-template="Showing {first} to {last} of {totalRecords} entries"
+      >
+        <template #header>
+          <div class="p-d-flex p-jc-between p-ai-center">
+            <h5 class="p-m-0">Transactions</h5>
+
+            <div class="flex">
+              <new-transaction :customer="customer" />
+            </div>
+          </div>
+        </template>
+        <template #empty> No transactions found. </template>
+        <Column field="total" header="Total" :sortable="true"></Column>
+        <Column field="isPaid" header="Paid" :sortable="true">
+          <template #body="slotProps">
+            <Tag v-if="slotProps.data.isPaid" class="p-mr-2" severity="success" value="Paid"></Tag>
+            <Tag v-else class="p-mr-2" severity="warning" value="Waiting"></Tag>
+          </template>
+        </Column>
+        <Column header="Scheduled">
+          <template #body="slotProps"> {{ format(new Date(slotProps.data.date), 'dd/mm/yyyy') }} </template>
+        </Column>
+        <Column>
+          <template #body="slotProps">
+            <edit-transaction :transaction-value="slotProps.data" />
+          </template>
+        </Column>
+      </DataTable>
+    </div>
+  </div>
 </template>
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useCustomersStore } from '@/store/customersStore';
+import { format } from 'date-fns';
+import NewTransaction from '../transactions/NewTransaction.vue';
+import EditTransaction from '../transactions/EditTransaction.vue';
+import { useTransactionsStore } from '@/store/transactionsStore';
 
 export default defineComponent({
-  components: {},
+  components: { NewTransaction, EditTransaction },
   setup() {
-    const store = useCustomersStore();
+    const customersStore = useCustomersStore();
+    const transactionsStore = useTransactionsStore();
     const id = useRoute().params.id as string;
 
-    store.fetchAll();
+    customersStore.fetchAll();
+    transactionsStore.fetchAll();
 
-    const customer = computed(() => store.getCustomerById(id));
+    const customer = computed(() => customersStore.getCustomerById(id));
+    const customerTransactions = computed(() => transactionsStore.getTransactionsByCustomer(customer.value));
 
     if (!customer.value) {
       throw Error('Customer was not found.');
     }
 
-    return { customer };
+    return { customer, customerTransactions, format };
   },
 });
 </script>
