@@ -67,8 +67,5 @@ export const useAppointmentsStore = defineStore({
         })
         .catch((err) => console.log('Failed to update Appointment', appointment, err));
     },
-    setSelected(appointment: Appointment | null) {
-      this.selected = appointment;
-    },
   },
 });
