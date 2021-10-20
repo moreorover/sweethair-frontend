@@ -56,8 +56,8 @@
 import { defineComponent } from 'vue';
 import { Appointment } from '@/services/AppointmentService';
 import { format } from 'date-fns';
-import NewAppointment from '@/views/appointments/NewAppointment.vue';
-import EditAppointment from '@/views/appointments/EditAppointment.vue';
+import NewAppointment from '@/components/appointments/NewAppointment.vue';
+import EditAppointment from '@/components/appointments/EditAppointment.vue';
 
 export default defineComponent({
   name: 'AppointmentsTable',

@@ -8,14 +8,10 @@ import Customers from '@/views/customers/Customers.vue';
 import Customer from '@/views/customers/Customer.vue';
 
 import Appointments from '@/views/appointments/Appointments.vue';
-import NewAppointment from '@/views/appointments/NewAppointment.vue';
 import Appointment from '@/views/appointments/Appointment.vue';
-import EditAppointment from '@/views/appointments/EditAppointment.vue';
 
 import Transactions from '@/views/transactions/Transactions.vue';
-import NewTransaction from '@/views/transactions/NewTransaction.vue';
 import Transaction from '@/views/transactions/Transaction.vue';
-import EditTransaction from '@/views/transactions/EditTransaction.vue';
 
 import { useLoggedInUserStore } from '@/store/loggedInUser';
 
@@ -47,27 +43,8 @@ const router = createRouter({
         { path: '/customers/:id', name: 'Customer', component: Customer, meta: { requiresAuth: true }, props: true },
         { path: '/customers', name: 'Customers', component: Customers, meta: { requiresAuth: true } },
         { path: '/appointments/:id', name: 'Appointment', component: Appointment, meta: { requiresAuth: true } },
-        {
-          path: '/appointments/:id/edit',
-          name: 'Edit Appointment',
-          component: EditAppointment,
-          meta: { requiresAuth: true },
-        },
-        {
-          path: '/appointments/new',
-          name: 'New Appointment',
-          component: NewAppointment,
-          meta: { requiresAuth: true },
-        },
         { path: '/appointments', name: 'Appointments', component: Appointments, meta: { requiresAuth: true } },
         { path: '/transactions/:id', name: 'Transaction', component: Transaction, meta: { requiresAuth: true } },
-        {
-          path: '/transactions/:id/edit',
-          name: 'Edit Transaction',
-          component: EditTransaction,
-          meta: { requiresAuth: true },
-        },
-        { path: '/transactions/new', name: 'New Transaction', component: NewTransaction, meta: { requiresAuth: true } },
         { path: '/transactions', name: 'Transactions', component: Transactions, meta: { requiresAuth: true } },
       ],
     },

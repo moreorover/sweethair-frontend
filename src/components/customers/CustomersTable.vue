@@ -59,7 +59,7 @@ import { Customer } from '@/services/CustomerService';
 import NewCustomer from '@/components/customers/NewCustomer.vue';
 import EditCustomer from '@/components/customers/EditCustomer.vue';
 import { FilterMatchMode, FilterOperator } from 'primevue/api';
-import NewTransaction from '@/views/transactions/NewTransaction.vue';
+import NewTransaction from '@/components/transactions/NewTransaction.vue';
 
 export default defineComponent({
   name: 'CustomersTable',

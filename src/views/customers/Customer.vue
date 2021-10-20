@@ -77,8 +77,8 @@
 import { defineComponent, computed } from 'vue';
 import { useCustomersStore } from '@/store/customersStore';
 import { format } from 'date-fns';
-import NewTransaction from '../transactions/NewTransaction.vue';
-import EditTransaction from '../transactions/EditTransaction.vue';
+import NewTransaction from '../../components/transactions/NewTransaction.vue';
+import EditTransaction from '../../components/transactions/EditTransaction.vue';
 import { useTransactionsStore } from '@/store/transactionsStore';
 import { useAppointmentsStore } from '@/store/appointmentsStore';
 

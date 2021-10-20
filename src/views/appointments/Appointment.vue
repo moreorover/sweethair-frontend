@@ -36,7 +36,7 @@ import { format } from 'date-fns';
 import { useCustomersStore } from '@/store/customersStore';
 import { useTransactionsStore } from '@/store/transactionsStore';
 import Customer from '../customers/Customer.vue';
-import EditAppointment from '@/views/appointments/EditAppointment.vue';
+import EditAppointment from '@/components/appointments/EditAppointment.vue';
 
 export default defineComponent({
   components: { Customer, EditAppointment },

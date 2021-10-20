@@ -38,8 +38,8 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import NewTransaction from '@/views/transactions/NewTransaction.vue';
-import EditTransaction from '@/views/transactions/EditTransaction.vue';
+import NewTransaction from '@/components/transactions/NewTransaction.vue';
+import EditTransaction from '@/components/transactions/EditTransaction.vue';
 import { Transaction } from '@/services/TransactionService';
 import { format } from 'date-fns';
 
