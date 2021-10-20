@@ -27,7 +27,7 @@
   <div v-for="customer in customers" :key="customer.id" class="px-0 py-4 md:px-4">
     <div class="border-2 surface-border border-round surface-card">
       <customer-vue :id="customer.id" :appointment-id="appointment?.id">
-        <template v-if="customer.transactions?.length === 0" #Action>
+        <template v-if="customerTransactions(customer).value === 0" #Action>
           <Button
             class="p-button-sm"
             label="Remove Customer From Appointment"
@@ -70,11 +70,16 @@ export default defineComponent({
       throw Error('Appointment was not found.');
     }
 
+    const customerTransactions = (customer: Customer) =>
+      computed<number>(
+        () => transactionsStore.getTransactionsByCustomerAndAppointmentId(customer, appointment.value).length
+      );
+
     const removeCustomer = (customer: Customer) => {
       appointmentsStore.removeCustomer(appointment.value, customer);
     };
 
-    return { appointment, format, customers, removeCustomer };
+    return { appointment, format, customers, removeCustomer, customerTransactions };
   },
 });
 </script>

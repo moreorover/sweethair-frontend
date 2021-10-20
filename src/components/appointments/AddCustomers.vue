@@ -1,10 +1,11 @@
 <template>
   <modal title="Add Customers" action="+ Customers" @submit="submit">
     <multiple-customer-picker v-model:selection-value="appointment.customers" :filter-by-selection="true" />
+    {{ appointment.customers?.map((c) => c.firstName) }}
   </modal>
 </template>
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, ref, onBeforeUpdate } from 'vue';
 import { useAppointmentsStore } from '@/store/appointmentsStore';
 import { Appointment } from '@/services/AppointmentService';
 import Modal from '@/components/common/Modal.vue';
@@ -26,12 +27,16 @@ export default defineComponent({
     const appointmentStore = useAppointmentsStore();
     const entityCleaner = useEntityCleaner();
 
-    const appointment: Appointment = reactive({ ...props.appointmentValue });
+    const appointment = ref<Appointment>({ ...props.appointmentValue });
 
     const submit = () => {
-      const cleanAppointment: Appointment = entityCleaner.clean(appointment);
+      const cleanAppointment: Appointment = entityCleaner.clean(appointment.value);
       appointmentStore.update(cleanAppointment);
     };
+
+    onBeforeUpdate(() => {
+      appointment.value = { ...props.appointmentValue };
+    });
 
     return { appointment, submit };
   },

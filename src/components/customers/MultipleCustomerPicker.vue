@@ -57,7 +57,8 @@ export default defineComponent({
   emits: ['update:selectionValue'],
   setup(props, { emit }) {
     const customerStore = useCustomersStore();
-    const sellectionFilter = props.selectionValue.map((c) => c.id);
+    let sellectionFilter = props.selectionValue.map((c) => c.id);
+    // const sellectionFilter = computed(() => props.selectionValue.map((c) => c.id));
     const customers = !props.filterBySelection
       ? computed(() => customerStore.getAll)
       : computed(() => customerStore.getAll.filter((c) => !sellectionFilter.includes(c.id)));
