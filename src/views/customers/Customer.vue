@@ -26,6 +26,9 @@
               </div>
             </div>
           </div>
+          <div class="flex align-items-end">
+            <slot name="Action" />
+          </div>
         </div>
       </div>
     </div>

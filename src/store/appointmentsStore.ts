@@ -2,6 +2,7 @@ import AppointmentService, { Appointment } from '@/services/AppointmentService';
 import { defineStore } from 'pinia';
 import _ from 'lodash';
 import router from '@/router';
+import { Customer } from '@/services/CustomerService';
 
 interface AppointmentStore {
   all: Appointment[];
@@ -66,6 +67,12 @@ export const useAppointmentsStore = defineStore({
           }
         })
         .catch((err) => console.log('Failed to update Appointment', appointment, err));
+    },
+    async removeCustomer(appointment: Appointment | undefined, customer: Customer) {
+      if (appointment?.customers) {
+        appointment.customers = appointment.customers?.filter((c) => c.id !== customer.id);
+        this.update(appointment);
+      }
     },
   },
 });

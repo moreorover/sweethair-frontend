@@ -26,7 +26,15 @@
 
   <div v-for="customer in customers" :key="customer.id" class="px-0 py-4 md:px-4">
     <div class="border-2 surface-border border-round surface-card">
-      <customer :id="customer.id" :appointment-id="appointment?.id" />
+      <customer-vue :id="customer.id" :appointment-id="appointment?.id">
+        <template v-if="customer.transactions?.length === 0" #Action>
+          <Button
+            class="p-button-sm"
+            label="Remove Customer From Appointment"
+            @click="removeCustomer(customer)"
+          ></Button>
+        </template>
+      </customer-vue>
     </div>
   </div>
 </template>
@@ -37,12 +45,13 @@ import { useAppointmentsStore } from '@/store/appointmentsStore';
 import { format } from 'date-fns';
 import { useCustomersStore } from '@/store/customersStore';
 import { useTransactionsStore } from '@/store/transactionsStore';
-import Customer from '../customers/Customer.vue';
 import EditAppointment from '@/components/appointments/EditAppointment.vue';
 import AddCustomers from '@/components/appointments/AddCustomers.vue';
+import { Customer } from '@/services/CustomerService';
+import CustomerVue from '../customers/Customer.vue';
 
 export default defineComponent({
-  components: { Customer, EditAppointment, AddCustomers },
+  components: { EditAppointment, AddCustomers, CustomerVue },
   setup() {
     const appointmentsStore = useAppointmentsStore();
     const customersStore = useCustomersStore();
@@ -61,7 +70,11 @@ export default defineComponent({
       throw Error('Appointment was not found.');
     }
 
-    return { appointment, format, customers };
+    const removeCustomer = (customer: Customer) => {
+      appointmentsStore.removeCustomer(appointment.value, customer);
+    };
+
+    return { appointment, format, customers, removeCustomer };
   },
 });
 </script>
