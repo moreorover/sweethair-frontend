@@ -14,6 +14,10 @@
             <edit-appointment :appointment-value="appointment" />
           </div>
         </div>
+        <div class="flex align-items-start flex-column lg:flex-row lg:justify-content-between py-2">
+          <div class="flex align-items-start flex-column md:flex-row"></div>
+          <div class="flex align-items-end"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -48,13 +52,13 @@ export default defineComponent({
 
     const appointment = computed(() => appointmentsStore.getAppointmentById(id));
     const customers = computed(() => customersStore.getCustomersByAppointment(appointment.value));
-    const transactions = computed(() => transactionsStore.getTransactionsByAppointment(appointment.value));
+    // const transactions = computed(() => transactionsStore.getTransactionsByAppointment(appointment.value));
 
     if (!appointment.value) {
       throw Error('Appointment was not found.');
     }
 
-    return { appointment, format, customers, transactions };
+    return { appointment, format, customers };
   },
 });
 </script>
