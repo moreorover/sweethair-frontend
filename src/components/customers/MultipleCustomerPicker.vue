@@ -44,7 +44,7 @@ export default defineComponent({
   name: 'MultipleCustomerPicker',
   props: {
     selectionValue: {
-      type: Object as PropType<Customer[] | null | undefined>,
+      type: Object as PropType<Customer[]>,
       required: true,
       default: () => null,
     },
