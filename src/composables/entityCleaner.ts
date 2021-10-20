@@ -9,9 +9,10 @@ export const useEntityCleaner = () => {
       ) {
         delete entity[propName];
       }
-      delete entity.createdOn;
-      delete entity.modifiedOn;
     }
+
+    delete entity.createdOn;
+    delete entity.modifiedOn;
     return entity;
   };
 
