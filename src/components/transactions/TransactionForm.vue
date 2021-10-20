@@ -24,7 +24,7 @@
         />
       </div>
     </div>
-    <div class="p-field p-grid">
+    <div v-if="pickCustomer" class="p-field p-grid">
       <label for="isPaid" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Customer</label>
       <div v-if="transaction.customer" class="p-col-2">
         {{ transaction.customer?.firstName }} {{ transaction.customer?.lastName }}
@@ -59,9 +59,9 @@ export default defineComponent({
       set: (val) => emit('update:transactionValue', val),
     });
 
-    // watchEffect(() => (newTransaction.date = dateInput.value.toISOString()));
+    const pickCustomer = props.transactionValue.customer ? false : true;
 
-    return { transaction };
+    return { transaction, pickCustomer };
   },
 });
 </script>
