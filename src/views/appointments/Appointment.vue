@@ -16,7 +16,9 @@
         </div>
         <div class="flex align-items-start flex-column lg:flex-row lg:justify-content-between py-2">
           <div class="flex align-items-start flex-column md:flex-row"></div>
-          <div class="flex align-items-end"></div>
+          <div class="flex align-items-end">
+            <add-customers :appointment-value="appointment" />
+          </div>
         </div>
       </div>
     </div>
@@ -37,9 +39,10 @@ import { useCustomersStore } from '@/store/customersStore';
 import { useTransactionsStore } from '@/store/transactionsStore';
 import Customer from '../customers/Customer.vue';
 import EditAppointment from '@/components/appointments/EditAppointment.vue';
+import AddCustomers from '@/components/appointments/AddCustomers.vue';
 
 export default defineComponent({
-  components: { Customer, EditAppointment },
+  components: { Customer, EditAppointment, AddCustomers },
   setup() {
     const appointmentsStore = useAppointmentsStore();
     const customersStore = useCustomersStore();

@@ -48,11 +48,19 @@ export default defineComponent({
       required: true,
       default: () => null,
     },
+    filterBySelection: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   emits: ['update:selectionValue'],
   setup(props, { emit }) {
     const customerStore = useCustomersStore();
-    const customers = computed(() => customerStore.getAll);
+    const sellectionFilter = props.selectionValue.map((c) => c.id);
+    const customers = !props.filterBySelection
+      ? computed(() => customerStore.getAll)
+      : computed(() => customerStore.getAll.filter((c) => !sellectionFilter.includes(c.id)));
     const selected = computed({
       get: () => props.selectionValue,
       set: (val) => emit('update:selectionValue', val),
