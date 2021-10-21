@@ -34,6 +34,11 @@
         <edit-transaction :transaction-value="slotProps.data" />
       </template>
     </Column>
+    <Column header-style="width: 4rem; text-align: center" body-style="text-align: center; overflow: visible">
+      <template #body="slotProps">
+        <Button class="p-button-sm" label="Delete" @click="deleteTransaction(slotProps.data)"></Button>
+      </template>
+    </Column>
   </DataTable>
 </template>
 <script lang="ts">
@@ -42,6 +47,7 @@ import NewTransaction from '@/components/transactions/NewTransaction.vue';
 import EditTransaction from '@/components/transactions/EditTransaction.vue';
 import { Transaction } from '@/services/TransactionService';
 import { format } from 'date-fns';
+import { useTransactionsStore } from '@/store/transactionsStore';
 
 export default defineComponent({
   name: 'TransactionsTable',
@@ -53,7 +59,11 @@ export default defineComponent({
     },
   },
   setup() {
-    return { format };
+    const transactionsStore = useTransactionsStore();
+    const deleteTransaction = (transaction: Transaction) => {
+      transactionsStore.delete(transaction);
+    };
+    return { format, deleteTransaction };
   },
 });
 </script>

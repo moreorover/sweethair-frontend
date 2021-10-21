@@ -14,7 +14,6 @@
       <Chart :height="50" type="line" :data="chartData" :options="basicOptions" />
     </div>
   </div>
-  {{ chartData }}
 </template>
 <script lang="ts">
 import { computed, defineComponent } from 'vue';

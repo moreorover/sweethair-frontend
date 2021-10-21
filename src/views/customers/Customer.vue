@@ -72,6 +72,11 @@
             <edit-transaction :transaction-value="slotProps.data" />
           </template>
         </Column>
+        <Column>
+          <template #body="slotProps">
+            <Button class="p-button-sm" label="Delete" @click="deleteTransaction(slotProps.data)"></Button>
+          </template>
+        </Column>
       </DataTable>
     </div>
   </div>
@@ -84,6 +89,7 @@ import NewTransaction from '../../components/transactions/NewTransaction.vue';
 import EditTransaction from '../../components/transactions/EditTransaction.vue';
 import { useTransactionsStore } from '@/store/transactionsStore';
 import { useAppointmentsStore } from '@/store/appointmentsStore';
+import { Transaction } from '@/services/TransactionService';
 
 export default defineComponent({
   components: { NewTransaction, EditTransaction },
@@ -116,7 +122,11 @@ export default defineComponent({
       throw Error('Customer was not found.');
     }
 
-    return { customer, appointment, customerTransactions, format };
+    const deleteTransaction = (transaction: Transaction) => {
+      transactionsStore.delete(transaction);
+    };
+
+    return { customer, appointment, customerTransactions, format, deleteTransaction };
   },
 });
 </script>
