@@ -25,7 +25,7 @@
     <Column header="Customers">
       <template #body="slotProps">
         <p v-for="customer in slotProps.data.customers" :key="customer.id">
-          {{ customer.firstName }} {{ customer.lastName }}
+          {{ customer.fullName }}
         </p>
       </template>
     </Column>

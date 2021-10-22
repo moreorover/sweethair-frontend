@@ -20,8 +20,9 @@ export default defineComponent({
 
     const newCustomer: Customer = {
       id: '',
-      firstName: '',
-      lastName: '',
+      fullName: '',
+      location: '',
+      about: '',
       email: '',
       instagram: '',
     };
@@ -30,8 +31,9 @@ export default defineComponent({
       const cleanCustomer: Customer = entityCleaner.clean(newCustomer);
       store.create(cleanCustomer);
       newCustomer.id = '';
-      newCustomer.firstName = '';
-      newCustomer.lastName = '';
+      newCustomer.fullName = '';
+      newCustomer.location = '';
+      newCustomer.about = '';
       newCustomer.email = '';
       newCustomer.instagram = '';
     };

@@ -27,7 +27,7 @@
     <div v-if="pickCustomer" class="p-field p-grid">
       <label for="isPaid" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Customer</label>
       <div v-if="transaction.customer" class="p-col-2">
-        {{ transaction.customer?.firstName }} {{ transaction.customer?.lastName }}
+        {{ transaction.customer?.fullName }}
       </div>
       <div class="p-col-10 p-md-8">
         <modal title="Select Customer" action="Select Customer">

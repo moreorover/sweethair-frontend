@@ -1,15 +1,21 @@
 <template>
   <div class="p-fluid">
     <div class="p-field p-grid">
-      <label for="firstName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Firstname</label>
+      <label for="firstName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Full Name</label>
       <div class="p-col-12 p-md-10">
-        <InputText id="firstName" v-model="customer.firstName" type="text" />
+        <InputText id="firstName" v-model="customer.fullName" type="text" />
       </div>
     </div>
     <div class="p-field p-grid">
-      <label for="lastName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Lastname</label>
+      <label for="lastName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Location</label>
       <div class="p-col-12 p-md-10">
-        <InputText id="lastName" v-model="customer.lastName" type="text" />
+        <InputText id="lastName" v-model="customer.location" type="text" />
+      </div>
+    </div>
+    <div class="p-field p-grid">
+      <label for="lastName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">About</label>
+      <div class="p-col-12 p-md-10">
+        <InputText id="lastName" v-model="customer.about" type="text" />
       </div>
     </div>
     <div class="p-field p-grid">

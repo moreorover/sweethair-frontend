@@ -5,8 +5,9 @@ import { AxiosResponse } from 'axios';
 
 export interface Customer {
   id: string;
-  firstName: string;
-  lastName: string;
+  fullName: string;
+  location: string;
+  about: string;
   email: string | null;
   instagram: string | null;
   createdOn?: string;

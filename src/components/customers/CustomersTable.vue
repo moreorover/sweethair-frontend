@@ -26,8 +26,9 @@
       </div>
     </template>
     <template #empty> No customers found. </template>
-    <Column field="firstName" header="First Name" :sortable="true"></Column>
-    <Column field="lastName" header="Last Name" :sortable="true"></Column>
+    <Column field="fullName" header="Full Name" :sortable="true"></Column>
+    <Column field="location" header="Location" :sortable="true"></Column>
+    <Column field="about" header="About" :sortable="true"></Column>
     <Column field="email" header="Email"></Column>
     <Column field="instagram" header="Instagram"></Column>
     <Column header-style="width: 4rem; text-align: center" body-style="text-align: center; overflow: visible">
