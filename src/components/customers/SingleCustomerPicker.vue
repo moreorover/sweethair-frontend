@@ -11,7 +11,7 @@
     :paginator="true"
     :rows="10"
     filter-display="menu"
-    :global-filter-fields="['firstName', 'lastName', 'email', 'instagram']"
+    :global-filter-fields="['fullName', 'location', 'about', 'email', 'instagram']"
     paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
     :rows-per-page-options="[10, 25, 50]"
     current-page-report-template="Showing {first} to {last} of {totalRecords} entries"

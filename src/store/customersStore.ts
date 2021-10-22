@@ -58,7 +58,7 @@ export const useCustomersStore = defineStore({
       await CustomerService.create(customer)
         .then((response) => {
           this.all.push(response.data);
-          this.all = _.sortBy(this.all, ['firstName', 'lastName']);
+          this.all = _.sortBy(this.all, ['fullName']);
         })
         .catch((err) => console.log('Failed to update Customer', customer, err));
     },

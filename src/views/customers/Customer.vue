@@ -5,7 +5,7 @@
         <div class="flex align-items-start flex-column lg:flex-row lg:justify-content-between">
           <div class="flex align-items-start flex-column md:flex-row">
             <div>
-              <span class="text-900 font-medium text-3xl">{{ customer?.firstName }} {{ customer?.lastName }}</span>
+              <span class="text-900 font-medium text-3xl">{{ customer?.fullName }}</span>
               <div class="flex align-items-center flex-wrap text-sm">
                 <div class="mr-5 mt-3">
                   <span class="font-medium text-500">EMAIL</span>

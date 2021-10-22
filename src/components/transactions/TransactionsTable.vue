@@ -26,7 +26,7 @@
     <Column field="total" header="Total"></Column>
     <Column header="Customer">
       <template #body="slotProps">
-        {{ slotProps.data.customer.firstName }} {{ slotProps.data.customer.lastName }}
+        {{ slotProps.data.customer.fullName }}
       </template>
     </Column>
     <Column header-style="width: 4rem; text-align: center" body-style="text-align: center; overflow: visible">
