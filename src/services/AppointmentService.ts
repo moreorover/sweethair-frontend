@@ -5,7 +5,7 @@ import { AxiosResponse } from 'axios';
 
 export interface Appointment {
   id?: string;
-  start: string;
+  scheduledAt: string;
   createdOn?: string;
   modifiedOn?: string;
   customers: Customer[] | null;

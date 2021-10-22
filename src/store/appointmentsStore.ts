@@ -51,7 +51,7 @@ export const useAppointmentsStore = defineStore({
       await AppointmentService.create(appointment)
         .then((response) => {
           this.all.push(response.data);
-          this.all = _.sortBy(this.all, ['start']);
+          this.all = _.sortBy(this.all, ['scheduledAt']);
           router.push({ name: 'Appointment', params: { id: response.data.id } });
         })
         .catch((err) => console.log('Failed to create Customer', appointment, err));

@@ -20,7 +20,7 @@
     </template>
     <template #empty> No appointments found. </template>
     <Column header="Scheduled">
-      <template #body="slotProps"> {{ format(new Date(slotProps.data.start), 'dd/MMMM/yyyy hh:mm') }} </template>
+      <template #body="slotProps"> {{ format(new Date(slotProps.data.scheduledAt), 'dd/MMMM/yyyy HH:mm') }} </template>
     </Column>
     <Column header="Customers">
       <template #body="slotProps">

@@ -5,7 +5,7 @@
       <div class="p-col-12 p-md-10">
         <Calendar
           id="scheduled"
-          v-model="appointment.start"
+          v-model="appointment.scheduledAt"
           :touch-u-i="true"
           :show-time="true"
           date-format="mm-dd-yy"

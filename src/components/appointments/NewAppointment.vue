@@ -42,7 +42,7 @@ export default defineComponent({
 
     const newAppointment = reactive<Appointment>({
       id: '',
-      start: new Date().toISOString(),
+      scheduledAt: new Date().toISOString(),
       customers: props.customers,
       transactions: props.transactions,
     });
@@ -51,7 +51,7 @@ export default defineComponent({
       const cleanAppointment: Appointment = entityCleaner.clean(newAppointment);
       appointmentsStore.create(cleanAppointment);
       newAppointment.id = '';
-      newAppointment.start = new Date().toISOString();
+      newAppointment.scheduledAt = new Date().toISOString();
       newAppointment.customers = null;
       newAppointment.transactions = null;
     };

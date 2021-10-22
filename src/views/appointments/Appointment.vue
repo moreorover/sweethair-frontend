@@ -6,7 +6,7 @@
           <div class="flex align-items-start flex-column md:flex-row">
             <div>
               <span class="text-900 font-medium text-3xl">
-                {{ appointment?.start && format(new Date(appointment?.start), 'dd/MMMM/yyy hh:mm') }}
+                {{ appointment?.scheduledAt && format(new Date(appointment?.scheduledAt), 'dd/MMMM/yyy hh:mm') }}
               </span>
             </div>
           </div>
