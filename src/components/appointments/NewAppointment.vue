@@ -43,6 +43,7 @@ export default defineComponent({
     const newAppointment = reactive<Appointment>({
       id: '',
       scheduledAt: new Date().toISOString(),
+      title: '',
       customers: props.customers,
       transactions: props.transactions,
     });
