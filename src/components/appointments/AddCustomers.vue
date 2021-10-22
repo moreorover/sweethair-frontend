@@ -1,7 +1,6 @@
 <template>
   <modal title="Add Customers" action="+ Customers" @submit="submit">
     <multiple-customer-picker v-model:selection-value="appointment.customers" :filter-by-selection="true" />
-    {{ appointment.customers?.map((c) => c.firstName) }}
   </modal>
 </template>
 <script lang="ts">
