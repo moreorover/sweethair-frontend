@@ -15,13 +15,7 @@
     <div class="p-field p-grid">
       <label for="scheduled" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Scheduled at</label>
       <div class="p-col-12 p-md-10">
-        <Calendar
-          id="scheduled"
-          v-model="transaction.date"
-          :touch-u-i="true"
-          :show-time="true"
-          date-format="mm-dd-yy"
-        />
+        <Calendar id="scheduled" v-model="transaction.date" date-format="dd MM yy" :manual-input="false" />
       </div>
     </div>
     <div v-if="pickCustomer" class="p-field p-grid">

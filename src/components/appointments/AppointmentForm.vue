@@ -12,9 +12,9 @@
         <Calendar
           id="scheduled"
           v-model="appointment.scheduledAt"
-          :touch-u-i="true"
           :show-time="true"
-          date-format="mm-dd-yy"
+          date-format="dd MM yy"
+          :manual-input="false"
         />
       </div>
     </div>
