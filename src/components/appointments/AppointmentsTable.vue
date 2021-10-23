@@ -22,6 +22,7 @@
     <Column header="Scheduled">
       <template #body="slotProps"> {{ format(new Date(slotProps.data.scheduledAt), 'dd/MMMM/yyyy HH:mm') }} </template>
     </Column>
+    <Column field="title" header="Title" :sortable="true"></Column>
     <Column header="Customers">
       <template #body="slotProps">
         <p v-for="customer in slotProps.data.customers" :key="customer.id">
