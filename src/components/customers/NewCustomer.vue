@@ -1,45 +1,41 @@
 <template>
-  <modal title="Create New" action="New" @submit="submit">
-    <customer-form :customer-value="newCustomer" />
-  </modal>
+  <Button class="p-button-sm mr-2" label="New" @click="toggleModal()"></Button>
+
+  <Dialog
+    v-model:visible="showModal"
+    :modal="true"
+    :dismissable-mask="true"
+    header="Create New Customer"
+    :style="{ width: '50vw' }"
+  >
+    <customer-form :customer="newCustomer" @submit="submit" />
+  </Dialog>
 </template>
-<script lang="ts">
-import { defineComponent } from 'vue';
+
+<script setup lang="ts">
 import { useCustomersStore } from '@/store/customersStore';
-import Modal from '@/components/common/Modal.vue';
-import CustomerForm from '@/components/customers/CustomerForm.vue';
 import useEntityCleaner from '@/composables/entityCleaner';
 import { Customer } from '@/services/CustomerService';
+import CustomerForm from './CustomerForm.vue';
+import useModal from '@/composables/useModal';
 
-export default defineComponent({
-  name: 'NewCustomerModal',
-  components: { Modal, CustomerForm },
-  setup() {
-    const store = useCustomersStore();
-    const entityCleaner = useEntityCleaner();
+const store = useCustomersStore();
 
-    const newCustomer: Customer = {
-      id: '',
-      fullName: '',
-      location: '',
-      about: '',
-      email: '',
-      instagram: '',
-    };
+const entityCleaner = useEntityCleaner();
+const { showModal, toggleModal } = useModal();
 
-    const submit = () => {
-      const cleanCustomer: Customer = entityCleaner.clean(newCustomer);
-      store.create(cleanCustomer);
-      newCustomer.id = '';
-      newCustomer.fullName = '';
-      newCustomer.location = '';
-      newCustomer.about = '';
-      newCustomer.email = '';
-      newCustomer.instagram = '';
-    };
+const newCustomer: Customer = {
+  id: '',
+  fullName: '',
+  location: '',
+  about: '',
+  email: '',
+  instagram: '',
+};
 
-    return { newCustomer, submit };
-  },
-});
+const submit = (data: Customer) => {
+  const cleanCustomer: Customer = entityCleaner.clean(data);
+  store.create(cleanCustomer);
+  toggleModal();
+};
 </script>
-<style scoped></style>
