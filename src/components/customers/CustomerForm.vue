@@ -15,10 +15,8 @@ const c = reactive<Customer>({ ...props.customer });
 
 const rules = {
   fullName: { required },
-  location: {},
-  about: {},
-  email: { email, val: (v: string | null) => v === null },
-  instagram: { val: (v: string | null) => v === null },
+  email: { val: (v: string | null) => v === null || v === '' || email },
+  instagram: { val: (v: string | null) => v === null || v === '' },
 };
 
 const submitted = ref(false);

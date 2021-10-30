@@ -17,7 +17,7 @@
         <h5 class="p-m-0">Customers</h5>
 
         <div class="flex">
-          <new-customer />
+          <customer-modal header="Create New Customer" label="New" />
           <span class="p-input-icon-left">
             <i class="pi pi-search" />
             <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
@@ -33,7 +33,7 @@
     <Column field="instagram" header="Instagram"></Column>
     <Column header-style="width: 4rem; text-align: center" body-style="text-align: center; overflow: visible">
       <template #body="slotProps">
-        <edit-customer :customer-value="slotProps.data" action="Edit" />
+        <customer-modal :customer="slotProps.data" header="Update Customer" label="Edit" />
       </template>
     </Column>
     <Column header-style="width: 4rem; text-align: center" body-style="text-align: center; overflow: visible">
@@ -57,14 +57,13 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { Customer } from '@/services/CustomerService';
-import NewCustomer from '@/components/customers/NewCustomer.vue';
-import EditCustomer from '@/components/customers/EditCustomer.vue';
 import { FilterMatchMode, FilterOperator } from 'primevue/api';
 import NewTransaction from '@/components/transactions/NewTransaction.vue';
+import CustomerModal from './CustomerModal.vue';
 
 export default defineComponent({
   name: 'CustomersTable',
-  components: { NewCustomer, EditCustomer, NewTransaction },
+  components: { NewTransaction, CustomerModal },
   props: {
     customers: {
       type: Object as () => Customer[],
