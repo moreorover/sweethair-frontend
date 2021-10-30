@@ -13,6 +13,7 @@ import 'primeflex/primeflex.css';
 
 import StyleClass from 'primevue/styleclass';
 
+import AutoComplete from 'primevue/autocomplete';
 import Badge from 'primevue/badge';
 import Button from 'primevue/button';
 import Calendar from 'primevue/calendar';
@@ -35,6 +36,7 @@ app.use(router);
 
 app.directive('styleclass', StyleClass);
 
+app.component('AutoComplete', AutoComplete);
 app.component('Badge', Badge);
 app.component('Button', Button);
 app.component('Calendar', Calendar);

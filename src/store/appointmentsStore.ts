@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import _ from 'lodash';
 import router from '@/router';
 import { Customer } from '@/services/CustomerService';
+import { getMonth, getYear } from 'date-fns';
 
 interface AppointmentStore {
   all: Appointment[];
@@ -24,6 +25,15 @@ export const useAppointmentsStore = defineStore({
     getAppointmentById: (state) => (id: string) => {
       if (state.loaded) {
         return state.all.find((x) => x.id === id);
+      } else {
+        console.log('State is not loaded.');
+      }
+    },
+    getAppointmentByMonthAndYear: (state) => (month: number, year: number) => {
+      if (state.loaded) {
+        return state.all.filter(
+          (x) => getMonth(new Date(x.scheduledAt)) == month && getYear(new Date(x.scheduledAt)) == year
+        );
       } else {
         console.log('State is not loaded.');
       }

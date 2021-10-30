@@ -34,6 +34,13 @@
     <Column field="email" header="Email"></Column>
     <Column field="instagram" header="Instagram"></Column>
   </DataTable>
+  <AutoComplete
+    v-model="selected"
+    :multiple="true"
+    :suggestions="filteredCustomers"
+    field="fullName"
+    @complete="searchCustomer($event)"
+  />
 </template>
 <script lang="ts">
 import { computed, defineComponent, PropType, ref } from 'vue';
@@ -57,6 +64,7 @@ export default defineComponent({
   },
   emits: ['update:selectionValue'],
   setup(props, { emit }) {
+    const filteredCustomers = ref();
     const customerStore = useCustomersStore();
     let sellectionFilter = props.selectionValue.map((c) => c.id);
     // const sellectionFilter = computed(() => props.selectionValue.map((c) => c.id));
@@ -78,7 +86,19 @@ export default defineComponent({
       },
     });
 
-    return { customers, filters, selected };
+    const searchCustomer = (event) => {
+      setTimeout(() => {
+        if (!event.query.trim().length) {
+          filteredCustomers.value = [...filteredCustomers.value];
+        } else {
+          filteredCustomers.value = customers.value.filter((customer) => {
+            return customer.fullName.toLowerCase().startsWith(event.query.toLowerCase());
+          });
+        }
+      }, 250);
+    };
+
+    return { customers, filters, selected, searchCustomer, filteredCustomers };
   },
 });
 </script>
