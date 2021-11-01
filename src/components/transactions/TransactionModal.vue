@@ -1,88 +1,66 @@
 <template>
-  <button class="button is-small is-warning" @click="show = true">{{ action }}</button>
-  <div class="modal" :class="{ 'is-active': show }">
-    <div class="modal-background" @click="show = false"></div>
-    <div class="modal-card">
-      <header class="modal-card-head">
-        <p class="modal-card-title">{{ title }}</p>
-        <button class="delete" aria-label="close" @click="show = false" />
-      </header>
-      <section class="modal-card-body">
-        <!-- Content ... -->
-        <transaction-form :transaction-value="newTransaction" />
-      </section>
-      <footer class="modal-card-foot">
-        <button class="button is-primary" @click="submit">Submit</button>
-      </footer>
-    </div>
-  </div>
+  <Button class="p-button-sm mr-2" :label="props.label" @click="toggleModal()"></Button>
+
+  <Dialog
+    v-model:visible="showModal"
+    :modal="true"
+    :dismissable-mask="true"
+    :header="props.header"
+    :style="{ width: '50vw' }"
+  >
+    <transaction-form :transaction="t" @submit="submit" />
+  </Dialog>
 </template>
-<script lang="ts">
-import { defineComponent, PropType, reactive, ref, toRefs } from 'vue';
+<script setup lang="ts">
+import { reactive } from 'vue';
 import TransactionForm from '@/components/transactions/TransactionForm.vue';
-import { Customer } from '@/services/CustomerService';
+import useEntityCleaner from '@/composables/entityCleaner';
+import useModal from '@/composables/useModal';
 import { Transaction } from '@/services/TransactionService';
 import { useTransactionsStore } from '@/store/transactionsStore';
-import useTransactionModal from '@/composables/transactionModal';
+import { Customer } from '@/services/CustomerService';
 import { Appointment } from '@/services/AppointmentService';
 
-export default defineComponent({
-  name: 'TransactionModal',
-  components: { TransactionForm },
-  props: {
-    transaction: {
-      type: Object as PropType<Transaction | null>,
-      required: false,
-      default: null,
-    },
-    customer: {
-      type: Object as PropType<Customer | null>,
-      required: false,
-      default: null,
-    },
-    appointment: {
-      type: Object as PropType<Appointment | null>,
-      required: false,
-      default: null,
-    },
-    title: {
-      type: String,
-      required: true,
-    },
-    action: {
-      type: String,
-      required: true,
-    },
-  },
-  setup(props) {
-    const transactionsStore = useTransactionsStore();
-    const show = ref<boolean>(false);
-    const transactionModal = useTransactionModal();
-    const { transaction, customer, appointment } = toRefs(props);
-    const newTransaction = transaction.value
-      ? reactive<Transaction>(transaction.value)
-      : reactive<Transaction>({
-          ...transactionModal.emptyTransaction,
-          customer: customer.value && customer.value,
-          appointment: appointment.value && appointment.value,
-        });
+interface Props {
+  header: string;
+  label: string;
+  transaction?: Transaction;
+  customer?: Customer | null;
+  appointment?: Appointment | null;
+}
 
-    const submit = () => {
-      const a: Transaction = transactionModal.cleanTransaction(newTransaction);
-      console.log('a', a);
-      if (!a.id) {
-        transactionsStore.create(a);
-      } else {
-        transactionsStore.update(a);
-      }
-      show.value = false;
+const props = withDefaults(defineProps<Props>(), {
+  transaction: () => {
+    return {
+      id: '',
+      total: 0,
+      date: new Date().toISOString(),
+      isPaid: false,
+      customer: null,
+      appointment: null,
     };
-    return { show, submit, newTransaction };
+  },
+  customer: () => {
+    return null;
+  },
+  appointment: () => {
+    return null;
   },
 });
+
+const store = useTransactionsStore();
+const entityCleaner = useEntityCleaner();
+const { showModal, toggleModal } = useModal();
+
+const t: Transaction = reactive({
+  ...props.transaction,
+  customer: props.customer && { ...props.customer },
+  appointment: props.appointment && { ...props.appointment },
+});
+
+const submit = (data: Transaction) => {
+  const cleanTransaction: Transaction = entityCleaner.clean(data);
+  cleanTransaction.id ? store.update(cleanTransaction) : store.create(cleanTransaction);
+  toggleModal();
+};
 </script>
-<style scoped>
-.modal-card {
-  width: 80%;
-}
-</style>

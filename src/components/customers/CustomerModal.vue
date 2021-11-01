@@ -1,66 +1,52 @@
 <template>
-  <button class="button is-small is-warning" @click="show = true">{{ action }}</button>
-  <div class="modal" :class="{ 'is-active': show }">
-    <div class="modal-background" @click="show = false"></div>
-    <div class="modal-card">
-      <header class="modal-card-head">
-        <p class="modal-card-title">{{ title }}</p>
-        <button class="delete" aria-label="close" @click="show = false" />
-      </header>
-      <section class="modal-card-body">
-        <!-- Content ... -->
-        <customer-form :customer-value="newCustomer" />
-      </section>
-      <footer class="modal-card-foot">
-        <button class="button is-primary" @click="submit">Submit</button>
-      </footer>
-    </div>
-  </div>
+  <Button class="p-button-sm mr-2" :label="props.label" @click="toggleModal()"></Button>
+
+  <Dialog
+    v-model:visible="showModal"
+    :modal="true"
+    :dismissable-mask="true"
+    :header="props.header"
+    :style="{ width: '50vw' }"
+  >
+    <customer-form :customer="c" @submit="submit" />
+  </Dialog>
 </template>
-<script lang="ts">
-import { defineComponent, PropType, reactive, ref, toRefs } from 'vue';
-import CustomerForm from '@/components/customers/CustomerForm.vue';
-import { Customer } from '@/services/CustomerService';
-import { useCustomerModal } from '@/composables/customerModal';
+<script setup lang="ts">
+import { reactive } from 'vue';
 import { useCustomersStore } from '@/store/customersStore';
+import CustomerForm from '@/components/customers/CustomerForm.vue';
+import useEntityCleaner from '@/composables/entityCleaner';
+import { Customer } from '@/services/CustomerService';
+import useModal from '@/composables/useModal';
 
-export default defineComponent({
-  name: 'CustomerModal',
-  components: { CustomerForm },
-  props: {
-    customer: {
-      type: Object as PropType<Customer | null>,
-      required: false,
-      default: null,
-    },
-    title: {
-      type: String,
-      required: true,
-    },
-    action: {
-      type: String,
-      required: true,
-    },
-  },
-  setup(props) {
-    const customersStore = useCustomersStore();
-    const show = ref<boolean>(false);
-    const customerModal = useCustomerModal();
-    const { customer } = toRefs(props);
-    const newCustomer = customer.value
-      ? reactive<Customer>(customer.value)
-      : reactive<Customer>(customerModal.emptyCustomer);
+interface Props {
+  customer?: Customer;
+  header: string;
+  label: string;
+}
 
-    const submit = () => {
-      const c: Customer = customerModal.cleanCustomer(newCustomer);
-      if (!c.id) {
-        customersStore.create(c);
-      } else {
-        customersStore.update(c);
-      }
-      show.value = false;
+const props = withDefaults(defineProps<Props>(), {
+  customer: () => {
+    return {
+      id: '',
+      fullName: '',
+      location: '',
+      about: '',
+      email: '',
+      instagram: '',
     };
-    return { show, submit, newCustomer };
   },
 });
+
+const store = useCustomersStore();
+const entityCleaner = useEntityCleaner();
+const { showModal, toggleModal } = useModal();
+
+const c: Customer = reactive({ ...props.customer });
+
+const submit = (data: Customer) => {
+  const cleanCustomer: Customer = entityCleaner.clean(data);
+  cleanCustomer.id ? store.update(cleanCustomer) : store.create(cleanCustomer);
+  toggleModal();
+};
 </script>

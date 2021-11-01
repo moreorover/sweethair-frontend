@@ -1,64 +1,73 @@
-<template>
-  <div class="columns is-centered">
-    <div class="column">
-      <div class="field">
-        <label class="label">Total for Transaction</label>
-        <div class="control">
-          <input
-            v-model.number="transaction.total"
-            type="number"
-            step="0.01"
-            class="input is-medium"
-            placeholder="Amount"
-          />
-        </div>
-      </div>
-      <div class="field">
-        <label class="label">
-          <div class="control"><input v-model="transaction.isPaid" type="checkbox" /> Is Paid?</div>
-        </label>
-      </div>
-      <div class="field">
-        <label class="label">Scheduled Date</label>
-        <datepicker
-          v-model="transaction.date"
-          :uid="Date.now().toString(36) + Math.random().toString(36).substring(2)"
-        />
-      </div>
-      <div class="field">
-        <customer-picker v-model:customer-value="transaction.customer" />
-      </div>
-      <!-- <div class="field">
-        <appointment-picker v-model:appointment-value="transaction.appointment" />
-      </div> -->
-    </div>
-  </div>
-</template>
-<script lang="ts">
+<script setup lang="ts">
 import { Transaction } from '@/services/TransactionService';
-import { defineComponent, computed } from 'vue';
-import Datepicker from 'vue3-date-time-picker';
+import { reactive, ref } from 'vue';
+import { required } from '@vuelidate/validators';
+import { useVuelidate } from '@vuelidate/core';
 import CustomerPicker from '@/components/customers/CustomerPicker.vue';
 
-export default defineComponent({
-  components: { Datepicker, CustomerPicker },
-  props: {
-    transactionValue: {
-      type: Object as () => Transaction,
-      required: true,
-    },
-  },
-  emits: ['update:transactionValue'],
-  setup(props, { emit }) {
-    const transaction = computed({
-      get: () => props.transactionValue,
-      set: (val) => emit('update:transactionValue', val),
-    });
+type Props = {
+  transaction: Transaction;
+};
 
-    // watchEffect(() => (newTransaction.date = dateInput.value.toISOString()));
+const props = defineProps<Props>();
+const emit = defineEmits(['submit']);
 
-    return { transaction };
-  },
-});
+const t = reactive<Transaction>({ ...props.transaction });
+
+const rules = {
+  total: { val: (v: number) => v > 0 || v < 0 },
+  date: { required },
+  isPaid: { required },
+  customer: { required },
+};
+
+const submitted = ref(false);
+
+const v$ = useVuelidate(rules, t);
+
+function handleSubmit(isFormValid: boolean) {
+  submitted.value = true;
+
+  if (!isFormValid) {
+    return;
+  }
+
+  emit('submit', t);
+}
+const pickCustomer: boolean = props.transaction.customer ? false : true;
 </script>
-<style scoped></style>
+<template>
+  <form class="p-fluid" @submit.prevent="handleSubmit(!v$.$invalid)">
+    <div class="p-field p-grid">
+      <label for="total" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Total</label>
+      <div class="p-col-12 p-md-10">
+        <InputNumber id="total" v-model="t.total" mode="decimal" :min-fraction-digits="2" />
+      </div>
+    </div>
+    <div class="p-field p-grid">
+      <label for="isPaid" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Paid</label>
+      <div class="p-col-12 p-md-10">
+        <InputSwitch id="isPaid" v-model="t.isPaid" />
+      </div>
+    </div>
+    <div class="p-field p-grid">
+      <label for="scheduled" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Scheduled at</label>
+      <div class="p-col-12 p-md-10">
+        <Calendar id="scheduled" v-model="t.date" date-format="dd MM yy" :manual-input="false" />
+      </div>
+    </div>
+    <div v-if="pickCustomer" class="p-field p-grid">
+      <label class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Customer</label>
+      <div class="p-col-10 p-md-8">
+        <customer-picker @selected="t.customer = $event" />
+        <small v-if="v$.customer.$invalid && submitted" class="p-error">{{
+          v$.customer.required.$message.replace('Value', 'Customer')
+        }}</small>
+      </div>
+    </div>
+    <div class="p-field p-grid pt-2">
+      <Button type="submit" label="Submit" class="p-mt-2" />
+    </div>
+  </form>
+  {{ t }}
+</template>

@@ -1,8 +1,12 @@
 <template>
   <DataTable
     v-model:filters="filters"
+    v-model:selection="selected"
     :value="customers"
-    responsive-layout="stack"
+    :meta-key-selection="false"
+    responsive-layout="scroll"
+    selection-mode="single"
+    data-key="id"
     class="p-datatable-sm"
     :paginator="true"
     :rows="10"
@@ -15,9 +19,7 @@
     <template #header>
       <div class="p-d-flex p-jc-between p-ai-center">
         <h5 class="p-m-0">Customers</h5>
-
         <div class="flex">
-          <customer-modal header="Create New Customer" label="New" />
           <span class="p-input-icon-left">
             <i class="pi pi-search" />
             <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
@@ -31,52 +33,34 @@
     <Column field="about" header="About" :sortable="true"></Column>
     <Column field="email" header="Email"></Column>
     <Column field="instagram" header="Instagram"></Column>
-    <Column header-style="width: 4rem; text-align: center" body-style="text-align: center; overflow: visible">
-      <template #body="slotProps">
-        <customer-modal :customer="slotProps.data" header="Update Customer" label="Edit" />
-      </template>
-    </Column>
-    <Column header-style="width: 4rem; text-align: center" body-style="text-align: center; overflow: visible">
-      <template #body="slotProps">
-        <!-- <new-transaction :customer="slotProps.data" action="+Transaction" /> -->
-        <transaction-modal :customer="slotProps.data" header="Add Transaction to Customer" label="+Transaction" />
-      </template>
-    </Column>
-    <Column
-      v-if="viewCustomer"
-      header-style="width: 4rem; text-align: center"
-      body-style="text-align: center; overflow: visible"
-    >
-      <template #body="slotProps">
-        <router-link v-slot="{ navigate }" :to="{ name: `Customer`, params: { id: slotProps.data.id } }" custom>
-          <Button class="p-button-sm" type="button" icon="pi pi-search" @click="navigate" />
-        </router-link>
-      </template>
-    </Column>
   </DataTable>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import { Customer } from '@/services/CustomerService';
+import { computed, defineComponent, PropType, ref } from 'vue';
+import { useCustomersStore } from '@/store/customersStore';
 import { FilterMatchMode, FilterOperator } from 'primevue/api';
-import CustomerModal from './CustomerModal.vue';
-import TransactionModal from '../transactions/TransactionModal.vue';
+import { Customer } from '@/services/CustomerService';
 
 export default defineComponent({
-  name: 'CustomersTable',
-  components: { CustomerModal, TransactionModal },
+  name: 'SingleCustomerPicker',
   props: {
-    customers: {
-      type: Object as () => Customer[],
+    selectionValue: {
+      type: Object as PropType<Customer | null | undefined>,
       required: true,
-    },
-    viewCustomer: {
-      type: Boolean,
-      default: false,
+      default: () => null,
     },
   },
-  emits: ['rowClicked'],
-  setup() {
+  emits: ['update:selectionValue'],
+  setup(props, { emit }) {
+    const customerStore = useCustomersStore();
+    const customers = computed(() => customerStore.getAll);
+    const selected = computed({
+      get: () => props.selectionValue,
+      set: (val) => emit('update:selectionValue', val),
+    });
+
+    customerStore.fetchAll();
+
     const filters = ref({
       global: { value: null, matchMode: FilterMatchMode.CONTAINS },
       name: {
@@ -85,7 +69,7 @@ export default defineComponent({
       },
     });
 
-    return { filters };
+    return { customers, filters, selected };
   },
 });
 </script>

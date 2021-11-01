@@ -1,0 +1,105 @@
+<template>
+  <DataTable
+    v-model:filters="filters"
+    v-model:selection="selected"
+    :value="customers"
+    :meta-key-selection="false"
+    responsive-layout="scroll"
+    selection-mode="multiple"
+    data-key="id"
+    class="p-datatable-sm"
+    :paginator="true"
+    :rows="10"
+    filter-display="menu"
+    :global-filter-fields="['fullName', 'location', 'about', 'email', 'instagram']"
+    paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+    :rows-per-page-options="[10, 25, 50]"
+    current-page-report-template="Showing {first} to {last} of {totalRecords} entries"
+  >
+    <template #header>
+      <div class="p-d-flex p-jc-between p-ai-center">
+        <h5 class="p-m-0">Customers</h5>
+        <div class="flex">
+          <span class="p-input-icon-left">
+            <i class="pi pi-search" />
+            <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
+          </span>
+        </div>
+      </div>
+    </template>
+    <template #empty> No customers found. </template>
+    <Column field="fullName" header="Full Name" :sortable="true"></Column>
+    <Column field="location" header="Location" :sortable="true"></Column>
+    <Column field="about" header="About" :sortable="true"></Column>
+    <Column field="email" header="Email"></Column>
+    <Column field="instagram" header="Instagram"></Column>
+  </DataTable>
+  <AutoComplete
+    v-model="selected"
+    :multiple="true"
+    :suggestions="filteredCustomers"
+    field="fullName"
+    @complete="searchCustomer($event)"
+  />
+</template>
+<script lang="ts">
+import { computed, defineComponent, PropType, ref } from 'vue';
+import { useCustomersStore } from '@/store/customersStore';
+import { FilterMatchMode, FilterOperator } from 'primevue/api';
+import { Customer } from '@/services/CustomerService';
+
+export default defineComponent({
+  name: 'MultipleCustomerPicker',
+  props: {
+    selectionValue: {
+      type: Object as PropType<Customer[]>,
+      required: true,
+      default: () => null,
+    },
+    filterBySelection: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
+  emits: ['update:selectionValue'],
+  setup(props, { emit }) {
+    const filteredCustomers = ref();
+    const customerStore = useCustomersStore();
+    let sellectionFilter = props.selectionValue.map((c) => c.id);
+    // const sellectionFilter = computed(() => props.selectionValue.map((c) => c.id));
+    const customers = !props.filterBySelection
+      ? computed(() => customerStore.getAll)
+      : computed(() => customerStore.getAll.filter((c) => !sellectionFilter.includes(c.id)));
+    const selected = computed({
+      get: () => props.selectionValue,
+      set: (val) => emit('update:selectionValue', val),
+    });
+
+    customerStore.fetchAll();
+
+    const filters = ref({
+      global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+      name: {
+        operator: FilterOperator.AND,
+        constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }],
+      },
+    });
+
+    const searchCustomer = (event) => {
+      setTimeout(() => {
+        if (!event.query.trim().length) {
+          filteredCustomers.value = [...filteredCustomers.value];
+        } else {
+          filteredCustomers.value = customers.value.filter((customer) => {
+            return customer.fullName.toLowerCase().startsWith(event.query.toLowerCase());
+          });
+        }
+      }, 250);
+    };
+
+    return { customers, filters, selected, searchCustomer, filteredCustomers };
+  },
+});
+</script>
+<style scoped></style>

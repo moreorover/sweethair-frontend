@@ -1,6 +1,9 @@
 import AppointmentService, { Appointment } from '@/services/AppointmentService';
 import { defineStore } from 'pinia';
 import _ from 'lodash';
+import router from '@/router';
+import { Customer } from '@/services/CustomerService';
+import { getMonth, getYear } from 'date-fns';
 
 interface AppointmentStore {
   all: Appointment[];
@@ -22,6 +25,15 @@ export const useAppointmentsStore = defineStore({
     getAppointmentById: (state) => (id: string) => {
       if (state.loaded) {
         return state.all.find((x) => x.id === id);
+      } else {
+        console.log('State is not loaded.');
+      }
+    },
+    getAppointmentByMonthAndYear: (state) => (month: number, year: number) => {
+      if (state.loaded) {
+        return state.all.filter(
+          (x) => getMonth(new Date(x.scheduledAt)) == month && getYear(new Date(x.scheduledAt)) == year
+        );
       } else {
         console.log('State is not loaded.');
       }
@@ -49,7 +61,8 @@ export const useAppointmentsStore = defineStore({
       await AppointmentService.create(appointment)
         .then((response) => {
           this.all.push(response.data);
-          this.all = _.sortBy(this.all, ['start']);
+          this.all = _.sortBy(this.all, ['scheduledAt']);
+          router.push({ name: 'Appointment', params: { id: response.data.id } });
         })
         .catch((err) => console.log('Failed to create Customer', appointment, err));
     },
@@ -65,8 +78,11 @@ export const useAppointmentsStore = defineStore({
         })
         .catch((err) => console.log('Failed to update Appointment', appointment, err));
     },
-    setSelected(appointment: Appointment | null) {
-      this.selected = appointment;
+    async removeCustomer(appointment: Appointment | undefined, customer: Customer) {
+      if (appointment?.customers) {
+        appointment.customers = appointment.customers?.filter((c) => c.id !== customer.id);
+        this.update(appointment);
+      }
     },
   },
 });

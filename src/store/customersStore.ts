@@ -31,11 +31,11 @@ export const useCustomersStore = defineStore({
     },
     getCustomersByAppointment: (state) => (appointment: Appointment | undefined) => {
       if (appointment) {
-        const customerIds: (string | undefined)[] = appointment.customers.map((customer) => customer.id);
-        const transactionIds = appointment.transactions.map((transactions) => transactions.id);
-        const customers: Customer[] = state.all.filter((customer) => customerIds.includes(customer.id));
+        const customerIds: (string | undefined)[] | undefined = appointment.customers?.map((customer) => customer.id);
+        const transactionIds = appointment.transactions?.map((transactions) => transactions.id);
+        const customers: Customer[] = state.all.filter((customer) => customerIds?.includes(customer.id));
         customers.forEach(
-          (customer) => (customer.transactions = customer.transactions?.filter((t) => transactionIds.includes(t.id)))
+          (customer) => (customer.transactions = customer.transactions?.filter((t) => transactionIds?.includes(t.id)))
         );
         return customers;
       }
@@ -58,7 +58,7 @@ export const useCustomersStore = defineStore({
       await CustomerService.create(customer)
         .then((response) => {
           this.all.push(response.data);
-          this.all = _.sortBy(this.all, ['firstName', 'lastName']);
+          this.all = _.sortBy(this.all, ['fullName']);
         })
         .catch((err) => console.log('Failed to update Customer', customer, err));
     },

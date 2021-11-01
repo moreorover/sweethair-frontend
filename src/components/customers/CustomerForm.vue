@@ -1,85 +1,78 @@
-<template>
-  <div class="column">
-    <form @submit.prevent="">
-      <div class="field">
-        <div class="field">
-          <label class="label">First Name</label>
-          <div class="control">
-            <input v-model="customer.firstName" class="input is-large" type="text" placeholder="e.g. Jane" required />
-          </div>
-        </div>
-      </div>
-
-      <div class="field">
-        <div class="field">
-          <label class="label">Last Name</label>
-          <div class="control">
-            <input v-model="customer.lastName" class="input is-large" type="text" placeholder="e.g. Smith" required />
-          </div>
-        </div>
-      </div>
-
-      <div class="field">
-        <label class="label">Email</label>
-        <div class="control has-icons-left">
-          <input v-model="customer.email" class="input" type="email" placeholder="e.g. janesmith@gmail.com" />
-          <span class="icon is-small is-left">
-            <i class="fa fa-envelope"></i>
-          </span>
-        </div>
-      </div>
-
-      <div class="field">
-        <label class="label">Instagram</label>
-        <div class="control">
-          <input v-model="customer.instagram" class="input" type="text" placeholder="janesmith" />
-        </div>
-      </div>
-
-      <!-- <div class="field">
-        <div class="buttons">
-          <button class="button is-medium is-success">Save</button>
-        </div>
-      </div> -->
-    </form>
-  </div>
-</template>
-<script lang="ts">
+<script setup lang="ts">
 import { Customer } from '@/services/CustomerService';
-import { computed, defineComponent } from 'vue';
+import { reactive, ref } from 'vue';
+import { email, required } from '@vuelidate/validators';
+import { useVuelidate } from '@vuelidate/core';
 
-export default defineComponent({
-  props: {
-    customerValue: {
-      type: Object as () => Customer,
-      required: true,
-    },
-  },
-  emits: ['update:customerValue'],
-  setup(props, { emit }) {
-    const customer = computed({
-      get: () => props.customerValue,
-      set: (val) => emit('update:customerValue', val),
-    });
+type Props = {
+  customer: Customer;
+};
 
-    return { customer };
+const props = defineProps<Props>();
+const emit = defineEmits(['submit']);
 
-    // const onSubmit = () => {
-    //   const newCustomer: Customer = {
-    //     ...props.customer,
-    //     firstName: firstName.value,
-    //     lastName: lastName.value,
-    //     email: email.value,
-    //     instagram: instagram.value,
-    //   };
+const c = reactive<Customer>({ ...props.customer });
 
-    //   for (var propName in newCustomer) {
-    //     if (newCustomer[propName] === null || newCustomer[propName] === undefined || newCustomer[propName] === '') {
-    //       delete newCustomer[propName];
-    //     }
-    //   }
-    // };
-  },
-});
+const rules = {
+  fullName: { required },
+  email: { val: (v: string | null) => v === null || v === '' || email },
+  instagram: { val: (v: string | null) => v === null || v === '' },
+};
+
+const submitted = ref(false);
+
+const v$ = useVuelidate(rules, c);
+
+function handleSubmit(isFormValid: boolean) {
+  submitted.value = true;
+
+  if (!isFormValid) {
+    return;
+  }
+
+  emit('submit', c);
+}
 </script>
-<style scoped></style>
+<template>
+  <form class="p-fluid" @submit.prevent="handleSubmit(!v$.$invalid)">
+    <div class="p-field p-grid">
+      <label for="firstName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Full Name</label>
+      <div class="p-col-12 p-md-10">
+        <InputText id="firstName" v-model="c.fullName" type="text" />
+        <small v-if="v$.fullName.$invalid && submitted" class="p-error">{{
+          v$.fullName.required.$message.replace('Value', 'Full Name')
+        }}</small>
+      </div>
+    </div>
+    <div class="p-field p-grid">
+      <label for="lastName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Location</label>
+      <div class="p-col-12 p-md-10">
+        <InputText id="lastName" v-model="c.location" type="text" />
+      </div>
+    </div>
+    <div class="p-field p-grid">
+      <label for="lastName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">About</label>
+      <div class="p-col-12 p-md-10">
+        <InputText id="lastName" v-model="c.about" type="text" />
+      </div>
+    </div>
+    <div class="p-field p-grid">
+      <label for="email" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Email</label>
+      <div class="p-col-12 p-md-10">
+        <InputText id="email" v-model="c.email" type="text" />
+        <small v-if="(v$.email.$invalid && submitted) || v$.email.$pending.$response" class="p-error">{{
+          v$.email.email.$message.replace('Value', 'Email')
+        }}</small>
+      </div>
+    </div>
+    <div class="p-field p-grid">
+      <label for="instagram" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Instagram</label>
+      <div class="p-col-12 p-md-10">
+        <InputText id="instagram" v-model="c.instagram" type="text" />
+      </div>
+    </div>
+    <div class="p-field p-grid pt-2">
+      <Button type="submit" label="Submit" class="p-mt-2" />
+    </div>
+  </form>
+</template>

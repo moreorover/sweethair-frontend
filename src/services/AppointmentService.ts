@@ -5,11 +5,12 @@ import { AxiosResponse } from 'axios';
 
 export interface Appointment {
   id?: string;
-  start: string;
+  scheduledAt: string;
+  title: string;
   createdOn?: string;
   modifiedOn?: string;
-  customers: Customer[];
-  transactions: Transaction[];
+  customers: Customer[] | null;
+  transactions: Transaction[] | null;
 }
 
 class AppointmentService {

@@ -1,118 +1,37 @@
-<template>
-  <div class="box">
-    <h1 class="title">Pick Customer</h1>
-    <nav class="level">
-      <div class="level-left">
-        <div class="level-item">
-          <p class="subtitle is-5">
-            <strong>{{ customers.length }}</strong> customers
-          </p>
-        </div>
-
-        <div class="level-item is-hidden-tablet-only">
-          <div class="field">
-            <p class="control">
-              <input v-model="searchKey" class="input" type="text" placeholder="Customer name, email..." />
-            </p>
-          </div>
-        </div>
-      </div>
-    </nav>
-    <table v-if="filteredCustomers.length > 0" class="table is-fullwidth is-hoverable">
-      <thead>
-        <tr>
-          <th></th>
-          <th>Full Name</th>
-          <th>Email</th>
-          <th>Instagram</th>
-        </tr>
-      </thead>
-      <tfoot>
-        <tr>
-          <th></th>
-          <th>Full Name</th>
-          <th>Email</th>
-          <th>Instagram</th>
-        </tr>
-      </tfoot>
-      <tbody>
-        <tr v-for="customer in filteredCustomers" :key="customer.id">
-          <td>
-            <input
-              :id="customer.id"
-              :checked="selectedId === customer.id"
-              type="radio"
-              @click="onSelect(customer.id)"
-            />
-          </td>
-          <td>{{ customer.firstName }} {{ customer.lastName }}</td>
-          <td>{{ customer.email }}</td>
-          <td>{{ customer.instagram }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <p v-else-if="searchKey === ''" class="title has-text-info has-text-centered">
-      Search Customers by typing in search field.
-    </p>
-    <p v-else class="title has-text-danger has-text-centered">No Customers found, try something else.</p>
-  </div>
-</template>
-<script lang="ts">
-import { computed, defineComponent, PropType, ref } from 'vue';
-import { Customer } from '@/services/CustomerService';
+<script setup lang="ts">
 import { useCustomersStore } from '@/store/customersStore';
+import { computed, ref } from 'vue';
 
-export default defineComponent({
-  name: 'CustomerPicker',
-  props: {
-    customerValue: {
-      type: Object as PropType<Customer | null>,
-      required: false,
-      default: null,
-    },
-  },
-  emits: ['update:customerValue'],
-  setup(props, { emit }) {
-    const customerStore = useCustomersStore();
-    const customers = computed(() => customerStore.getAll);
-    const searchKey = ref('');
+const emit = defineEmits(['selected']);
 
-    const selectedId = ref(props.customerValue ? props.customerValue.id : '');
-
-    const onSelect = (customerId: string | undefined) => {
-      if (customerId === selectedId.value) {
-        selectedId.value = '';
-      } else {
-        selectedId.value = customerId;
-      }
-      emit(
-        'update:customerValue',
-        customers.value.find((c) => c.id === selectedId.value)
-      );
-    };
-
-    customerStore.fetchAll();
-
-    const filteredCustomers = computed(() => {
-      return customers.value.filter((customer) => {
-        if (searchKey.value === '' && !(props.customerValue?.id === customer.id)) {
-          return false;
-        }
-        if (
-          customer.firstName.toLowerCase().includes(searchKey.value) ||
-          customer.lastName.toLowerCase().includes(searchKey.value) ||
-          customer.email?.toLowerCase().includes(searchKey.value) ||
-          customer.instagram?.toLowerCase().includes(searchKey.value) ||
-          props.customerValue?.id === customer.id
-        ) {
-          return true;
-        }
-        return false;
+const store = useCustomersStore();
+store.fetchAll();
+const customers = computed(() => store.getAll);
+const selected = ref();
+const filteredCustomers = ref();
+const searchCustomer = (event) => {
+  setTimeout(() => {
+    if (!event.query.trim().length) {
+      filteredCustomers.value = [...filteredCustomers.value];
+    } else {
+      filteredCustomers.value = customers.value.filter((customer) => {
+        return customer.fullName.toLowerCase().includes(event.query.toLowerCase());
       });
-    });
+    }
+  }, 250);
+};
 
-    return { filteredCustomers, searchKey, customers, onSelect, selectedId };
-  },
-});
+const selectedSuggestion = (event) => {
+  emit('selected', event.value);
+};
 </script>
-<style scoped></style>
+<template>
+  <AutoComplete
+    v-model="selected"
+    :suggestions="filteredCustomers"
+    field="fullName"
+    force-selection
+    @complete="searchCustomer($event)"
+    @item-select="selectedSuggestion($event)"
+  />
+</template>

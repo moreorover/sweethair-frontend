@@ -1,44 +1,24 @@
 <template>
-  <section class="hero welcome is-info is-fullheight">
-    <div class="hero-body">
-      <div class="container">
-        <div class="columns is-centered">
-          <div class="column is-5-tablet is-4-desktop is-3-widescreen">
-            <form class="box" @submit.prevent="onSubmit">
-              <h1 class="title has-text-centered has-text-danger-dark">Sweet Hair</h1>
-              <div class="field">
-                <label class="label">Email</label>
-                <div class="control has-icons-left">
-                  <input v-model="email" class="input" type="email" placeholder="e.g. alexjohnson@gmail.com" required />
-                  <span class="icon is-small is-left">
-                    <i class="fa fa-envelope"></i>
-                  </span>
-                </div>
-              </div>
-              <div class="field">
-                <label class="label">Password</label>
-                <div class="control has-icons-left">
-                  <input v-model="password" class="input" type="password" placeholder="********" required />
-                  <span class="icon is-small is-left">
-                    <i class="fa fa-lock"></i>
-                  </span>
-                </div>
-              </div>
-              <div class="field">
-                <label class="checkbox">
-                  <input type="checkbox" disabled />
-                  Remember me
-                </label>
-              </div>
-              <div class="field">
-                <button class="button is-success">Login</button>
-              </div>
-            </form>
-          </div>
+  <div class="px-2 py-2 md:px-6 lg:px-8">
+    <div class="flex align-items-center justify-content-center">
+      <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
+        <div class="text-center mb-5">
+          <h1>Sweet Hair</h1>
+          <div class="text-900 text-3xl font-medium mb-3">Welcome Back</div>
+        </div>
+
+        <div>
+          <label for="email1" class="block text-900 font-medium mb-2">Email</label>
+          <InputText id="email1" v-model="email" type="text" class="w-full mb-3" />
+
+          <label for="password1" class="block text-900 font-medium mb-2">Password</label>
+          <InputText id="password1" v-model="password" type="password" class="w-full mb-3" />
+
+          <Button label="Sign In" icon="pi pi-user" class="w-full" @click="onSubmit"></Button>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script lang="ts">

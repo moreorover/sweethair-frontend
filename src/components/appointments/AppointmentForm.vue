@@ -1,17 +1,21 @@
 <template>
-  <div class="columns is-centered">
-    <div class="column">
-      <div class="block">
-        <div class="field">
-          <label class="label">Scheduled Date and Time</label>
-          <datepicker
-            v-model="appointment.start"
-            :uid="Date.now().toString(36) + Math.random().toString(36).substring(2)"
-          />
-        </div>
+  <div class="p-fluid py-2">
+    <div class="p-field p-grid">
+      <label for="lastName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Title</label>
+      <div class="p-col-12 p-md-10">
+        <InputText id="lastName" v-model="appointment.title" type="text" />
       </div>
-      <div class="field">
-        <customers-picker :customers-value="appointment.customers" />
+    </div>
+    <div class="p-field p-grid">
+      <label for="scheduled" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Scheduled at</label>
+      <div class="p-col-12 p-md-10">
+        <Calendar
+          id="scheduled"
+          v-model="appointment.scheduledAt"
+          :show-time="true"
+          date-format="dd MM yy"
+          :manual-input="false"
+        />
       </div>
     </div>
   </div>
@@ -19,11 +23,8 @@
 <script lang="ts">
 import { Appointment } from '@/services/AppointmentService';
 import { defineComponent, computed } from 'vue';
-import CustomersPicker from '@/components/customers/CustomersPicker.vue';
-import Datepicker from 'vue3-date-time-picker';
 
 export default defineComponent({
-  components: { CustomersPicker, Datepicker },
   props: {
     appointmentValue: {
       type: Object as () => Appointment,

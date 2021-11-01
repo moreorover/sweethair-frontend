@@ -1,26 +1,40 @@
 <template>
-  <h1 class="title block">Appointment</h1>
-
-  <nav class="level">
-    <div class="level-left">
-      <div class="level-item">
-        <h1 class="subtitle block">
-          {{ appointment?.start && format(new Date(appointment?.start), 'dd MMMM yyyy HH:mm') }}
-        </h1>
-      </div>
-      <div class="level-item">
-        <appointment-modal title="Edit Appointment" action="Edit" :appointment="appointment" />
+  <div class="px-0 py-4 md:px-4">
+    <div class="border-2 surface-border border-round surface-card">
+      <div class="surface-section p-5">
+        <div class="flex align-items-start flex-column lg:flex-row lg:justify-content-between">
+          <div class="flex align-items-start flex-column md:flex-row">
+            <div>
+              <span class="text-900 font-medium text-3xl">
+                {{ appointment?.scheduledAt && format(new Date(appointment?.scheduledAt), 'dd/MMMM/yyy hh:mm') }}
+              </span>
+            </div>
+          </div>
+          <div class="flex align-items-end">
+            <edit-appointment :appointment-value="appointment" />
+          </div>
+        </div>
+        <div class="flex align-items-start flex-column lg:flex-row lg:justify-content-between py-2">
+          <div class="flex align-items-start flex-column md:flex-row"></div>
+          <div class="flex align-items-end">
+            <add-customers :appointment-value="appointment" />
+          </div>
+        </div>
       </div>
     </div>
-  </nav>
-  <!-- <customers-table :customers="customers" /> -->
-  <div class="columns is-multiline content">
-    <div v-for="customer in customers" :key="customer.id" class="column is-full">
-      <div class="box">
-        <h1 class="title">{{ customer.firstName }} {{ customer.lastName }}</h1>
+  </div>
 
-        <div v-for="transaction in customer.transactions" :key="transaction.id"></div>
-      </div>
+  <div v-for="customer in customers" :key="customer.id" class="px-0 py-4 md:px-4">
+    <div class="border-2 surface-border border-round surface-card">
+      <customer-vue :id="customer.id" :appointment-id="appointment?.id">
+        <template v-if="customerTransactions(customer).value === 0" #Action>
+          <Button
+            class="p-button-sm"
+            label="Remove Customer From Appointment"
+            @click="removeCustomer(customer)"
+          ></Button>
+        </template>
+      </customer-vue>
     </div>
   </div>
 </template>
@@ -30,11 +44,14 @@ import { useRoute } from 'vue-router';
 import { useAppointmentsStore } from '@/store/appointmentsStore';
 import { format } from 'date-fns';
 import { useCustomersStore } from '@/store/customersStore';
-import AppointmentModal from '@/components/appointments/AppointmentModal.vue';
 import { useTransactionsStore } from '@/store/transactionsStore';
+import EditAppointment from '@/components/appointments/EditAppointment.vue';
+import AddCustomers from '@/components/appointments/AddCustomers.vue';
+import { Customer } from '@/services/CustomerService';
+import CustomerVue from '../customers/Customer.vue';
 
 export default defineComponent({
-  components: { AppointmentModal },
+  components: { EditAppointment, AddCustomers, CustomerVue },
   setup() {
     const appointmentsStore = useAppointmentsStore();
     const customersStore = useCustomersStore();
@@ -47,15 +64,22 @@ export default defineComponent({
 
     const appointment = computed(() => appointmentsStore.getAppointmentById(id));
     const customers = computed(() => customersStore.getCustomersByAppointment(appointment.value));
-    const transactions = computed(() => transactionsStore.getTransactionsByAppointment(appointment.value));
+    // const transactions = computed(() => transactionsStore.getTransactionsByAppointment(appointment.value));
 
     if (!appointment.value) {
       throw Error('Appointment was not found.');
     }
 
-    appointmentsStore.setSelected(appointment.value);
+    const customerTransactions = (customer: Customer) =>
+      computed<number>(
+        () => transactionsStore.getTransactionsByCustomerAndAppointmentId(customer, appointment.value).length
+      );
 
-    return { appointment, format, customers, transactions };
+    const removeCustomer = (customer: Customer) => {
+      appointmentsStore.removeCustomer(appointment.value, customer);
+    };
+
+    return { appointment, format, customers, removeCustomer, customerTransactions };
   },
 });
 </script>
