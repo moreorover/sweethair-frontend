@@ -4,7 +4,7 @@ import apiClient from '@/axios/axios';
 import { AxiosResponse } from 'axios';
 
 export interface Appointment {
-  id?: string;
+  id: string;
   scheduledAt: string;
   title: string;
   createdOn?: string;

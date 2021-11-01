@@ -14,7 +14,7 @@
         <h5 class="p-m-0">Appointments</h5>
 
         <div class="flex">
-          <new-appointment />
+          <appointment-modal label="New" header="Create New Appointment" />
         </div>
       </div>
     </template>
@@ -37,7 +37,7 @@
     </Column>
     <Column>
       <template #body="slotProps">
-        <edit-appointment :appointment-value="slotProps.data" />
+        <appointment-modal :appointment="slotProps.data" label="Edit" header="Edit Appointment" />
       </template>
     </Column>
     <Column
@@ -57,12 +57,11 @@
 import { defineComponent } from 'vue';
 import { Appointment } from '@/services/AppointmentService';
 import { format } from 'date-fns';
-import NewAppointment from '@/components/appointments/NewAppointment.vue';
-import EditAppointment from '@/components/appointments/EditAppointment.vue';
+import AppointmentModal from './AppointmentModal.vue';
 
 export default defineComponent({
   name: 'AppointmentsTable',
-  components: { NewAppointment, EditAppointment },
+  components: { AppointmentModal },
   props: {
     appointments: {
       type: Object as () => Appointment[],

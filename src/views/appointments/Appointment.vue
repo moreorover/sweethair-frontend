@@ -8,10 +8,11 @@
               <span class="text-900 font-medium text-3xl">
                 {{ appointment?.scheduledAt && format(new Date(appointment?.scheduledAt), 'dd/MMMM/yyy hh:mm') }}
               </span>
+              <span>{{ appointment?.title }}</span>
             </div>
           </div>
           <div class="flex align-items-end">
-            <edit-appointment :appointment-value="appointment" />
+            <appointment-modal :appointment="appointment" label="Edit" header="Edit Appointment" />
           </div>
         </div>
         <div class="flex align-items-start flex-column lg:flex-row lg:justify-content-between py-2">
@@ -45,13 +46,13 @@ import { useAppointmentsStore } from '@/store/appointmentsStore';
 import { format } from 'date-fns';
 import { useCustomersStore } from '@/store/customersStore';
 import { useTransactionsStore } from '@/store/transactionsStore';
-import EditAppointment from '@/components/appointments/EditAppointment.vue';
 import AddCustomers from '@/components/appointments/AddCustomers.vue';
 import { Customer } from '@/services/CustomerService';
 import CustomerVue from '../customers/Customer.vue';
+import AppointmentModal from '@/components/appointments/AppointmentModal.vue';
 
 export default defineComponent({
-  components: { EditAppointment, AddCustomers, CustomerVue },
+  components: { AddCustomers, CustomerVue, AppointmentModal },
   setup() {
     const appointmentsStore = useAppointmentsStore();
     const customersStore = useCustomersStore();
