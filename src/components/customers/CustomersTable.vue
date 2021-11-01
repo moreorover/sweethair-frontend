@@ -38,7 +38,8 @@
     </Column>
     <Column header-style="width: 4rem; text-align: center" body-style="text-align: center; overflow: visible">
       <template #body="slotProps">
-        <new-transaction :customer="slotProps.data" action="+Transaction" />
+        <!-- <new-transaction :customer="slotProps.data" action="+Transaction" /> -->
+        <transaction-modal :customer="slotProps.data" header="Add Transaction to Customer" label="+Transaction" />
       </template>
     </Column>
     <Column
@@ -58,12 +59,12 @@
 import { defineComponent, ref } from 'vue';
 import { Customer } from '@/services/CustomerService';
 import { FilterMatchMode, FilterOperator } from 'primevue/api';
-import NewTransaction from '@/components/transactions/NewTransaction.vue';
 import CustomerModal from './CustomerModal.vue';
+import TransactionModal from '../transactions/TransactionModal.vue';
 
 export default defineComponent({
   name: 'CustomersTable',
-  components: { NewTransaction, CustomerModal },
+  components: { CustomerModal, TransactionModal },
   props: {
     customers: {
       type: Object as () => Customer[],

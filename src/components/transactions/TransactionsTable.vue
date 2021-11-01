@@ -14,7 +14,7 @@
         <h5 class="p-m-0">Transactions</h5>
 
         <div class="flex">
-          <new-transaction />
+          <transaction-modal header="Create New Transaction" label="New" />
         </div>
       </div>
     </template>
@@ -26,12 +26,12 @@
     <Column field="total" header="Total"></Column>
     <Column header="Customer">
       <template #body="slotProps">
-        {{ slotProps.data.customer.fullName }}
+        {{ slotProps.data.customer?.fullName }}
       </template>
     </Column>
     <Column header-style="width: 4rem; text-align: center" body-style="text-align: center; overflow: visible">
       <template #body="slotProps">
-        <edit-transaction :transaction-value="slotProps.data" />
+        <transaction-modal :transaction="slotProps.data" header="Update Transaction" label="Edit" />
       </template>
     </Column>
     <Column header-style="width: 4rem; text-align: center" body-style="text-align: center; overflow: visible">
@@ -43,15 +43,14 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import NewTransaction from '@/components/transactions/NewTransaction.vue';
-import EditTransaction from '@/components/transactions/EditTransaction.vue';
 import { Transaction } from '@/services/TransactionService';
 import { format } from 'date-fns';
 import { useTransactionsStore } from '@/store/transactionsStore';
+import TransactionModal from './TransactionModal.vue';
 
 export default defineComponent({
   name: 'TransactionsTable',
-  components: { NewTransaction, EditTransaction },
+  components: { TransactionModal },
   props: {
     transactions: {
       type: Object as () => Transaction[],

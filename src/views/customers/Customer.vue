@@ -52,7 +52,12 @@
             <h5 class="p-m-0">Transactions</h5>
 
             <div class="flex">
-              <new-transaction :customer="customer" :appoointment="appointment" />
+              <transaction-modal
+                :customer="customer"
+                :appointment="appointment"
+                label="New"
+                header="Create Transaction for Appointment"
+              />
             </div>
           </div>
         </template>
@@ -69,7 +74,12 @@
         </Column>
         <Column>
           <template #body="slotProps">
-            <edit-transaction :transaction-value="slotProps.data" />
+            <transaction-modal
+              :transaction="slotProps.data"
+              :customer="customer"
+              label="Edit"
+              header="Edit Transaction"
+            />
           </template>
         </Column>
         <Column>
@@ -85,14 +95,13 @@
 import { defineComponent, computed } from 'vue';
 import { useCustomersStore } from '@/store/customersStore';
 import { format } from 'date-fns';
-import NewTransaction from '../../components/transactions/NewTransaction.vue';
-import EditTransaction from '../../components/transactions/EditTransaction.vue';
 import { useTransactionsStore } from '@/store/transactionsStore';
 import { useAppointmentsStore } from '@/store/appointmentsStore';
 import { Transaction } from '@/services/TransactionService';
+import TransactionModal from '@/components/transactions/TransactionModal.vue';
 
 export default defineComponent({
-  components: { NewTransaction, EditTransaction },
+  components: { TransactionModal },
   props: {
     id: {
       type: String,
