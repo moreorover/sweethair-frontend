@@ -33,20 +33,13 @@
         </div>
       </div>
       <div class="flex flex-column flex-auto">
-        <!-- <div class="px-4 py-5 md:px-6 lg:px-8"> -->
         <router-view />
-        <!-- </div> -->
       </div>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import SideMenu from '@/components/SideMenu.vue';
-
-export default defineComponent({
-  components: { SideMenu },
-});
 </script>
 <style></style>
