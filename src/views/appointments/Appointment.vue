@@ -62,8 +62,7 @@ export default defineComponent({
     customersStore.fetchAll();
     transactionsStore.fetchAll();
 
-    const appointmentIndex = computed(() => appointmentsStore.getAll.findIndex((a) => a.id === id));
-    const appointment = computed(() => appointmentsStore.getAll[appointmentIndex.value]);
+    const appointment = computed(() => appointmentsStore.getAppointmentById(id));
     const customers = computed(() => customersStore.getCustomersByAppointment(appointment.value));
     // const transactions = computed(() => transactionsStore.getTransactionsByAppointment(appointment.value));
 
