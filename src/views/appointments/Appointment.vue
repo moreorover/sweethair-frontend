@@ -18,13 +18,12 @@
         <div class="flex align-items-start flex-column lg:flex-row lg:justify-content-between py-2">
           <div class="flex align-items-start flex-column md:flex-row"></div>
           <div class="flex align-items-end">
-            <add-customers :appointment-value="appointment" />
+            <add-customers-modal :appointment="appointment" />
           </div>
         </div>
       </div>
     </div>
   </div>
-
   <div v-for="customer in customers" :key="customer.id" class="px-0 py-4 md:px-4">
     <div class="border-2 surface-border border-round surface-card">
       <customer-vue :id="customer.id" :appointment-id="appointment?.id">
@@ -46,13 +45,13 @@ import { useAppointmentsStore } from '@/store/appointmentsStore';
 import { format } from 'date-fns';
 import { useCustomersStore } from '@/store/customersStore';
 import { useTransactionsStore } from '@/store/transactionsStore';
-import AddCustomers from '@/components/appointments/AddCustomers.vue';
+import AddCustomersModal from '@/components/appointments/AddCustomersModal.vue';
 import { Customer } from '@/services/CustomerService';
 import CustomerVue from '../customers/Customer.vue';
 import AppointmentModal from '@/components/appointments/AppointmentModal.vue';
 
 export default defineComponent({
-  components: { AddCustomers, CustomerVue, AppointmentModal },
+  components: { AddCustomersModal, CustomerVue, AppointmentModal },
   setup() {
     const appointmentsStore = useAppointmentsStore();
     const customersStore = useCustomersStore();
@@ -63,7 +62,8 @@ export default defineComponent({
     customersStore.fetchAll();
     transactionsStore.fetchAll();
 
-    const appointment = computed(() => appointmentsStore.getAppointmentById(id));
+    const appointmentIndex = computed(() => appointmentsStore.getAll.findIndex((a) => a.id === id));
+    const appointment = computed(() => appointmentsStore.getAll[appointmentIndex.value]);
     const customers = computed(() => customersStore.getCustomersByAppointment(appointment.value));
     // const transactions = computed(() => transactionsStore.getTransactionsByAppointment(appointment.value));
 

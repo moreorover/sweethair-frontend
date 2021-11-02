@@ -69,5 +69,4 @@ const pickCustomer: boolean = props.transaction.customer ? false : true;
       <Button type="submit" label="Submit" class="p-mt-2" />
     </div>
   </form>
-  {{ t }}
 </template>
