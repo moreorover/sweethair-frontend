@@ -1,5 +1,5 @@
 <template>
-  <h3 class="text-3xl font-medium text-gray-700">Dashboard</h3>
+  <h3 class="text-3xl font-medium text-gray-700">Customers</h3>
   {{ customers }}
 </template>
 

@@ -11,7 +11,7 @@ import Modal from './views/Modal.vue';
 import Card from './views/Card.vue';
 import Blank from './views/Blank.vue';
 import NotFound from './views/NotFound.vue';
-import Customers from './views/Customers.vue';
+import Customers from './views/customers/Customers.vue';
 
 const routes: RouteRecordRaw[] = [
   {
