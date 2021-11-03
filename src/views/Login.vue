@@ -19,7 +19,7 @@
         <span class="text-2xl font-semibold text-gray-700">Hair Manager</span>
       </div>
 
-      <form class="mt-4" @submit.prevent="login">
+      <form class="mt-4" @submit.prevent="onSubmit()">
         <label class="block">
           <span class="text-sm text-gray-700">Email</span>
           <input
@@ -96,14 +96,19 @@
 </template>
 
 <script setup lang="ts">
+import { useLoggedInUserStore } from '@/store/loggedInUser';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
-const email = ref('johndoe@mail.com');
-const password = ref('@#!@#asdf1231!_!@#');
 
-function login() {
+const store = useLoggedInUserStore();
+
+const email = ref('test@gmail.com');
+const password = ref('adminadmin');
+
+const onSubmit = async () => {
+  await store.login(email.value, password.value);
   router.push('/dashboard');
-}
+};
 </script>
