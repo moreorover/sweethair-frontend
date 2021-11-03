@@ -3,7 +3,18 @@
     <h3 class="text-3xl font-medium text-gray-700">Modal</h3>
     <button
       @click="open = true"
-      class="px-6 py-3 mt-3 font-medium tracking-wide text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none"
+      class="
+        px-6
+        py-3
+        mt-3
+        font-medium
+        tracking-wide
+        text-white
+        bg-indigo-600
+        rounded-md
+        hover:bg-indigo-500
+        focus:outline-none
+      "
     >
       Open Modal
     </button>
@@ -13,16 +24,23 @@
         !open && 'opacity-0 pointer-events-none'
       } z-50 fixed w-full h-full top-0 left-0 flex items-center justify-center`"
     >
-      <div
-        @click="open = false"
-        class="absolute w-full h-full bg-gray-900 opacity-50 modal-overlay"
-      ></div>
+      <div @click="open = false" class="absolute w-full h-full bg-gray-900 opacity-50 modal-overlay"></div>
 
-      <div
-        class="z-50 w-11/12 mx-auto overflow-y-auto bg-white rounded shadow-lg modal-container md:max-w-md"
-      >
+      <div class="z-50 w-11/12 mx-auto overflow-y-auto bg-white rounded shadow-lg modal-container md:max-w-md">
         <div
-          class="absolute top-0 right-0 z-50 flex flex-col items-center mt-4 mr-4 text-sm text-white cursor-pointer modal-close"
+          class="
+            absolute
+            top-0
+            right-0
+            z-50
+            flex flex-col
+            items-center
+            mt-4
+            mr-4
+            text-sm text-white
+            cursor-pointer
+            modal-close
+          "
         >
           <svg
             class="text-white fill-current"
@@ -65,13 +83,33 @@
           <div class="flex justify-end pt-2">
             <button
               @click="open = false"
-              class="p-3 px-6 py-3 mr-2 text-indigo-500 bg-transparent rounded-lg hover:bg-gray-100 hover:text-indigo-400 focus:outline-none"
+              class="
+                p-3
+                px-6
+                py-3
+                mr-2
+                text-indigo-500
+                bg-transparent
+                rounded-lg
+                hover:bg-gray-100 hover:text-indigo-400
+                focus:outline-none
+              "
             >
               Close
             </button>
             <button
               @click="open = false"
-              class="px-6 py-3 font-medium tracking-wide text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none"
+              class="
+                px-6
+                py-3
+                font-medium
+                tracking-wide
+                text-white
+                bg-indigo-600
+                rounded-md
+                hover:bg-indigo-500
+                focus:outline-none
+              "
             >
               Action
             </button>
@@ -83,7 +121,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from 'vue';
 
 const open = ref(false);
 </script>
