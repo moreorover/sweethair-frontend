@@ -7,7 +7,11 @@ import { createPinia } from 'pinia';
 import DashboardLayout from './components/DashboardLayout.vue';
 import EmptyLayout from './components/EmptyLayout.vue';
 
+import BaseComponents from './components/base';
+
 const app = createApp(App);
+
+BaseComponents.register(app);
 
 app.component('default-layout', DashboardLayout);
 app.component('empty-layout', EmptyLayout);
