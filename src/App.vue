@@ -1,9 +1,18 @@
 <template>
-  <router-view />
+  <component :is="layout">
+    <router-view />
+  </component>
 </template>
-<script lang="ts">
-import { defineComponent } from '@vue/runtime-core';
-export default defineComponent({});
-</script>
 
-<style></style>
+<script setup lang="ts">
+import { computed } from "vue";
+import { useRouter } from "vue-router";
+
+const defaultLayout = "default";
+
+const { currentRoute } = useRouter();
+
+const layout = computed(
+  () => `${currentRoute.value.meta.layout || defaultLayout}-layout`
+);
+</script>
