@@ -41,7 +41,7 @@
             />
           </svg>
 
-          <span class="mx-2 text-2xl font-semibold text-white">V-Dashboard</span>
+          <span class="mx-2 text-2xl font-semibold text-white">Hair Manager</span>
         </div>
       </div>
 

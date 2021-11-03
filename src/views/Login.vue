@@ -16,7 +16,7 @@
             fill="white"
           />
         </svg>
-        <span class="text-2xl font-semibold text-gray-700">V-Dashboard</span>
+        <span class="text-2xl font-semibold text-gray-700">Hair Manager</span>
       </div>
 
       <form class="mt-4" @submit.prevent="login">
