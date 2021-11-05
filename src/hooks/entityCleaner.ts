@@ -5,7 +5,7 @@ export const useEntityCleaner = () => {
         entity[propName] == null ||
         entity[propName] === undefined ||
         entity[propName] === '' ||
-        entity[propName] === []
+        entity[propName] == []
       ) {
         delete entity[propName];
       }
