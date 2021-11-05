@@ -10,12 +10,12 @@
     "
     v-bind="attrs"
     :placeholder="label"
-    @input="emit('update:modelValue', $event.target.value)"
-    v-model="props.modelValue"
+    v-model="value"
   />
 </template>
 
 <script setup lang="ts">
+import { useModelWrapper } from '@/hooks/modelWrapper';
 import { useAttrs } from 'vue';
 
 const attrs = useAttrs();
@@ -26,4 +26,6 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), { label: '' });
 const emit = defineEmits(['update:modelValue']);
+
+const value = useModelWrapper(props, emit);
 </script>
