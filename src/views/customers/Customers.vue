@@ -4,26 +4,7 @@
   <div class="mt-8">
     <div class="mt-6">
       <div class="flex flex-col mt-3 sm:flex-row">
-        <button
-          class="
-            px-4
-            py-2
-            mr-2
-            font-medium
-            tracking-wide
-            text-white
-            capitalize
-            transition-colors
-            duration-200
-            transform
-            bg-indigo-600
-            rounded-md
-            hover:bg-indigo-500
-            focus:outline-none focus:bg-indigo-500
-          "
-        >
-          New
-        </button>
+        <customer-dialog header="Header" label="New" />
         <div class="flex">
           <div class="relative">
             <select
@@ -116,8 +97,7 @@
           />
         </div>
       </div>
-
-      <div class="px-4 py-4 -mx-4 overflow-x-auto sm:-mx-8 sm:px-8">
+      <!-- <div class="px-4 py-4 -mx-4 overflow-x-auto sm:-mx-8 sm:px-8">
         <div class="inline-block min-w-full overflow-hidden rounded-lg shadow">
           <table class="table-fixed">
             <thead>
@@ -237,7 +217,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -245,6 +225,7 @@
 <script setup lang="ts">
 import { useCustomersStore } from '@/store/customersStore';
 import { computed } from 'vue';
+import CustomerDialog from '@/views/customers/CustomerDialog.vue';
 
 const customersStore = useCustomersStore();
 customersStore.fetchAll();
