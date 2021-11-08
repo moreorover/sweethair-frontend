@@ -97,127 +97,9 @@
           />
         </div>
       </div>
-      <!-- <div class="px-4 py-4 -mx-4 overflow-x-auto sm:-mx-8 sm:px-8">
-        <div class="inline-block min-w-full overflow-hidden rounded-lg shadow">
-          <table class="table-fixed">
-            <thead>
-              <tr>
-                <th
-                  class="
-                    px-5
-                    py-3
-                    text-xs
-                    font-semibold
-                    tracking-wider
-                    text-left text-gray-600
-                    uppercase
-                    bg-gray-100
-                    border-b-2 border-gray-200
-                    w-1/5
-                  "
-                >
-                  Full Name
-                </th>
-                <th
-                  class="
-                    px-5
-                    py-3
-                    text-xs
-                    font-semibold
-                    tracking-wider
-                    text-left text-gray-600
-                    uppercase
-                    bg-gray-100
-                    border-b-2 border-gray-200
-                    w-1/5
-                  "
-                >
-                  Location
-                </th>
-                <th
-                  class="
-                    px-5
-                    py-3
-                    text-xs
-                    font-semibold
-                    tracking-wider
-                    text-left text-gray-600
-                    uppercase
-                    bg-gray-100
-                    border-b-2 border-gray-200
-                    w-1/5
-                  "
-                >
-                  About
-                </th>
-                <th
-                  class="
-                    px-5
-                    py-3
-                    text-xs
-                    font-semibold
-                    tracking-wider
-                    text-left text-gray-600
-                    uppercase
-                    bg-gray-100
-                    border-b-2 border-gray-200
-                    w-1/5
-                  "
-                >
-                  Email
-                </th>
-                <th
-                  class="
-                    px-5
-                    py-3
-                    text-xs
-                    font-semibold
-                    tracking-wider
-                    text-left text-gray-600
-                    uppercase
-                    bg-gray-100
-                    border-b-2 border-gray-200
-                    w-1/5
-                  "
-                >
-                  Instagram
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="customer in customers" :key="customer.id">
-                <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
-                  <p class="font-bold text-gray-900 whitespace-nowrap">{{ customer.fullName }}</p>
-                </td>
-                <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
-                  <p class="text-gray-900 whitespace-nowrap">{{ customer.location }}</p>
-                </td>
-                <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
-                  <p class="text-gray-900 break-normal">{{ customer.about }}</p>
-                </td>
-                <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
-                  <p class="text-gray-900 whitespace-nowrap">{{ customer.email }}</p>
-                </td>
-                <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
-                  <p class="text-gray-900 whitespace-nowrap">{{ customer.instagram }}</p>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="flex flex-col items-center px-5 py-5 bg-white border-t xs:flex-row xs:justify-between">
-            <span class="text-xs text-gray-900 xs:text-sm">Showing 1 to 4 of 50 Entries</span>
-
-            <div class="inline-flex mt-2 xs:mt-0">
-              <button class="px-4 py-2 text-sm font-semibold text-gray-800 bg-gray-300 rounded-l hover:bg-gray-400">
-                Prev
-              </button>
-              <button class="px-4 py-2 text-sm font-semibold text-gray-800 bg-gray-300 rounded-r hover:bg-gray-400">
-                Next
-              </button>
-            </div>
-          </div>
-        </div>
-      </div> -->
+      <BaseCardGrid>
+        <customer-card v-for="customer in customers" :key="customer.id" :customer="customer"></customer-card>
+      </BaseCardGrid>
     </div>
   </div>
 </template>
@@ -226,6 +108,8 @@
 import { useCustomersStore } from '@/store/customersStore';
 import { computed } from 'vue';
 import CustomerDialog from '@/components/customers/CustomerDialog.vue';
+import CustomerCard from '@/components/customers/CustomerCard.vue';
+import BaseCardGrid from '@/components/base/BaseCardGrid.vue';
 
 const customersStore = useCustomersStore();
 customersStore.fetchAll();
