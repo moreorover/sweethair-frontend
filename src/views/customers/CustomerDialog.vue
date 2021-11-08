@@ -1,5 +1,5 @@
 <template>
-  <BaseButton label="New" @onClick="toggleModal()" />
+  <BaseButton label="New" @onClick="toggleModal()" class="mr-2" />
   <BaseModal :header="props.header" :show-footer="false" v-model:visible="showModal" @toggle-modal="toggleModal()">
     <customer-form :customer="c" @submit="submit($event)" />
   </BaseModal>
