@@ -20,8 +20,8 @@
   >
     {{ props.label }}
   </button>
-  <BaseModal v-model:visible="showModal" @toggle-modal="toggleModal()">
-    <customer-form :customer="c" />
+  <BaseModal :header="props.header" :show-footer="false" v-model:visible="showModal" @toggle-modal="toggleModal()">
+    <customer-form :customer="c" @submit="submit($event)" />
   </BaseModal>
 </template>
 <script setup lang="ts">
@@ -58,8 +58,9 @@ const { showModal, toggleModal } = useModal();
 
 const c: Customer = reactive({ ...props.customer });
 
-const submit = (data: Customer) => {
-  const cleanCustomer: Customer = entityCleaner.clean(data);
+const submit = (customer: Customer) => {
+  const cleanCustomer: Customer = entityCleaner.clean(customer);
   cleanCustomer.id ? store.update(cleanCustomer) : store.create(cleanCustomer);
+  toggleModal();
 };
 </script>

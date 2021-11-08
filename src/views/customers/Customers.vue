@@ -4,7 +4,7 @@
   <div class="mt-8">
     <div class="mt-6">
       <div class="flex flex-col mt-3 sm:flex-row">
-        <customer-dialog header="Header" label="New" />
+        <customer-dialog header="Create new Customer" label="New" />
         <div class="flex">
           <div class="relative">
             <select
