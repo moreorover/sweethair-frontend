@@ -1,8 +1,14 @@
 <template>
-  <form @submit.prevent="onSubmit">
+  <form @submit.prevent="handleSubmit(!v$.$invalid)">
     <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
       <div>
-        <BaseInput label="Full Name" v-model="c.fullName" type="text" />
+        <BaseInput
+          label="Full Name"
+          v-model="c.fullName"
+          type="text"
+          :showError="v$.fullName.$invalid && submitted"
+          :error="v$.fullName.required.$message.replace('Value', 'Full Name')"
+        />
       </div>
       <div>
         <BaseInput label="Location" v-model="c.location" type="text" />
@@ -43,7 +49,9 @@
 </template>
 <script setup lang="ts">
 import { Customer } from '@/services/CustomerService';
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
+import { email, required } from '@vuelidate/validators';
+import { useVuelidate } from '@vuelidate/core';
 
 type Props = {
   customer: Customer;
@@ -55,9 +63,24 @@ const emit = defineEmits<{
   (e: 'submit', customer: Customer): void;
 }>();
 
+const submitted = ref(false);
+
 const c = reactive<Customer>({ ...props.customer });
 
-const onSubmit = () => {
+const rules = {
+  fullName: { required },
+  email: { email },
+};
+
+const v$ = useVuelidate(rules, c);
+
+const handleSubmit = (isFormValid: boolean) => {
+  submitted.value = true;
+
+  if (!isFormValid) {
+    return;
+  }
+
   emit('submit', c);
 };
 </script>
