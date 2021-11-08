@@ -1,25 +1,5 @@
 <template>
-  <button
-    :label="props.label"
-    @click="toggleModal()"
-    class="
-      px-4
-      py-2
-      font-medium
-      tracking-wide
-      text-white
-      capitalize
-      transition-colors
-      duration-200
-      transform
-      bg-indigo-600
-      rounded-md
-      hover:bg-indigo-500
-      focus:outline-none focus:bg-indigo-500
-    "
-  >
-    {{ props.label }}
-  </button>
+  <BaseButton label="New" @onClick="toggleModal()" />
   <BaseModal :header="props.header" :show-footer="false" v-model:visible="showModal" @toggle-modal="toggleModal()">
     <customer-form :customer="c" @submit="submit($event)" />
   </BaseModal>
@@ -32,6 +12,7 @@ import { Customer } from '@/services/CustomerService';
 import CustomerForm from '@/views/customers/CustomerForm.vue';
 import BaseModal from '@/components/base/BaseModal.vue';
 import useModal from '@/hooks/useModal';
+import BaseButton from '@/components/base/BaseButton.vue';
 
 interface Props {
   customer?: Customer;

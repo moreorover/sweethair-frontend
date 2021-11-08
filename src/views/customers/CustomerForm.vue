@@ -31,25 +31,7 @@
     </div>
 
     <div class="flex justify-end mt-4">
-      <button
-        class="
-          px-4
-          py-2
-          font-medium
-          tracking-wide
-          text-white
-          capitalize
-          transition-colors
-          duration-200
-          transform
-          bg-indigo-600
-          rounded-md
-          hover:bg-indigo-500
-          focus:outline-none focus:bg-indigo-500
-        "
-      >
-        Submit
-      </button>
+      <BaseButton label="Submit" />
     </div>
   </form>
 </template>
