@@ -9,7 +9,7 @@ import { reactive } from 'vue';
 import { useCustomersStore } from '@/store/customersStore';
 import useEntityCleaner from '@/hooks/entityCleaner';
 import { Customer } from '@/services/CustomerService';
-import CustomerForm from '@/views/customers/CustomerForm.vue';
+import CustomerForm from '@/components/customers/CustomerForm.vue';
 import BaseModal from '@/components/base/BaseModal.vue';
 import useModal from '@/hooks/useModal';
 import BaseButton from '@/components/base/BaseButton.vue';

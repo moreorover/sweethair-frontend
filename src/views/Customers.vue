@@ -225,7 +225,7 @@
 <script setup lang="ts">
 import { useCustomersStore } from '@/store/customersStore';
 import { computed } from 'vue';
-import CustomerDialog from '@/views/customers/CustomerDialog.vue';
+import CustomerDialog from '@/components/customers/CustomerDialog.vue';
 
 const customersStore = useCustomersStore();
 customersStore.fetchAll();
