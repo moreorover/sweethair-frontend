@@ -1,14 +1,7 @@
 <template>
-  <Dialog
-    :draggable="false"
-    :modal="true"
-    :dismissable-mask="true"
-    header="Header"
-    v-model:visible="showModal"
-    :style="{ width: '50vw' }"
-  >
+  <Dialog :draggable="false" :modal="true" :dismissable-mask="true" :header="props.header" v-model:visible="showModal">
     <slot />
-    <template #footer>
+    <template #footer v-if="props.showFooter">
       <Button label="No" icon="pi pi-times" @click="emit('toggleModal')" class="p-button-text" />
       <Button label="Yes" icon="pi pi-check" @click="emit('toggleModal')" autofocus />
     </template>
@@ -19,6 +12,8 @@ import { computed, useSlots } from 'vue';
 
 interface Props {
   visible: boolean;
+  header: string;
+  showFooter: boolean;
 }
 
 const props = defineProps<Props>();
