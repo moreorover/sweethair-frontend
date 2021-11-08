@@ -17,7 +17,13 @@
         <BaseInput label="About" v-model="c.about" type="text" />
       </div>
       <div>
-        <BaseInput label="Email Address" v-model="c.email" type="email" />
+        <BaseInput
+          label="Email Address"
+          v-model="c.email"
+          type="email"
+          :showError="v$.email.$invalid && submitted"
+          :error="v$.email.email.$message.replace('Value', 'Full Name')"
+        />
       </div>
       <div>
         <BaseInput label="Instagram" v-model="c.instagram" type="text" />
