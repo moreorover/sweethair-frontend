@@ -12,6 +12,7 @@
     :placeholder="label"
     v-model="value"
   />
+  <small v-if="props.showError" class="font-bold text-red-700">{{ props.error }}</small>
 </template>
 
 <script setup lang="ts">
@@ -22,9 +23,11 @@ const attrs = useAttrs();
 type Props = {
   label?: string;
   modelValue: string | number | null;
+  showError?: boolean;
+  error?: string;
 };
 
-const props = withDefaults(defineProps<Props>(), { label: '' });
+const props = withDefaults(defineProps<Props>(), { label: '', showError: false, error: '' });
 const emit = defineEmits(['update:modelValue']);
 
 const value = useModelWrapper(props, emit);
