@@ -3,70 +3,8 @@
 
   <div class="mt-8">
     <div class="mt-6">
-      <div class="flex flex-col mt-3 sm:flex-row">
+      <div class="flex flex-col mt-3 lg:flex-row">
         <customer-dialog header="Create new Customer" label="New" buttonSize="medium" />
-        <div class="flex">
-          <div class="relative">
-            <select
-              class="
-                block
-                w-full
-                h-full
-                px-4
-                py-2
-                pr-8
-                leading-tight
-                text-gray-700
-                bg-white
-                border border-gray-400
-                rounded-l
-                appearance-none
-                focus:outline-none focus:bg-white focus:border-gray-500
-              "
-            >
-              <option>5</option>
-              <option>10</option>
-              <option>20</option>
-            </select>
-
-            <div class="absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 pointer-events-none">
-              <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-              </svg>
-            </div>
-          </div>
-
-          <div class="relative">
-            <select
-              class="
-                block
-                w-full
-                h-full
-                px-4
-                py-2
-                pr-8
-                leading-tight
-                text-gray-700
-                bg-white
-                border-t border-b border-r border-gray-400
-                rounded-r
-                appearance-none
-                sm:rounded-r-none sm:border-r-0
-                focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500
-              "
-            >
-              <option>All</option>
-              <option>Active</option>
-              <option>Inactive</option>
-            </select>
-
-            <div class="absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 pointer-events-none">
-              <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-              </svg>
-            </div>
-          </div>
-        </div>
 
         <div class="relative block mt-2 sm:mt-0">
           <span class="absolute inset-y-0 left-0 flex items-center pl-2">
@@ -77,8 +15,8 @@
             </svg>
           </span>
 
-          <input
-            placeholder="Search"
+          <BaseInput
+            v-model="search"
             class="
               block
               w-full
@@ -94,8 +32,12 @@
               sm:rounded-l-none
               focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none
             "
+            type="text"
           />
         </div>
+      </div>
+      <div class="text-center lg:text-left text-gray-700 font-bold py-2">
+        Showing {{ customers.length }} out of {{ customersStore.getAll.length }} records.
       </div>
       <BaseCardGrid>
         <customer-card v-for="customer in customers" :key="customer.id" :customer="customer"></customer-card>
@@ -106,12 +48,22 @@
 
 <script setup lang="ts">
 import { useCustomersStore } from '@/store/customersStore';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import CustomerDialog from '@/components/customers/CustomerDialog.vue';
 import CustomerCard from '@/components/customers/CustomerCard.vue';
 import BaseCardGrid from '@/components/base/BaseCardGrid.vue';
 
 const customersStore = useCustomersStore();
 customersStore.fetchAll();
-const customers = computed(() => customersStore.getAll);
+const customers = computed(() =>
+  customersStore.getAll.filter(
+    (c) =>
+      c.fullName.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
+      c.location.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
+      c.about.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
+      c.email?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
+      c.instagram?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase())
+  )
+);
+const search = ref('');
 </script>
