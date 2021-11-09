@@ -35,7 +35,7 @@ const sizes = new Map<Size, string>([
 const attrs = useAttrs();
 type Props = {
   label?: string;
-  size: string;
+  size?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), { label: '', size: 'small' });
