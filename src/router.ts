@@ -12,6 +12,7 @@ import Card from './views/Card.vue';
 import Blank from './views/Blank.vue';
 import NotFound from './views/NotFound.vue';
 import Customers from './views/Customers.vue';
+import Customer from './views/customers/Customer.vue';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -67,6 +68,13 @@ const routes: RouteRecordRaw[] = [
     name: 'Customers',
     component: Customers,
     meta: { requiresAuth: true },
+  },
+  {
+    path: '/customers/:id',
+    name: 'Customer',
+    component: Customer,
+    meta: { requiresAuth: true },
+    props: true,
   },
 ];
 
