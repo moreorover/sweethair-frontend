@@ -1,45 +1,32 @@
 <template>
-  <form @submit.prevent="handleSubmit(!v$.$invalid)">
+  <form @submit.prevent="submit">
     <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
       <div>
-        <BaseInput
-          label="Full Name"
-          v-model="c.fullName"
-          type="text"
-          :showError="v$.fullName.$invalid && submitted"
-          :error="v$.fullName.required.$message.replace('Value', 'Full Name')"
-        />
+        <BaseInput label="Full Name" v-model="fullName" type="text" :error="errors.fullName" />
       </div>
       <div>
-        <BaseInput label="Location" v-model="c.location" type="text" />
+        <BaseInput label="Location" v-model="location" type="text" :error="errors.location" />
       </div>
       <div>
-        <BaseInput label="About" v-model="c.about" type="text" />
+        <BaseInput label="About" v-model="about" type="text" :error="errors.about" />
       </div>
       <div>
-        <BaseInput
-          label="Email Address"
-          v-model="c.email"
-          type="email"
-          :showError="v$.email.$invalid && submitted"
-          :error="v$.email.email.$message.replace('Value', 'Full Name')"
-        />
+        <BaseInput label="Email Address" :modelValue="email" @change="emailChange" type="text" :error="errors.email" />
       </div>
       <div>
-        <BaseInput label="Instagram" v-model="c.instagram" type="text" />
+        <BaseInput label="Instagram" v-model="instagram" type="text" :error="errors.instagram" />
       </div>
     </div>
 
     <div class="flex justify-end mt-4">
-      <BaseButton label="Submit" />
+      <BaseButton label="Submit" size="large" />
     </div>
   </form>
 </template>
 <script setup lang="ts">
 import { Customer } from '@/services/CustomerService';
-import { reactive, ref } from 'vue';
-import { email, required } from '@vuelidate/validators';
-import { useVuelidate } from '@vuelidate/core';
+import { useField, useForm } from 'vee-validate';
+import { object, string } from 'yup';
 
 type Props = {
   customer: Customer;
@@ -47,28 +34,33 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const emit = defineEmits<{
-  (e: 'submit', customer: Customer): void;
-}>();
+const emit = defineEmits(['submit']);
 
-const submitted = ref(false);
+const validationSchema = object({
+  fullName: string().required('Full name is required').trim(),
+  location: string().trim(),
+  about: string().max(254, 'Can not be longer than 254 characters').trim(),
+  email: string().email('Email must be valid').nullable().trim(),
+  instagram: string().nullable().trim(),
+});
 
-const c = reactive<Customer>({ ...props.customer });
+const { handleSubmit, errors } = useForm({
+  validationSchema,
+});
 
-const rules = {
-  fullName: { required },
-  email: { email },
-};
+const { value: fullName } = useField('fullName');
+const { value: location } = useField('location');
+const { value: about } = useField('about');
+const { value: email, handleChange: emailChange } = useField('email');
+const { value: instagram } = useField('instagram');
 
-const v$ = useVuelidate(rules, c);
+fullName.value = props.customer.fullName;
+location.value = props.customer.location;
+about.value = props.customer.about;
+email.value = props.customer.email;
+instagram.value = props.customer.instagram;
 
-const handleSubmit = (isFormValid: boolean) => {
-  submitted.value = true;
-
-  if (!isFormValid) {
-    return;
-  }
-
-  emit('submit', c);
-};
+const submit = handleSubmit((values) => {
+  emit('submit', { id: props.customer.id, ...values });
+});
 </script>
