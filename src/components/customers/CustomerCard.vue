@@ -27,10 +27,14 @@
         <p class="text-gray-600">{{ customer.instagram }}</p>
       </div>
     </div>
+    <div class="grid justify-items-end pt-2">
+      <customer-dialog :customer="customer" header="Edit Customer" label="Edit" buttonSize="small" />
+    </div>
   </div>
 </template>
 <script setup lang="ts">
 import { Customer } from '@/services/CustomerService';
+import CustomerDialog from '@/components/customers/CustomerDialog.vue';
 
 interface Props {
   customer: Customer;

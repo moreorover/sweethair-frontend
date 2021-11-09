@@ -1,5 +1,5 @@
 <template>
-  <BaseButton label="New" @onClick="toggleModal()" class="mr-2" />
+  <BaseButton :label="props.label" @onClick="toggleModal()" class="mr-2" :size="props.buttonSize" />
   <BaseModal :header="props.header" :show-footer="false" v-model:visible="showModal" @toggle-modal="toggleModal()">
     <customer-form :customer="c" @submit="submit($event)" />
   </BaseModal>
@@ -18,6 +18,7 @@ interface Props {
   customer?: Customer;
   header: string;
   label: string;
+  buttonSize: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -31,6 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
       instagram: '',
     };
   },
+  buttonSize: 'small',
 });
 
 const store = useCustomersStore();
