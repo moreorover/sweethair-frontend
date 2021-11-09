@@ -1,11 +1,10 @@
 <template>
   <BaseButton :label="props.label" @onClick="toggleModal()" class="mr-2" :size="props.buttonSize" />
   <BaseModal :header="props.header" :show-footer="false" v-model:visible="showModal" @toggle-modal="toggleModal()">
-    <customer-form :customer="c" @submit="submit($event)" />
+    <customer-form :customer="props.customer" @submit="submit($event)" />
   </BaseModal>
 </template>
 <script setup lang="ts">
-import { reactive } from 'vue';
 import { useCustomersStore } from '@/store/customersStore';
 import useEntityCleaner from '@/hooks/entityCleaner';
 import { Customer } from '@/services/CustomerService';
@@ -38,8 +37,6 @@ const props = withDefaults(defineProps<Props>(), {
 const store = useCustomersStore();
 const entityCleaner = useEntityCleaner();
 const { showModal, toggleModal } = useModal();
-
-const c: Customer = reactive({ ...props.customer });
 
 const submit = (customer: Customer) => {
   const cleanCustomer: Customer = entityCleaner.clean(customer);
