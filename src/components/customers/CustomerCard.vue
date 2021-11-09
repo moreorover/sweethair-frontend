@@ -12,22 +12,23 @@
       my-2
     "
   >
-    <div class="mb-8">
-      <p class="flex items-center text-sm text-gray-600">
-        {{ customer.location }}
-      </p>
-      <div class="mb-2 text-xl font-bold text-gray-900">{{ customer.fullName }}</div>
-      <p class="text-base text-gray-700">
-        {{ customer.about }}
-      </p>
-    </div>
+    <p class="flex items-center text-sm text-gray-600">
+      {{ customer.location }}
+    </p>
+    <div class="mb-2 text-xl font-bold text-gray-900">{{ customer.fullName }}</div>
+    <p class="text-base text-gray-700">
+      {{ customer.about }}
+    </p>
     <div class="flex items-center">
       <div class="text-sm">
         <p class="leading-none text-gray-900">{{ customer.email }}</p>
         <p class="text-gray-600">{{ customer.instagram }}</p>
       </div>
     </div>
-    <div class="grid justify-items-end pt-2">
+    <div class="flex gap-1 justify-items-end pt-2">
+      <router-link v-slot="{ navigate }" :to="{ name: `Customer`, params: { id: customer.id } }" custom>
+        <BaseButton @onClick="navigate" label="Show" />
+      </router-link>
       <customer-dialog :customer="customer" header="Edit Customer" label="Edit" buttonSize="small" />
     </div>
   </div>
