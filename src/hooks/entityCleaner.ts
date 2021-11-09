@@ -4,8 +4,7 @@ export const useEntityCleaner = () => {
       if (
         entity[propName] == null ||
         entity[propName] === undefined ||
-        entity[propName] === '' ||
-        entity[propName] == []
+        (entity[propName] instanceof Array && entity[propName].length == 0)
       ) {
         delete entity[propName];
       }
