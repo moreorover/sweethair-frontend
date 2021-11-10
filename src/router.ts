@@ -10,9 +10,11 @@ import Login from './views/Login.vue';
 import Modal from './views/Modal.vue';
 import Card from './views/Card.vue';
 import Blank from './views/Blank.vue';
-import NotFound from './views/NotFound.vue';
+
 import Customers from './views/customers/Customers.vue';
 import Customer from './views/customers/Customer.vue';
+import Appointment from './views/appointments/Appointment.vue';
+import Appointments from './views/appointments/Appointments.vue';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -73,6 +75,19 @@ const routes: RouteRecordRaw[] = [
     path: '/customers/:id',
     name: 'Customer',
     component: Customer,
+    meta: { requiresAuth: true },
+    props: true,
+  },
+  {
+    path: '/appointments',
+    name: 'Appointments',
+    component: Appointments,
+    meta: { requiredAuth: true },
+  },
+  {
+    path: '/appointments/:id',
+    name: 'Appointment',
+    component: Appointment,
     meta: { requiresAuth: true },
     props: true,
   },

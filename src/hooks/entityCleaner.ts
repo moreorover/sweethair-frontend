@@ -1,11 +1,7 @@
 export const useEntityCleaner = () => {
   const clean = (entity) => {
     for (const propName in entity) {
-      if (
-        entity[propName] == null ||
-        entity[propName] === undefined ||
-        (entity[propName] instanceof Array && entity[propName].length == 0)
-      ) {
+      if (entity[propName] == null || entity[propName] === undefined) {
         delete entity[propName];
       }
     }
