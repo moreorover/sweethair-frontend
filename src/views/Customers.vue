@@ -15,25 +15,7 @@
             </svg>
           </span>
 
-          <BaseInput
-            v-model="search"
-            class="
-              block
-              w-full
-              py-2
-              pl-8
-              pr-6
-              text-sm text-gray-700
-              placeholder-gray-400
-              bg-white
-              border border-b border-gray-400
-              rounded-l rounded-r
-              appearance-none
-              sm:rounded-l-none
-              focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none
-            "
-            type="text"
-          />
+          <BaseInput v-model="search" class="pl-8 pr-6" type="text" />
         </div>
       </div>
       <div class="text-center lg:text-left text-gray-700 font-bold py-2">
