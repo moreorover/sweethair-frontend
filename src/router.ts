@@ -15,6 +15,8 @@ import Customers from './views/customers/Customers.vue';
 import Customer from './views/customers/Customer.vue';
 import Appointments from './views/appointments/Appointments.vue';
 import Appointment from './views/appointments/Appointment.vue';
+import Transactions from './views/transactions/Transactions.vue';
+import Transaction from './views/transactions/Transaction.vue';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -88,6 +90,19 @@ const routes: RouteRecordRaw[] = [
     path: '/appointments/:id',
     name: 'Appointment',
     component: Appointment,
+    meta: { requiresAuth: true },
+    props: true,
+  },
+  {
+    path: '/transactions',
+    name: 'Transactions',
+    component: Transactions,
+    meta: { requiredAuth: true },
+  },
+  {
+    path: '/transactions/:id',
+    name: 'Transaction',
+    component: Transaction,
     meta: { requiresAuth: true },
     props: true,
   },
