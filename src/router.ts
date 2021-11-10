@@ -13,8 +13,8 @@ import Blank from './views/Blank.vue';
 
 import Customers from './views/customers/Customers.vue';
 import Customer from './views/customers/Customer.vue';
-import Appointment from './views/appointments/Appointment.vue';
 import Appointments from './views/appointments/Appointments.vue';
+import Appointment from './views/appointments/Appointment.vue';
 
 const routes: RouteRecordRaw[] = [
   {

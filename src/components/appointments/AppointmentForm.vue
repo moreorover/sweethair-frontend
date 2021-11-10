@@ -4,17 +4,30 @@
       <div>
         <BaseInput label="Title" v-model="title" type="text" :error="errors.title" />
       </div>
-      <div class="p-field p-col-12 p-md-4">
+      <div>
         <label for="time24">Scheduled Date</label>
-        <Calendar id="time24" v-model="scheduledAt" :showTime="true" :showSeconds="false" />
+        <Calendar
+          id="time24"
+          class="
+            w-full
+            border-gray-200
+            rounded-md
+            focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500
+          "
+          v-model="scheduledAt"
+          :showTime="true"
+          :showSeconds="false"
+          :manualInput="true"
+          hourFormat="24"
+          dateFormat="d MM yy"
+        />
+        <p v-if="errors.scheduledAt" class="text-xs font-bold text-red-500">{{ errors.scheduledAt }}</p>
       </div>
     </div>
     <div class="flex justify-end mt-4">
       <BaseButton label="Submit" size="large" />
     </div>
   </form>
-  {{ props.appointment.scheduledAt }}
-  {{ scheduledAt }}
 </template>
 <script setup lang="ts">
 import { Appointment } from '@/services/AppointmentService';
@@ -31,7 +44,7 @@ const emit = defineEmits(['submit']);
 
 const validationSchema = object({
   scheduledAt: string().trim().required('Scheduled Date is required'),
-  title: string().trim().required(),
+  title: string().trim().required('Title field is required'),
   customers: array().nullable(),
   transactions: array().nullable(),
 });
@@ -47,6 +60,6 @@ scheduledAt.value = props.appointment.scheduledAt;
 title.value = props.appointment.title;
 
 const submit = handleSubmit((values) => {
-  emit('submit', { id: props.appointment.id, ...values });
+  props.appointment.id ? emit('submit', { id: props.appointment.id, ...values }) : emit('submit', { ...values });
 });
 </script>
