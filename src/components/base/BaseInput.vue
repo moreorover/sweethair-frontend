@@ -21,7 +21,7 @@ import { useAttrs } from 'vue';
 const attrs = useAttrs();
 type Props = {
   label?: string;
-  modelValue: string | number | null;
+  modelValue: string | number | null | boolean;
   error?: string;
 };
 
