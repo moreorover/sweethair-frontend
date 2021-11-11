@@ -10,8 +10,7 @@
         Showing {{ appointments.length }} out of {{ appointmentsStore.getAll.length }} records.
       </div>
       <BaseCardGrid>
-        <!-- <customer-card v-for="customer in customers" :key="customer.id" :customer="customer"></customer-card> -->
-        <CustomerCard v-for="appointment in appointments" :key="appointment.id" :appointment="appointment" />
+        <AppointmentCard v-for="appointment in appointments" :key="appointment.id" :appointment="appointment" />
       </BaseCardGrid>
     </div>
   </div>
@@ -22,7 +21,7 @@ import { computed } from 'vue';
 import BaseCardGrid from '@/components/base/BaseCardGrid.vue';
 import { useAppointmentsStore } from '@/store/appointmentsStore';
 import AppointmentDialog from '@/components/appointments/AppointmentDialog.vue';
-import CustomerCard from '@/components/appointments/CustomerCard.vue';
+import AppointmentCard from '@/components/appointments/AppointmentCard.vue';
 
 const appointmentsStore = useAppointmentsStore();
 appointmentsStore.fetchAll();
