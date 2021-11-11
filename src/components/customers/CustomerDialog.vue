@@ -1,6 +1,6 @@
 <template>
   <BaseButton :label="props.label" @onClick="toggleModal()" class="mr-2" :size="props.buttonSize" />
-  <BaseModal :header="props.header" :show-footer="false" v-model:visible="showModal" @toggle-modal="toggleModal()">
+  <BaseModal :header="props.header" :show-footer="false" v-model:visible="showModal" @toggle-modal="toggleModal">
     <customer-form :customer="props.customer" @submit="submit($event)" />
   </BaseModal>
 </template>
