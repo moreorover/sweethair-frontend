@@ -21,6 +21,7 @@
     >
       {{ transaction.isPaid ? 'Paid' : 'Awaiting' }}
     </span>
+    <p>{{ transaction.customer?.fullName }}</p>
     <div class="flex">
       <div class="flex-grow max-h-full mx-6 m-auto">
         <div class="h-1" :class="{ 'bg-red-700': transaction.total < 0, 'bg-green-700': transaction.total > 0 }"></div>
