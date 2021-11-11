@@ -16,6 +16,14 @@
       {{ format(new Date(appointment.scheduledAt), 'd MMMM yyyy - HH:mm') }}
     </p>
     <div class="mb-2 text-xl font-bold text-gray-900">{{ appointment.title }}</div>
+
+    <div class="flex justify-center">
+      <div class="rounded-lg w-full">
+        <ul class="divide-y divide-gray-300">
+          <li v-for="customer in appointment.customers">{{ customer.fullName }}</li>
+        </ul>
+      </div>
+    </div>
     <div class="flex gap-1 justify-items-end pt-2">
       <router-link v-slot="{ navigate }" :to="{ name: `Appointment`, params: { id: appointment.id } }" custom>
         <BaseButton @onClick="navigate" label="Show" />
