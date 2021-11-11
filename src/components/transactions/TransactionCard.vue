@@ -36,6 +36,7 @@
         <BaseButton @onClick="navigate" label="Show" />
       </router-link>
       <TransactionDialog :transaction="transaction" header="Edit Transaction" label="Edit" buttonSize="small" />
+      <BaseConfirm @delete="deleteTransaction" />
     </div>
   </div>
 </template>
@@ -43,10 +44,17 @@
 import { Transaction } from '@/services/TransactionService';
 import { format } from 'date-fns';
 import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
+import { useTransactionsStore } from '@/store/transactionsStore';
 
 interface Props {
   transaction: Transaction;
 }
 
 const props = defineProps<Props>();
+
+const transactionsStore = useTransactionsStore();
+
+const deleteTransaction = () => {
+  transactionsStore.delete(props.transaction);
+};
 </script>
