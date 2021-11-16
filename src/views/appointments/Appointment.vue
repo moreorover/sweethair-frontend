@@ -39,7 +39,7 @@ const all = appointmentsStore.all;
 const appointment = computed<Appointment | undefined>(() => all.find((a) => a.id === props.id));
 
 const pickedCustomers = (customers: Customer[]) => {
-  if (appointment.value) {
+  if (appointment.value && customers.length > 0) {
     appointment.value?.customers?.push(...customers);
     appointmentsStore.update(appointment.value);
   }
