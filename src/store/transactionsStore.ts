@@ -52,7 +52,7 @@ export const useTransactionsStore = defineStore({
         }
         return [];
       },
-    getTransactionsByCustomerAndAppointmentId:
+    getTransactionsByCustomerAndAppointment:
       (state) =>
       (customer: Customer | undefined, appointment: Appointment | undefined): Transaction[] => {
         if (customer && appointment) {
