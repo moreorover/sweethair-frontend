@@ -71,6 +71,18 @@ export const useTransactionsStore = defineStore({
         }
         return [];
       },
+    getTransactionsByCustomerAndAppointmentNull:
+      (state) =>
+      (customer: Customer | undefined): Transaction[] => {
+        if (customer) {
+          const { id } = customer;
+          const transactions: Transaction[] = state.all.filter(
+            (transaction) => transaction.customer?.id === id && !transaction.appointment
+          );
+          return transactions;
+        }
+        return [];
+      },
   },
   actions: {
     async fetchAll() {
