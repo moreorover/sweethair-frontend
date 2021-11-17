@@ -84,7 +84,7 @@ const routes: RouteRecordRaw[] = [
     path: '/appointments',
     name: 'Appointments',
     component: Appointments,
-    meta: { requiredAuth: true },
+    meta: { requiresAuth: true },
   },
   {
     path: '/appointments/:id',
@@ -97,7 +97,7 @@ const routes: RouteRecordRaw[] = [
     path: '/transactions',
     name: 'Transactions',
     component: Transactions,
-    meta: { requiredAuth: true },
+    meta: { requiresAuth: true },
   },
   {
     path: '/transactions/:id',
