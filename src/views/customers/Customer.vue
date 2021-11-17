@@ -10,12 +10,26 @@
   <div v-if="customer?.about" class="border-solid border-4 border-light-blue-500 bg-gray-300 py-8 px-6 my-4">
     {{ customer?.about }}
   </div>
+
+  <h3 class="text-2xl font-medium text-gray-700">Customer appointments</h3>
+  <BaseCardGrid>
+    <AppointmentCard v-for="appointment in customerAppointments" :key="appointment.id" :appointment="appointment" />
+  </BaseCardGrid>
+  <h3 class="text-2xl font-medium text-gray-700">Customer transactions</h3>
+  <BaseCardGrid>
+    <TransactionCard v-for="transaction in customerTransactions" :key="transaction.id" :transaction="transaction" />
+  </BaseCardGrid>
 </template>
 <script setup lang="ts">
 import { Customer } from '@/services/CustomerService';
 import { useCustomersStore } from '@/store/customersStore';
 import { computed } from 'vue';
 import CustomerDialog from '@/components/customers/CustomerDialog.vue';
+import BaseCardGrid from '@/components/base/BaseCardGrid.vue';
+import AppointmentCard from '@/components/appointments/AppointmentCard.vue';
+import { useAppointmentsStore } from '@/store/appointmentsStore';
+import { useTransactionsStore } from '@/store/transactionsStore';
+import TransactionCard from '@/components/transactions/TransactionCard.vue';
 
 type Props = {
   id: string;
@@ -24,9 +38,18 @@ type Props = {
 const props = defineProps<Props>();
 
 const customersStore = useCustomersStore();
+const appointmentsStore = useAppointmentsStore();
+const transactionsStore = useTransactionsStore();
 
-const all = customersStore.all;
+customersStore.fetchAll();
+appointmentsStore.fetchAll();
+transactionsStore.fetchAll();
 
-const customer = computed<Customer | undefined>(() => all.find((c) => c.id === props.id));
-const c = computed(() => customersStore.getCustomerById(props.id));
+const customers = customersStore.all;
+
+const customer = computed<Customer | undefined>(() => customers.find((c) => c.id === props.id));
+
+const customerAppointments = appointmentsStore.getAppointmentsByCustomer(customer.value);
+
+const customerTransactions = transactionsStore.getTransactionsByCustomerAndAppointmentNull(customer.value);
 </script>
