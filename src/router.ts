@@ -113,8 +113,10 @@ const router = createRouter({
   routes: routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const store = useLoggedInUserStore();
+
+  await store.me();
 
   if (!to.meta.requiresAuth) {
     next();
