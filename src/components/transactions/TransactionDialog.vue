@@ -12,12 +12,16 @@ import BaseButton from '@/components/base/BaseButton.vue';
 import TransactionForm from './TransactionForm.vue';
 import { Transaction } from '@/services/TransactionService';
 import { useTransactionsStore } from '@/store/transactionsStore';
+import { Customer } from '@/services/CustomerService';
+import { Appointment } from '@/services/AppointmentService';
 
 interface Props {
   transaction?: Transaction;
   header: string;
   label: string;
-  buttonSize: string;
+  buttonSize?: string;
+  customer?: Customer;
+  appointment?: Appointment;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -32,6 +36,8 @@ const props = withDefaults(defineProps<Props>(), {
     };
   },
   buttonSize: 'small',
+  customer: undefined,
+  appointment: undefined,
 });
 
 const store = useTransactionsStore();
@@ -39,7 +45,12 @@ const entityCleaner = useEntityCleaner();
 const { showModal, toggleModal } = useModal();
 
 const submit = (transaction: Transaction) => {
-  const cleanTransaction: Transaction = entityCleaner.clean(transaction);
+  const cleanTransaction: Transaction = entityCleaner.clean({
+    ...transaction,
+    customer: props.customer.id ? { id: props.customer.id } : null,
+    appointment: props.appointment.id ? { id: props.appointment.id } : null,
+  });
+  console.log(cleanTransaction);
   cleanTransaction.id ? store.update(cleanTransaction) : store.create(cleanTransaction);
   toggleModal();
 };
