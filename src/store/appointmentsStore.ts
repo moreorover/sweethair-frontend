@@ -36,6 +36,18 @@ export const useAppointmentsStore = defineStore({
         console.log('State is not loaded.');
       }
     },
+    getAppointmentsByCustomer:
+      (state) =>
+      (customer: Customer | undefined): Appointment[] => {
+        if (customer) {
+          const customerId: string | undefined = customer.id;
+          const appointments: Appointment[] = state.all.filter((a) =>
+            a.customers?.map((c) => c.id).includes(customerId)
+          );
+          return appointments;
+        }
+        return [];
+      },
   },
   actions: {
     async fetchAll() {
