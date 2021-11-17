@@ -8,8 +8,6 @@ import { getMonth, getYear } from 'date-fns';
 interface AppointmentStore {
   all: Appointment[];
   loaded: boolean;
-  new: Appointment | null;
-  selected: Appointment | null;
 }
 
 export const useAppointmentsStore = defineStore({
@@ -37,12 +35,6 @@ export const useAppointmentsStore = defineStore({
       } else {
         console.log('State is not loaded.');
       }
-    },
-    getNew(state) {
-      return state.new;
-    },
-    getSelected(state) {
-      return state.selected;
     },
   },
   actions: {
