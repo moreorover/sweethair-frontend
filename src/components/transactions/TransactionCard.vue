@@ -13,7 +13,7 @@
     "
   >
     <p class="flex items-center text-sm text-gray-600">
-      {{ format(new Date(transaction.date), 'd MMMM yyyy - HH:mm') }}
+      {{ format(new Date(transaction.date), 'd MMMM yyyy') }}
     </p>
     <span
       class="text-xs mx-auto px-2 font-medium text-white rounded-full py-0.5"
@@ -21,7 +21,6 @@
     >
       {{ transaction.isPaid ? 'Paid' : 'Awaiting' }}
     </span>
-    <p>{{ transaction.customer?.fullName }}</p>
     <div class="flex">
       <div class="flex-grow max-h-full mx-6 m-auto">
         <div class="h-1" :class="{ 'bg-red-700': transaction.total < 0, 'bg-green-700': transaction.total > 0 }"></div>
