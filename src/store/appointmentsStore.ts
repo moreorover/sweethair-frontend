@@ -12,7 +12,7 @@ interface AppointmentStore {
 
 export const useAppointmentsStore = defineStore({
   id: 'appointmentsStore',
-  state: (): AppointmentStore => ({ all: [] as Appointment[], loaded: false, new: null, selected: null }),
+  state: (): AppointmentStore => ({ all: [] as Appointment[], loaded: false }),
   getters: {
     getAll(state) {
       return state.all;
