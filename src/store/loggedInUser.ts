@@ -11,13 +11,15 @@ export const useLoggedInUserStore = defineStore({
   id: 'loggedInUser',
   state: (): UserStore => ({ user: null, isLoggedIn: false }),
   getters: {
-    getUser(state) {
+    getUser(state): User | null {
       return state.user;
     },
-    getIsLoggedIn(state) {
+    getIsLoggedIn(state): boolean {
       return state.isLoggedIn;
     },
-    async me() {
+  },
+  actions: {
+    async me(): Promise<void> {
       await AuthService.me()
         .then((response) => {
           this.user = response.data;
@@ -29,8 +31,6 @@ export const useLoggedInUserStore = defineStore({
           console.log('You are unauthenticated.');
         });
     },
-  },
-  actions: {
     async login(email: string, password: string) {
       await AuthService.login(email, password)
         .then((response) => {
@@ -44,9 +44,9 @@ export const useLoggedInUserStore = defineStore({
         });
     },
     async logout() {
-      await AuthService.logout();
       this.user = null;
       this.isLoggedIn = false;
+      await AuthService.logout();
     },
   },
 });
