@@ -96,8 +96,8 @@ const router = useRouter();
 const userStore = useLoggedInUserStore();
 const user = computed(() => userStore.getUser);
 
-const logOut = () => {
-  userStore.logout();
+const logOut = async () => {
+  await userStore.logout();
   router.push('/');
 };
 </script>
