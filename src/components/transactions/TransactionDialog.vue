@@ -47,8 +47,8 @@ const { showModal, toggleModal } = useModal();
 const submit = (transaction: Transaction) => {
   const cleanTransaction: Transaction = entityCleaner.clean({
     ...transaction,
-    customer: props.customer.id ? { id: props.customer.id } : null,
-    appointment: props.appointment.id ? { id: props.appointment.id } : null,
+    customer: props.customer || null,
+    appointment: props.appointment || null,
   });
   console.log(cleanTransaction);
   cleanTransaction.id ? store.update(cleanTransaction) : store.create(cleanTransaction);
