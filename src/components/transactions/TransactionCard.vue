@@ -69,10 +69,6 @@ const appointmentsStore = useAppointmentsStore();
 const transactionsStore = useTransactionsStore();
 const customersStore = useCustomersStore();
 
-appointmentsStore.fetchAll();
-transactionsStore.fetchAll();
-customersStore.fetchAll();
-
 const appointment = computed<Appointment | undefined>(() =>
   appointmentsStore.getAppointmentById(props.transaction.appointment?.id || '')
 );
