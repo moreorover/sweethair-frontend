@@ -40,6 +40,18 @@ export const useTransactionsStore = defineStore({
         }
         return [];
       },
+    getTransactionsByAppointmentCustomerNull:
+      (state) =>
+      (appointment: Appointment | undefined): Transaction[] => {
+        if (appointment) {
+          const { id } = appointment;
+          const transactions: Transaction[] = state.all.filter(
+            (transaction) => transaction.appointment?.id === id && !transaction.customer
+          );
+          return transactions;
+        }
+        return [];
+      },
     getTransactionsByCustomer:
       (state) =>
       (customer: Customer | undefined): Transaction[] => {
