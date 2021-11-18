@@ -3,7 +3,7 @@
     <h3 class="text-3xl font-medium text-gray-700">{{ appointment?.title }}</h3>
     <AppointmentDialog :appointment="appointment" header="Edit Appointment" label="Edit" buttonSize="large" />
     <MultipleCustomerPickerDialog
-      :preSelection="appointment?.customers"
+      :preSelection="appointment?.customers || []"
       header="Pick customers"
       label="Pick Customers"
       buttonSize="medium"
@@ -41,6 +41,14 @@
       </div>
     </div>
   </div>
+
+  <BaseCardGrid>
+    <TransactionCard
+      v-for="transaction in appointmentTransactionsNoCustomer"
+      :key="transaction.id"
+      :transaction="transaction"
+    />
+  </BaseCardGrid>
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
@@ -55,17 +63,24 @@ import TransactionCard from '@/components/transactions/TransactionCard.vue';
 import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
 import SingleTransactionPickerDialog from '@/components/transactions/SingleTransactionPickerDialog.vue';
 import { useRoute } from 'vue-router';
+import { useCustomersStore } from '@/store/customersStore';
 
 const route = useRoute();
 
 const appointmentsStore = useAppointmentsStore();
 const transactionsStore = useTransactionsStore();
+const customersStore = useCustomersStore();
 
 appointmentsStore.fetchAll();
 transactionsStore.fetchAll();
+customersStore.fetchAll();
 
 const appointment = computed<Appointment | undefined>(() =>
   appointmentsStore.all.find((a) => a.id === route.params.id)
+);
+
+const appointmentTransactionsNoCustomer = computed<Transaction[]>(
+  () => transactionsStore.getTransactionsByAppointmentCustomerNull(appointment.value) || []
 );
 
 const spareTransactions = (customer: Customer): boolean =>
