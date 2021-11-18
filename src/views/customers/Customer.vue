@@ -30,12 +30,9 @@ import AppointmentCard from '@/components/appointments/AppointmentCard.vue';
 import { useAppointmentsStore } from '@/store/appointmentsStore';
 import { useTransactionsStore } from '@/store/transactionsStore';
 import TransactionCard from '@/components/transactions/TransactionCard.vue';
+import { useRoute } from 'vue-router';
 
-type Props = {
-  id: string;
-};
-
-const props = defineProps<Props>();
+const route = useRoute();
 
 const customersStore = useCustomersStore();
 const appointmentsStore = useAppointmentsStore();
@@ -47,7 +44,7 @@ transactionsStore.fetchAll();
 
 const customers = customersStore.all;
 
-const customer = computed<Customer | undefined>(() => customers.find((c) => c.id === props.id));
+const customer = computed<Customer | undefined>(() => customers.find((c) => c.id === route.params.id));
 
 const customerAppointments = appointmentsStore.getAppointmentsByCustomer(customer.value);
 
