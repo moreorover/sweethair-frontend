@@ -12,7 +12,7 @@ import Card from './views/Card.vue';
 import Blank from './views/Blank.vue';
 
 import Customers from './views/customers/Customers.vue';
-import Customer from './views/customers/Customer.vue';
+import ShowCustomer from './views/customers/ShowCustomer.vue';
 import Appointments from './views/appointments/Appointments.vue';
 import Appointment from './views/appointments/Appointment.vue';
 import Transactions from './views/transactions/Transactions.vue';
@@ -76,7 +76,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/customers/:id',
     name: 'Customer',
-    component: Customer,
+    component: ShowCustomer,
     meta: { requiresAuth: true },
   },
   {

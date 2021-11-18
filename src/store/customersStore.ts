@@ -6,12 +6,16 @@ import _ from 'lodash';
 interface CustomerStore {
   all: Customer[];
   loaded: boolean;
-  selectedCustomer: Customer | null;
+  isLoading: boolean;
 }
 
 export const useCustomersStore = defineStore({
   id: 'customersStore',
-  state: (): CustomerStore => ({ all: [] as Customer[], loaded: false, selectedCustomer: null }),
+  state: (): CustomerStore => ({
+    all: [] as Customer[],
+    loaded: false,
+    isLoading: false,
+  }),
   getters: {
     getAll(state) {
       return state.all;
@@ -21,7 +25,7 @@ export const useCustomersStore = defineStore({
     },
     getCustomerById: (state) => (id: string) => {
       if (state.loaded) {
-        return state.all.find((c) => c.id === id);
+      return state.all.find((c) => c.id === id);
       } else {
         console.log('State is not loaded.');
       }
@@ -41,29 +45,35 @@ export const useCustomersStore = defineStore({
       }
       return [];
     },
+    shouldLoadState: (state) => {
+      return !state.isLoading && !state.loaded;
+    },
   },
   actions: {
     async fetchAll() {
-      await CustomerService.getAll()
-        .then((response) => {
-          this.all = response.data;
-          this.loaded = true;
-        })
-        .catch(() => {
-          this.loaded = false;
-          console.log('Not loaded, something went wrong loading Customers');
-        });
+      this.isLoading = true;
+      try {
+        const { data } = await CustomerService.getAll();
+        this.all = data;
+        this.loaded = true;
+        this.isLoading = false;
+      } catch (error) {
+        this.loaded = false;
+        this.isLoading = false;
+        console.log('Not loaded, something went wrong loading Customers');
+        console.log({ error });
+      }
     },
-    async create(customer: Customer) {
-      await CustomerService.create(customer)
+    create(customer: Customer) {
+      CustomerService.create(customer)
         .then((response) => {
           this.all.push(response.data);
           this.all = _.sortBy(this.all, ['fullName']);
         })
         .catch((err) => console.log('Failed to update Customer', customer, err));
     },
-    async update(customer: Customer) {
-      await CustomerService.update(customer)
+    update(customer: Customer) {
+      CustomerService.update(customer)
         .then((response) => {
           const i = this.all.findIndex((c) => c.id === response.data.id);
           if (i > -1) {

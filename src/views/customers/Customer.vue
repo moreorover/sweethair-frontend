@@ -38,7 +38,8 @@ const customersStore = useCustomersStore();
 const appointmentsStore = useAppointmentsStore();
 const transactionsStore = useTransactionsStore();
 
-customersStore.fetchAll();
+if (customersStore.shouldLoadState) await customersStore.fetchAll();
+
 appointmentsStore.fetchAll();
 transactionsStore.fetchAll();
 
