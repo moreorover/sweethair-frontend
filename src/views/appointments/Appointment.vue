@@ -15,6 +15,14 @@
       <div class="flex justify-between">
         <h4 class="text-1xl font-semibold text-indigo-600">{{ customer.fullName }}</h4>
         <div class="flex gap-1">
+          <SingleTransactionPickerDialog
+            v-if="spareTransactions(customer)"
+            header="Pick Transaction"
+            label="Pick Transaction"
+            buttonSize="small"
+            :customer="customer"
+            @submit="pickedTransactions($event)"
+          />
           <BaseConfirm v-if="customerTransactions(customer).value.length < 1" @delete="removeCustomer(customer)" />
           <TransactionDialog
             header="Book a Transaction"
@@ -29,7 +37,6 @@
         v-if="customerTransactions(customer).value.length > 0"
         v-for="transaction in customerTransactions(customer).value"
       >
-        <!-- {{ transaction }} -->
         <TransactionCard :transaction="transaction" />
       </div>
     </div>
@@ -46,28 +53,36 @@ import { useTransactionsStore } from '@/store/transactionsStore';
 import { Transaction } from '@/services/TransactionService';
 import TransactionCard from '@/components/transactions/TransactionCard.vue';
 import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
+import SingleTransactionPickerDialog from '@/components/transactions/SingleTransactionPickerDialog.vue';
+import { useRoute } from 'vue-router';
 
-type Props = {
-  id: string;
-};
-
-const props = defineProps<Props>();
+const route = useRoute();
 
 const appointmentsStore = useAppointmentsStore();
 const transactionsStore = useTransactionsStore();
 
+appointmentsStore.fetchAll();
 transactionsStore.fetchAll();
 
-const all = appointmentsStore.all;
+const appointment = computed<Appointment | undefined>(() =>
+  appointmentsStore.all.find((a) => a.id === route.params.id)
+);
 
-const appointment = computed<Appointment | undefined>(() => all.find((a) => a.id === props.id));
-
-const transactions = computed<Transaction[]>(() => transactionsStore.getTransactionsByAppointment(appointment.value));
+const spareTransactions = (customer: Customer): boolean =>
+  0 <
+  computed<Transaction[]>(() => transactionsStore.getTransactionsByCustomerAndAppointmentNull(customer)).value.length;
 
 const pickedCustomers = (customers: Customer[]) => {
   if (appointment.value && customers.length > 0) {
     appointment.value?.customers?.push(...customers);
     appointmentsStore.update(appointment.value);
+  }
+};
+
+const pickedTransactions = (transaction: Transaction) => {
+  if (appointment.value && transaction) {
+    transactionsStore.update({ ...transaction, appointment: appointment.value });
+    appointmentsStore.fetchAll();
   }
 };
 
