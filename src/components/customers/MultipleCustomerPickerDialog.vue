@@ -43,7 +43,6 @@ import BaseModal from '@/components/base/BaseModal.vue';
 import useModal from '@/hooks/useModal';
 import BaseButton from '@/components/base/BaseButton.vue';
 import { computed, ref } from 'vue';
-import { findIndex } from 'lodash';
 
 interface Props {
   header: string;
@@ -64,10 +63,7 @@ const search = ref('');
 const customers = computed(() =>
   store.getAll.filter(
     (c) =>
-      0 >
-        findIndex(selection.value, function (o) {
-          return o.id == c.id;
-        }) &&
+      !fullSelection.value.map((cs) => cs.id).includes(c.id) &&
       (c.fullName.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
         c.location.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
         c.about.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
