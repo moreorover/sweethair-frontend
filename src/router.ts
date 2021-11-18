@@ -91,7 +91,6 @@ const routes: RouteRecordRaw[] = [
     name: 'Appointment',
     component: Appointment,
     meta: { requiresAuth: true },
-    props: true,
   },
   {
     path: '/transactions',
