@@ -36,6 +36,14 @@
       </router-link>
       <TransactionDialog :transaction="transaction" header="Edit Transaction" label="Edit" buttonSize="small" />
       <BaseConfirm @delete="deleteTransaction" />
+      <SingleCustomerPickerDialog
+        v-if="!transaction.customer"
+        header="Pick Customer"
+        label="Pick Customer"
+        buttonSize="small"
+        :customersToPick="customersToPick"
+        @submit="customerPicked($event)"
+      />
     </div>
   </div>
 </template>
@@ -44,6 +52,12 @@ import { Transaction } from '@/services/TransactionService';
 import { format } from 'date-fns';
 import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
 import { useTransactionsStore } from '@/store/transactionsStore';
+import { useCustomersStore } from '@/store/customersStore';
+import { computed } from 'vue';
+import SingleCustomerPickerDialog from '@/components/customers/SingleCustomerPickerDialog.vue';
+import { Customer } from '@/services/CustomerService';
+import { useAppointmentsStore } from '@/store/appointmentsStore';
+import { Appointment } from '@/services/AppointmentService';
 
 interface Props {
   transaction: Transaction;
@@ -51,7 +65,27 @@ interface Props {
 
 const props = defineProps<Props>();
 
+const appointmentsStore = useAppointmentsStore();
 const transactionsStore = useTransactionsStore();
+const customersStore = useCustomersStore();
+
+appointmentsStore.fetchAll();
+transactionsStore.fetchAll();
+customersStore.fetchAll();
+
+const appointment = computed<Appointment | undefined>(() =>
+  appointmentsStore.getAppointmentById(props.transaction.appointment?.id || '')
+);
+
+const customersToPick = computed<Customer[] | undefined>(() =>
+  !props.transaction.customer && appointment.value
+    ? customersStore.getCustomersByAppointment(appointment.value)
+    : undefined
+);
+
+const customerPicked = (customer: Customer) => {
+  transactionsStore.update({ ...props.transaction, customer });
+};
 
 const deleteTransaction = () => {
   transactionsStore.delete(props.transaction);
