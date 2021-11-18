@@ -3,7 +3,7 @@
     <h3 class="text-3xl font-medium text-gray-700">{{ appointment?.title }}</h3>
     <AppointmentDialog :appointment="appointment" header="Edit Appointment" label="Edit" buttonSize="large" />
     <MultipleCustomerPickerDialog
-      :preSelection="appointment?.customers || []"
+      :currentSelection="appointment?.customers || undefined"
       header="Pick customers"
       label="Pick Customers"
       buttonSize="medium"

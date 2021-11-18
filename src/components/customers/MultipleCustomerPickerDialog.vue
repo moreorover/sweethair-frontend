@@ -48,10 +48,11 @@ interface Props {
   header: string;
   label: string;
   buttonSize: string;
-  preSelection: Customer[] | null | undefined;
+  currentSelection?: Customer[];
+  customersToPick?: Customer[];
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), { currentSelection: undefined, customersToPick: undefined });
 const emit = defineEmits(['submit']);
 
 const store = useCustomersStore();
@@ -61,26 +62,32 @@ const { showModal, toggleModal } = useModal();
 const search = ref('');
 
 const customers = computed(() =>
-  store.getAll.filter(
-    (c) =>
-      !fullSelection.value.map((cs) => cs.id).includes(c.id) &&
-      (c.fullName.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
-        c.location.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
-        c.about.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
-        c.email?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
-        c.instagram?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()))
-  )
+  props.customersToPick
+    ? props.customersToPick.filter(
+        (c) =>
+          !fullSelection.value.map((cs) => cs.id).includes(c.id) &&
+          (c.fullName.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
+            c.location.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
+            c.about.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
+            c.email?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
+            c.instagram?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()))
+      )
+    : store.getAll.filter(
+        (c) =>
+          !fullSelection.value.map((cs) => cs.id).includes(c.id) &&
+          (c.fullName.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
+            c.location.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
+            c.about.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
+            c.email?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
+            c.instagram?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()))
+      )
 );
 
 const selection = ref<Customer[]>([]);
 
-const fullSelection = computed<Customer[]>(() => {
-  if (props.preSelection instanceof Array) {
-    return [...props.preSelection, ...selection.value];
-  } else {
-    return [...selection.value];
-  }
-});
+const fullSelection = computed<Customer[]>(() =>
+  props.currentSelection instanceof Array ? [...props.currentSelection, ...selection.value] : [...selection.value]
+);
 
 const removeSelection = (customer: Customer) => {
   selection.value = selection.value.filter((c) => c.id !== customer.id);
