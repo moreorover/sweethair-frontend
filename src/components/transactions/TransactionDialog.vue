@@ -31,8 +31,6 @@ const props = withDefaults(defineProps<Props>(), {
       total: 0.0,
       date: new Date().toISOString(),
       isPaid: false,
-      customer: null,
-      appointment: null,
     };
   },
   buttonSize: 'small',
@@ -40,18 +38,22 @@ const props = withDefaults(defineProps<Props>(), {
   appointment: undefined,
 });
 
-const store = useTransactionsStore();
+const transactionsStore = useTransactionsStore();
 const entityCleaner = useEntityCleaner();
 const { showModal, toggleModal } = useModal();
 
-const submit = (transaction: Transaction) => {
-  const cleanTransaction: Transaction = entityCleaner.clean({
-    ...transaction,
-    customer: props.customer || null,
-    appointment: props.appointment || null,
-  });
-  console.log(cleanTransaction);
-  cleanTransaction.id ? store.update(cleanTransaction) : store.create(cleanTransaction);
+const submit = async (transaction: Transaction) => {
+  const cleanTransaction: Transaction = entityCleaner.clean(
+    {
+      ...transaction,
+      customer: props.customer || null,
+      appointment: props.appointment || null,
+    },
+    true
+  );
+  cleanTransaction.id
+    ? await transactionsStore.update(cleanTransaction)
+    : await transactionsStore.create(cleanTransaction);
   toggleModal();
 };
 </script>
