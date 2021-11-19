@@ -98,7 +98,7 @@ export const useAppointmentsStore = defineStore({
     async removeCustomer(appointment: Appointment, customer: Customer) {
       if (appointment.customers) {
         appointment.customers = appointment.customers.filter((c) => c.id !== customer.id);
-        this.update(appointment);
+        await this.update(appointment);
       }
     },
   },
