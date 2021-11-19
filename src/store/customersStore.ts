@@ -6,7 +6,7 @@ interface CustomerStore {
   all: Record<string, Customer>;
   ids: string[];
   loaded: boolean;
-  isLoading: boolean;
+  loading: boolean;
 }
 
 export const useCustomersStore = defineStore({
@@ -15,7 +15,7 @@ export const useCustomersStore = defineStore({
     all: {},
     ids: [],
     loaded: false,
-    isLoading: false,
+    loading: false,
   }),
   getters: {
     getRaw(state): Record<string, Customer> {
@@ -48,11 +48,11 @@ export const useCustomersStore = defineStore({
         }
         return [];
       },
-    shouldLoadState: (state): boolean => !state.isLoading && !state.loaded,
+    shouldLoadState: (state): boolean => !state.loading && !state.loaded,
   },
   actions: {
     async fetchAll() {
-      this.isLoading = true;
+      this.loading = true;
       try {
         const { data } = await CustomerService.getAll();
         const ids: string[] = [];
@@ -67,12 +67,12 @@ export const useCustomersStore = defineStore({
         this.all = all;
         this.ids = ids;
         this.loaded = true;
-        this.isLoading = false;
+        this.loading = false;
       } catch (error) {
         this.all = {};
         this.ids = [];
         this.loaded = false;
-        this.isLoading = false;
+        this.loading = false;
         console.log('Not loaded, something went wrong loading Customers');
         console.log({ error });
       }
