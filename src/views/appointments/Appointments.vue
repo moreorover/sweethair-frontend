@@ -24,7 +24,7 @@ import AppointmentDialog from '@/components/appointments/AppointmentDialog.vue';
 import AppointmentCard from '@/components/appointments/AppointmentCard.vue';
 
 const appointmentsStore = useAppointmentsStore();
-appointmentsStore.fetchAll();
+if (appointmentsStore.shouldLoadState) await appointmentsStore.fetchAll();
 
 const appointments = computed(() => appointmentsStore.getAll);
 </script>

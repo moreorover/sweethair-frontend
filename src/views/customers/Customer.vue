@@ -43,7 +43,8 @@ const transactionsStore = useTransactionsStore();
 if (customersStore.shouldLoadState) await customersStore.fetchAll();
 if (!customersStore.getIds.includes(id)) router.replace({ name: 'Customers' });
 
-appointmentsStore.fetchAll();
+if (appointmentsStore.shouldLoadState) await appointmentsStore.fetchAll();
+
 transactionsStore.fetchAll();
 
 const customer = computed<Customer>(() => customersStore.getCustomerById(id));

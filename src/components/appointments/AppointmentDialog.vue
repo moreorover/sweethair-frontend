@@ -37,9 +37,9 @@ const store = useAppointmentsStore();
 const entityCleaner = useEntityCleaner();
 const { showModal, toggleModal } = useModal();
 
-const submit = (customer: Appointment) => {
-  const cleanAppointment: Appointment = entityCleaner.clean(customer);
-  cleanAppointment.id ? store.update(cleanAppointment) : store.create(cleanAppointment);
+const submit = async (appointment: Appointment) => {
+  const cleanAppointment: Appointment = entityCleaner.clean(appointment, true);
+  cleanAppointment.id ? await store.update(cleanAppointment) : await store.create(cleanAppointment);
   toggleModal();
 };
 </script>
