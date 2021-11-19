@@ -50,14 +50,17 @@ interface Props {
 const props = defineProps<Props>();
 const emit = defineEmits(['submit']);
 
-const store = useTransactionsStore();
-store.fetchAll();
+const transactionsStore = useTransactionsStore();
+if (transactionsStore.shouldLoadState) await transactionsStore.fetchAll();
+
 const { showModal, toggleModal } = useModal();
 
 const search = ref('');
 
 const transactions = computed<Transaction[]>(() =>
-  store.getTransactionsByCustomerAndAppointmentNull(props.customer).filter((t) => t.id !== selection.value?.id)
+  transactionsStore
+    .getTransactionsByCustomerAndAppointmentNull(props.customer)
+    .filter((t) => t.id !== selection.value?.id)
 );
 
 const selection = ref<Transaction>();

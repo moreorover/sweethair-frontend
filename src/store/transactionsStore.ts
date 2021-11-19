@@ -2,7 +2,7 @@ import { Customer } from './../services/CustomerService';
 import TransactionService, { Transaction } from './../services/TransactionService';
 import { defineStore } from 'pinia';
 import { Appointment } from '@/services/AppointmentService';
-import { boolean } from 'yup';
+import { remove } from 'lodash';
 
 interface TransactionStore {
   all: Record<string, Transaction>;
@@ -82,6 +82,7 @@ export const useTransactionsStore = defineStore({
           .filter((transaction) => transaction.customer?.id === id && !transaction.appointment);
         return transactions;
       },
+    shouldLoadState: (state): boolean => !state.loading && !state.loaded,
   },
   actions: {
     async fetchAll() {

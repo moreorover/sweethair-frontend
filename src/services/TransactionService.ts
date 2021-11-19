@@ -10,8 +10,8 @@ export interface Transaction {
   isPaid: boolean;
   createdOn?: string;
   modifiedOn?: string;
-  customer: Customer | null;
-  appointment: Appointment | null;
+  customer?: Customer | null;
+  appointment?: Appointment | null;
 }
 
 class TransactionService {

@@ -1,7 +1,7 @@
 <template>
   <Suspense>
     <template #default>
-      <Customers />
+      <Transactions />
     </template>
 
     <template #fallback>
@@ -10,5 +10,5 @@
   </Suspense>
 </template>
 <script setup lang="ts">
-import Customers from '@/views/customers/Customers.vue';
+import Transactions from '@/views/transactions/Transactions.vue';
 </script>

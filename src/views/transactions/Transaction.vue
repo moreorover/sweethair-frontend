@@ -40,13 +40,15 @@ import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
 import { useTransactionsStore } from '@/store/transactionsStore';
 import { Transaction } from '@/services/TransactionService';
 import { format } from 'date-fns';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
+const router = useRouter();
+const id: string = route.params.id instanceof Array ? route.params.id[0] : route.params.id;
 
 const transactionsStore = useTransactionsStore();
+if (transactionsStore.shouldLoadState) await transactionsStore.fetchAll();
+if (!transactionsStore.getIds.includes(id)) router.replace({ name: 'Transactions' });
 
-const all = transactionsStore.all;
-
-const transaction = computed<Transaction | undefined>(() => all.find((t) => t.id === route.params.id));
+const transaction = computed<Transaction>(() => transactionsStore.getTransactionById(id));
 </script>

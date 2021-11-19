@@ -1,14 +1,14 @@
 <template>
   <div class="flex justify-between">
-    <h3 class="text-3xl font-medium text-gray-700">{{ customer?.fullName }}</h3>
+    <h3 class="text-3xl font-medium text-gray-700">{{ customer.fullName }}</h3>
     <CustomerDialog :customer="customer" header="Edit Customer" label="Edit" buttonSize="large" />
   </div>
-  <div v-if="customer?.email || customer?.instagram" class="flex space-x-4">
-    <h6 v-if="customer?.email" class="text-xl font-light text-gray-800">Email: {{ customer?.email }}</h6>
-    <h6 v-if="customer?.instagram" class="text-xl font-light text-gray-800">Instagram: {{ customer?.instagram }}</h6>
+  <div v-if="customer.email || customer.instagram" class="flex space-x-4">
+    <h6 v-if="customer.email" class="text-xl font-light text-gray-800">Email: {{ customer.email }}</h6>
+    <h6 v-if="customer.instagram" class="text-xl font-light text-gray-800">Instagram: {{ customer.instagram }}</h6>
   </div>
-  <div v-if="customer?.about" class="border-solid border-4 border-light-blue-500 bg-gray-300 py-8 px-6 my-4">
-    {{ customer?.about }}
+  <div v-if="customer.about" class="border-solid border-4 border-light-blue-500 bg-gray-300 py-8 px-6 my-4">
+    {{ customer.about }}
   </div>
 
   <h3 class="text-2xl font-medium text-gray-700">Customer appointments</h3>
@@ -45,7 +45,7 @@ if (!customersStore.getIds.includes(id)) router.replace({ name: 'Customers' });
 
 if (appointmentsStore.shouldLoadState) await appointmentsStore.fetchAll();
 
-transactionsStore.fetchAll();
+if (transactionsStore.shouldLoadState) await transactionsStore.fetchAll();
 
 const customer = computed<Customer>(() => customersStore.getCustomerById(id));
 
