@@ -94,10 +94,11 @@ const removeSelection = (customer: Customer) => {
 };
 
 const submit = () => {
-  emit('submit', selection.value);
-  selection.value = [];
-
-  toggleModal();
+  if (selection.value.length) {
+    emit('submit', selection.value);
+    selection.value = [];
+    toggleModal();
+  }
 };
 
 const cancel = () => {
