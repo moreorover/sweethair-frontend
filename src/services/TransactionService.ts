@@ -31,8 +31,8 @@ class TransactionService {
     return apiClient.patch<Transaction>(`/transactions/${data.id}`, data);
   }
 
-  delete(id: string): void {
-    apiClient.delete(`/transactions/${id}`);
+  delete(id: string): Promise<void> {
+    return apiClient.delete(`/transactions/${id}`);
   }
 }
 
