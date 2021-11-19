@@ -69,21 +69,19 @@ const appointmentsStore = useAppointmentsStore();
 const transactionsStore = useTransactionsStore();
 const customersStore = useCustomersStore();
 
-const appointment = computed<Appointment | undefined>(() =>
+const appointment = computed<Appointment>(() =>
   appointmentsStore.getAppointmentById(props.transaction.appointment?.id || '')
 );
 
-const customersToPick = computed<Customer[] | undefined>(() =>
-  !props.transaction.customer && appointment.value
-    ? customersStore.getCustomersByAppointment(appointment.value)
-    : undefined
+const customersToPick = computed<Customer[]>(() =>
+  !props.transaction.customer && appointment.value ? customersStore.getCustomersByAppointment(appointment.value) : []
 );
 
-const customerPicked = (customer: Customer) => {
-  transactionsStore.update({ ...props.transaction, customer });
+const customerPicked = async (customer: Customer) => {
+  await transactionsStore.update({ ...props.transaction, customer });
 };
 
-const deleteTransaction = () => {
-  transactionsStore.delete(props.transaction);
+const deleteTransaction = async () => {
+  await transactionsStore.delete(props.transaction);
 };
 </script>

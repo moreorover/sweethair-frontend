@@ -24,6 +24,6 @@ import TransactionCard from '@/components/transactions/TransactionCard.vue';
 import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
 
 const transactionsStore = useTransactionsStore();
-transactionsStore.fetchAll();
+if (transactionsStore.shouldLoadState) await transactionsStore.fetchAll();
 const tranactions = computed(() => transactionsStore.getAll);
 </script>

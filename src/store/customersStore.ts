@@ -34,19 +34,21 @@ export const useCustomersStore = defineStore({
       },
     getCustomersByAppointment:
       (state) =>
-      (appointment: Appointment | undefined): Customer[] => {
-        if (appointment) {
-          const customerIds: (string | undefined)[] | undefined = appointment.customers?.map((customer) => customer.id);
-          const transactionIds = appointment.transactions?.map((transactions) => transactions.id);
-          const customers: Customer[] = state.ids
-            .map((id) => state.all[id])
-            .filter((customer) => customerIds?.includes(customer.id));
-          customers.forEach(
-            (customer) => (customer.transactions = customer.transactions?.filter((t) => transactionIds?.includes(t.id)))
-          );
-          return customers;
-        }
-        return [];
+      (appointment: Appointment): Customer[] => {
+        const customerIds: string[] = appointment.customers
+          ? appointment.customers?.map((customer) => customer.id)
+          : [];
+        const transactionIds: string[] = appointment.transactions
+          ? appointment.transactions?.map((transactions) => transactions.id)
+          : [];
+        const customers: Customer[] = state.ids
+          .map((id) => state.all[id])
+          .filter((customer) => customerIds?.includes(customer.id))
+          .map((customer) => {
+            customer.transactions = customer.transactions?.filter((t) => transactionIds?.includes(t.id));
+            return customer;
+          });
+        return customers;
       },
     shouldLoadState: (state): boolean => !state.loading && !state.loaded,
   },

@@ -1,9 +1,9 @@
 <template>
   <div class="flex justify-between">
-    <h3 class="text-3xl font-medium text-gray-700">{{ appointment?.title }}</h3>
+    <h3 class="text-3xl font-medium text-gray-700">{{ appointment.title }}</h3>
     <AppointmentDialog :appointment="appointment" header="Edit Appointment" label="Edit" buttonSize="large" />
     <MultipleCustomerPickerDialog
-      :currentSelection="appointment?.customers || undefined"
+      :currentSelection="appointment.customers || undefined"
       header="Pick customers"
       label="Pick Customers"
       buttonSize="medium"
@@ -11,7 +11,7 @@
     />
   </div>
   <div class="flex flex-col mx-auto gap-8 pt-3">
-    <div class="container border-2 border-gray-400 p-2" v-for="customer in appointment?.customers" :key="customer.id">
+    <div class="container border-2 border-gray-400 p-2" v-for="customer in appointment.customers" :key="customer.id">
       <div class="flex justify-between">
         <h4 class="text-1xl font-semibold text-indigo-600">{{ customer.fullName }}</h4>
         <div class="flex gap-1">
@@ -63,7 +63,6 @@ import TransactionCard from '@/components/transactions/TransactionCard.vue';
 import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
 import SingleTransactionPickerDialog from '@/components/transactions/SingleTransactionPickerDialog.vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useCustomersStore } from '@/store/customersStore';
 
 const route = useRoute();
 const router = useRouter();
@@ -75,7 +74,7 @@ const transactionsStore = useTransactionsStore();
 if (appointmentsStore.shouldLoadState) await appointmentsStore.fetchAll();
 if (!appointmentsStore.getIds.includes(id)) router.replace({ name: 'Appointments' });
 
-transactionsStore.fetchAll();
+if (transactionsStore.shouldLoadState) await transactionsStore.fetchAll();
 
 const appointment = computed<Appointment>(() => appointmentsStore.getAppointmentById(id));
 

@@ -10,8 +10,8 @@ export interface Transaction {
   isPaid: boolean;
   createdOn?: string;
   modifiedOn?: string;
-  customer: Customer | null;
-  appointment: Appointment | null;
+  customer?: Customer | null;
+  appointment?: Appointment | null;
 }
 
 class TransactionService {
@@ -31,8 +31,8 @@ class TransactionService {
     return apiClient.patch<Transaction>(`/transactions/${data.id}`, data);
   }
 
-  delete(id: string): void {
-    apiClient.delete(`/transactions/${id}`);
+  delete(id: string): Promise<void> {
+    return apiClient.delete(`/transactions/${id}`);
   }
 }
 

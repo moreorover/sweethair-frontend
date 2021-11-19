@@ -26,8 +26,6 @@ const props = withDefaults(defineProps<Props>(), {
       id: '',
       title: '',
       scheduledAt: new Date().toISOString(),
-      customers: null,
-      transactions: null,
     };
   },
   buttonSize: 'small',
