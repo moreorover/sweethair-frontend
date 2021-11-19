@@ -40,6 +40,18 @@ export const useTransactionsStore = defineStore({
         }
         return [];
       },
+    getTransactionsByAppointmentCustomerNull:
+      (state) =>
+      (appointment: Appointment | undefined): Transaction[] => {
+        if (appointment) {
+          const { id } = appointment;
+          const transactions: Transaction[] = state.all.filter(
+            (transaction) => transaction.appointment?.id === id && !transaction.customer
+          );
+          return transactions;
+        }
+        return [];
+      },
     getTransactionsByCustomer:
       (state) =>
       (customer: Customer | undefined): Transaction[] => {
@@ -52,7 +64,7 @@ export const useTransactionsStore = defineStore({
         }
         return [];
       },
-    getTransactionsByCustomerAndAppointmentId:
+    getTransactionsByCustomerAndAppointment:
       (state) =>
       (customer: Customer | undefined, appointment: Appointment | undefined): Transaction[] => {
         if (customer && appointment) {
@@ -66,6 +78,18 @@ export const useTransactionsStore = defineStore({
           const customerId: string | undefined = customer.id;
           const transactions: Transaction[] = state.all.filter(
             (transaction) => transaction.customer?.id === customerId
+          );
+          return transactions;
+        }
+        return [];
+      },
+    getTransactionsByCustomerAndAppointmentNull:
+      (state) =>
+      (customer: Customer | undefined): Transaction[] => {
+        if (customer) {
+          const { id } = customer;
+          const transactions: Transaction[] = state.all.filter(
+            (transaction) => transaction.customer?.id === id && !transaction.appointment
           );
           return transactions;
         }

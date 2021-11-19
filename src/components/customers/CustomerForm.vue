@@ -1,78 +1,66 @@
+<template>
+  <form @submit.prevent="submit">
+    <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+      <div>
+        <BaseInput label="Full Name" v-model="fullName" type="text" :error="errors.fullName" />
+      </div>
+      <div>
+        <BaseInput label="Location" v-model="location" type="text" :error="errors.location" />
+      </div>
+      <div>
+        <BaseInput label="About" v-model="about" type="text" :error="errors.about" />
+      </div>
+      <div>
+        <BaseInput label="Email Address" :modelValue="email" @change="emailChange" type="text" :error="errors.email" />
+      </div>
+      <div>
+        <BaseInput label="Instagram" v-model="instagram" type="text" :error="errors.instagram" />
+      </div>
+    </div>
+
+    <div class="flex justify-end mt-4">
+      <BaseButton label="Submit" size="large" />
+    </div>
+  </form>
+</template>
 <script setup lang="ts">
 import { Customer } from '@/services/CustomerService';
-import { reactive, ref } from 'vue';
-import { email, required } from '@vuelidate/validators';
-import { useVuelidate } from '@vuelidate/core';
+import { useField, useForm } from 'vee-validate';
+import { object, string } from 'yup';
 
 type Props = {
   customer: Customer;
 };
 
 const props = defineProps<Props>();
+
 const emit = defineEmits(['submit']);
 
-const c = reactive<Customer>({ ...props.customer });
+const validationSchema = object({
+  fullName: string().required('Full name is required').trim(),
+  location: string().trim(),
+  about: string().max(254, 'Can not be longer than 254 characters').trim(),
+  email: string().email('Email must be valid').nullable().trim(),
+  instagram: string().nullable().trim(),
+});
 
-const rules = {
-  fullName: { required },
-  email: { val: (v: string | null) => v === null || v === '' || email },
-  instagram: { val: (v: string | null) => v === null || v === '' },
-};
+const { handleSubmit, errors } = useForm({
+  validationSchema,
+});
 
-const submitted = ref(false);
+const { value: fullName } = useField('fullName');
+const { value: location } = useField('location');
+const { value: about } = useField('about');
+const { value: email, handleChange: emailChange } = useField('email');
+const { value: instagram } = useField('instagram');
 
-const v$ = useVuelidate(rules, c);
+fullName.value = props.customer.fullName;
+location.value = props.customer.location;
+about.value = props.customer.about;
+email.value = props.customer.email;
+instagram.value = props.customer.instagram;
 
-function handleSubmit(isFormValid: boolean) {
-  submitted.value = true;
-
-  if (!isFormValid) {
-    return;
-  }
-
-  emit('submit', c);
-}
+const submit = handleSubmit((values) => {
+  props.customer.id ? emit('submit', { id: props.customer.id, ...values }) : emit('submit', { ...values });
+});
 </script>
-<template>
-  <form class="p-fluid" @submit.prevent="handleSubmit(!v$.$invalid)">
-    <div class="p-field p-grid">
-      <label for="firstName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Full Name</label>
-      <div class="p-col-12 p-md-10">
-        <InputText id="firstName" v-model="c.fullName" type="text" />
-        <small v-if="v$.fullName.$invalid && submitted" class="p-error">{{
-          v$.fullName.required.$message.replace('Value', 'Full Name')
-        }}</small>
-      </div>
-    </div>
-    <div class="p-field p-grid">
-      <label for="lastName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Location</label>
-      <div class="p-col-12 p-md-10">
-        <InputText id="lastName" v-model="c.location" type="text" />
-      </div>
-    </div>
-    <div class="p-field p-grid">
-      <label for="lastName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">About</label>
-      <div class="p-col-12 p-md-10">
-        <InputText id="lastName" v-model="c.about" type="text" />
-      </div>
-    </div>
-    <div class="p-field p-grid">
-      <label for="email" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Email</label>
-      <div class="p-col-12 p-md-10">
-        <InputText id="email" v-model="c.email" type="text" />
-        <small v-if="(v$.email.$invalid && submitted) || v$.email.$pending.$response" class="p-error">{{
-          v$.email.email.$message.replace('Value', 'Email')
-        }}</small>
-      </div>
-    </div>
-    <div class="p-field p-grid">
-      <label for="instagram" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Instagram</label>
-      <div class="p-col-12 p-md-10">
-        <InputText id="instagram" v-model="c.instagram" type="text" />
-      </div>
-    </div>
-    <div class="p-field p-grid pt-2">
-      <Button type="submit" label="Submit" class="p-mt-2" />
-    </div>
-  </form>
-</template>

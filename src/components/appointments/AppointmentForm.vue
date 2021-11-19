@@ -1,59 +1,65 @@
+<template>
+  <form @submit.prevent="submit">
+    <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+      <div>
+        <BaseInput label="Title" v-model="title" type="text" :error="errors.title" />
+      </div>
+      <div>
+        <label for="time24">Scheduled Date</label>
+        <Calendar
+          id="time24"
+          class="
+            w-full
+            border-gray-200
+            rounded-md
+            focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500
+          "
+          v-model="scheduledAt"
+          :showTime="true"
+          :showSeconds="false"
+          :manualInput="true"
+          hourFormat="24"
+          dateFormat="d MM yy"
+        />
+        <p v-if="errors.scheduledAt" class="text-xs font-bold text-red-500">{{ errors.scheduledAt }}</p>
+      </div>
+    </div>
+    <div class="flex justify-end mt-4">
+      <BaseButton label="Submit" size="large" />
+    </div>
+  </form>
+</template>
 <script setup lang="ts">
 import { Appointment } from '@/services/AppointmentService';
-import { reactive, ref } from 'vue';
-import { required } from '@vuelidate/validators';
-import { useVuelidate } from '@vuelidate/core';
+import { useField, useForm } from 'vee-validate';
+import { object, string, array } from 'yup';
 
 type Props = {
   appointment: Appointment;
 };
 
 const props = defineProps<Props>();
+
 const emit = defineEmits(['submit']);
 
-const a = reactive<Appointment>({ ...props.appointment });
+const validationSchema = object({
+  scheduledAt: string().trim().required('Scheduled Date is required'),
+  title: string().trim().required('Title field is required'),
+  customers: array().nullable(),
+  transactions: array().nullable(),
+});
 
-const rules = {
-  scheduledAt: { required },
-  title: { required },
-};
+const { handleSubmit, errors } = useForm({
+  validationSchema,
+});
 
-const submitted = ref(false);
+const { value: scheduledAt } = useField('scheduledAt');
+const { value: title } = useField('title');
 
-const v$ = useVuelidate(rules, a);
+scheduledAt.value = props.appointment.scheduledAt;
+title.value = props.appointment.title;
 
-function handleSubmit(isFormValid: boolean) {
-  submitted.value = true;
-
-  if (!isFormValid) {
-    return;
-  }
-
-  emit('submit', a);
-}
+const submit = handleSubmit((values) => {
+  props.appointment.id ? emit('submit', { id: props.appointment.id, ...values }) : emit('submit', { ...values });
+});
 </script>
-<template>
-  <form class="p-fluid py-2" @submit.prevent="handleSubmit(!v$.$invalid)">
-    <div class="p-field p-grid">
-      <label for="lastName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Title</label>
-      <div class="p-col-12 p-md-10">
-        <InputText id="lastName" v-model="a.title" type="text" />
-      </div>
-    </div>
-    <div class="p-field p-grid">
-      <label for="scheduled" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Scheduled at</label>
-      <div class="p-col-12 p-md-10">
-        <Calendar
-          id="scheduled"
-          v-model="a.scheduledAt"
-          :show-time="true"
-          date-format="dd MM yy"
-          :manual-input="false"
-        />
-      </div>
-    </div>
-    <div class="p-field p-grid pt-2">
-      <Button type="submit" label="Submit" class="p-mt-2" />
-    </div>
-  </form>
-</template>

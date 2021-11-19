@@ -1,72 +1,69 @@
+<template>
+  <form @submit.prevent="submit">
+    <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+      <div>
+        <label for="time24">Scheduled Date</label>
+        <Calendar
+          id="time24"
+          class="
+            w-full
+            border-gray-200
+            rounded-md
+            focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500
+          "
+          v-model="date"
+          :manualInput="true"
+          dateFormat="d MM yy"
+        />
+        <p v-if="errors.date" class="text-xs font-bold text-red-500">{{ errors.date }}</p>
+      </div>
+      <div>
+        <BaseInput label="Total amount" v-model="total" type="number" :error="errors.total" step=".01" />
+      </div>
+      <div>
+        <label class="mr-4">Is it paid?</label>
+        <InputSwitch v-model="isPaid" />
+        <p v-if="errors.date" class="text-xs font-bold text-red-500">{{ errors.date }}</p>
+      </div>
+    </div>
+    <div class="flex justify-end mt-4">
+      <BaseButton label="Submit" size="large" />
+    </div>
+  </form>
+</template>
 <script setup lang="ts">
 import { Transaction } from '@/services/TransactionService';
-import { reactive, ref } from 'vue';
-import { required } from '@vuelidate/validators';
-import { useVuelidate } from '@vuelidate/core';
-import CustomerPicker from '@/components/customers/CustomerPicker.vue';
+import { useField, useForm } from 'vee-validate';
+import { object, string, number, boolean } from 'yup';
+import BaseInput from '../base/BaseInput.vue';
 
 type Props = {
   transaction: Transaction;
 };
 
 const props = defineProps<Props>();
+
 const emit = defineEmits(['submit']);
 
-const t = reactive<Transaction>({ ...props.transaction });
+const validationSchema = object({
+  date: string().trim().required('Scheduled Date is required'),
+  total: number().required(),
+  isPaid: boolean(),
+});
 
-const rules = {
-  total: { val: (v: number) => v > 0 || v < 0 },
-  date: { required },
-  isPaid: { required },
-  customer: { required },
-};
+const { handleSubmit, errors } = useForm({
+  validationSchema,
+});
 
-const submitted = ref(false);
+const { value: date } = useField('date');
+const { value: total } = useField('total');
+const { value: isPaid } = useField('isPaid');
 
-const v$ = useVuelidate(rules, t);
+date.value = props.transaction.date;
+total.value = props.transaction.total;
+isPaid.value = props.transaction.isPaid;
 
-function handleSubmit(isFormValid: boolean) {
-  submitted.value = true;
-
-  if (!isFormValid) {
-    return;
-  }
-
-  emit('submit', t);
-}
-const pickCustomer: boolean = props.transaction.customer ? false : true;
+const submit = handleSubmit((values) => {
+  props.transaction.id ? emit('submit', { id: props.transaction.id, ...values }) : emit('submit', { ...values });
+});
 </script>
-<template>
-  <form class="p-fluid" @submit.prevent="handleSubmit(!v$.$invalid)">
-    <div class="p-field p-grid">
-      <label for="total" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Total</label>
-      <div class="p-col-12 p-md-10">
-        <InputNumber id="total" v-model="t.total" mode="decimal" :min-fraction-digits="2" />
-      </div>
-    </div>
-    <div class="p-field p-grid">
-      <label for="isPaid" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Paid</label>
-      <div class="p-col-12 p-md-10">
-        <InputSwitch id="isPaid" v-model="t.isPaid" />
-      </div>
-    </div>
-    <div class="p-field p-grid">
-      <label for="scheduled" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Scheduled at</label>
-      <div class="p-col-12 p-md-10">
-        <Calendar id="scheduled" v-model="t.date" date-format="dd MM yy" :manual-input="false" />
-      </div>
-    </div>
-    <div v-if="pickCustomer" class="p-field p-grid">
-      <label class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Customer</label>
-      <div class="p-col-10 p-md-8">
-        <customer-picker @selected="t.customer = $event" />
-        <small v-if="v$.customer.$invalid && submitted" class="p-error">{{
-          v$.customer.required.$message.replace('Value', 'Customer')
-        }}</small>
-      </div>
-    </div>
-    <div class="p-field p-grid pt-2">
-      <Button type="submit" label="Submit" class="p-mt-2" />
-    </div>
-  </form>
-</template>

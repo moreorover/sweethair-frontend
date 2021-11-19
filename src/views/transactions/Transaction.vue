@@ -1,48 +1,52 @@
 <template>
-  <div class="hero is-small welcome is-info my-3">
-    <div class="hero-body">
-      <div class="columns">
-        <div class="column has-text-left my-auto">
-          <p class="title is-3">{{ transaction?.id }}</p>
-        </div>
-        <div class="column has-text-right my-auto">
-          <p class="subtitle">{{ transaction?.total }} {{ transaction?.isPaid }}</p>
-          <p class="subtitle">{{ transaction && format(new Date(transaction.date), 'dd MMMM yyyy') }}</p>
-        </div>
-      </div>
+  <div class="flex justify-between">
+    <h3 class="text-3xl font-medium text-gray-700">
+      {{ transaction && format(new Date(transaction.date), 'd MMMM yyyy - HH:mm') }}
+    </h3>
+
+    <TransactionDialog :transaction="transaction" header="Edit Transaction" label="Edit" buttonSize="large" />
+  </div>
+  <div class="flex max-w-screen-md">
+    <div class="flex-grow max-h-full mx-6 m-auto">
+      <div
+        class="h-1"
+        :class="{
+          'bg-red-700': transaction && transaction.total < 0,
+          'bg-green-700': transaction && transaction.total > 0,
+        }"
+      ></div>
     </div>
-    <div class="hero-foot">
-      <nav class="tabs">
-        <div class="container end">
-          <ul>
-            <!-- <router-link to="/customers/new">Create Customer</router-link> -->
-          </ul>
-        </div>
-      </nav>
+    <div class="flex flex-none text-xl font-bold text-gray-900 px-6">{{ transaction && transaction.total }}</div>
+    <span
+      class="text-xs mx-auto px-2 font-medium text-white rounded-full py-0.5"
+      :class="{ 'bg-indigo-500': transaction && transaction.isPaid, 'bg-pink-500': transaction && !transaction.isPaid }"
+    >
+      {{ transaction && transaction.isPaid ? 'Paid' : 'Awaiting' }}
+    </span>
+    <div class="flex-grow max-h-full mx-6 m-auto">
+      <div
+        class="h-1"
+        :class="{
+          'bg-red-700': transaction && transaction.total < 0,
+          'bg-green-700': transaction && transaction.total > 0,
+        }"
+      ></div>
     </div>
   </div>
 </template>
-<script lang="ts">
-import { defineComponent, computed } from 'vue';
-import { useRoute } from 'vue-router';
+<script setup lang="ts">
+import { computed } from 'vue';
+import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
 import { useTransactionsStore } from '@/store/transactionsStore';
+import { Transaction } from '@/services/TransactionService';
 import { format } from 'date-fns';
+import { useRoute } from 'vue-router';
 
-export default defineComponent({
-  components: {},
-  setup() {
-    const store = useTransactionsStore();
-    const id = useRoute().params.id as string;
+const route = useRoute();
 
-    store.fetchAll();
+const transactionsStore = useTransactionsStore();
 
-    const transaction = computed(() => store.getTransactionById(id));
+const all = transactionsStore.all;
 
-    if (!transaction.value) {
-      throw Error('Transaction was not found.');
-    }
-
-    return { transaction, format };
-  },
-});
+const transaction = computed<Transaction | undefined>(() => all.find((t) => t.id === route.params.id));
 </script>

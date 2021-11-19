@@ -2,80 +2,99 @@ import { Appointment } from './../services/AppointmentService';
 import CustomerService, { Customer } from '@/services/CustomerService';
 import { defineStore } from 'pinia';
 import _ from 'lodash';
+import { string } from 'yup';
 
 interface CustomerStore {
-  all: Customer[];
+  all: Record<string, Customer>;
+  ids: string[];
   loaded: boolean;
-  selectedCustomer: Customer | null;
+  isLoading: boolean;
 }
 
 export const useCustomersStore = defineStore({
   id: 'customersStore',
-  state: (): CustomerStore => ({ all: [] as Customer[], loaded: false, selectedCustomer: null }),
+  state: (): CustomerStore => ({
+    all: {},
+    ids: [],
+    loaded: false,
+    isLoading: false,
+  }),
   getters: {
-    getAll(state) {
+    getRaw(state): Record<string, Customer> {
       return state.all;
     },
-    getIsLoaded(state) {
-      return state.loaded;
+    getAll(state): Customer[] {
+      return state.ids.map((id) => this.all[id]);
     },
-    getCustomerById: (state) => (id: string) => {
-      if (state.loaded) {
-        return state.all.find((c) => c.id === id);
-      } else {
-        console.log('State is not loaded.');
-      }
+    getIds(state): string[] {
+      return state.ids;
     },
-    getSelectedCustomer(state) {
-      return state.selectedCustomer;
-    },
-    getCustomersByAppointment: (state) => (appointment: Appointment | undefined) => {
-      if (appointment) {
-        const customerIds: (string | undefined)[] | undefined = appointment.customers?.map((customer) => customer.id);
-        const transactionIds = appointment.transactions?.map((transactions) => transactions.id);
-        const customers: Customer[] = state.all.filter((customer) => customerIds?.includes(customer.id));
-        customers.forEach(
-          (customer) => (customer.transactions = customer.transactions?.filter((t) => transactionIds?.includes(t.id)))
-        );
-        return customers;
-      }
-      return [];
-    },
+    getCustomerById:
+      (state) =>
+      (id: string): Customer => {
+        return state.all[id];
+      },
+    getCustomersByAppointment:
+      (state) =>
+      (appointment: Appointment | undefined): Customer[] => {
+        if (appointment) {
+          const customerIds: (string | undefined)[] | undefined = appointment.customers?.map((customer) => customer.id);
+          const transactionIds = appointment.transactions?.map((transactions) => transactions.id);
+          const customers: Customer[] = state.ids
+            .map((id) => state.all[id])
+            .filter((customer) => customerIds?.includes(customer.id));
+          customers.forEach(
+            (customer) => (customer.transactions = customer.transactions?.filter((t) => transactionIds?.includes(t.id)))
+          );
+          return customers;
+        }
+        return [];
+      },
+    shouldLoadState: (state): boolean => !state.isLoading && !state.loaded,
   },
   actions: {
     async fetchAll() {
-      await CustomerService.getAll()
-        .then((response) => {
-          this.all = response.data;
-          this.loaded = true;
-        })
-        .catch(() => {
-          this.loaded = false;
-          console.log('Not loaded, something went wrong loading Customers');
-        });
+      this.isLoading = true;
+      try {
+        const { data } = await CustomerService.getAll();
+        const ids: string[] = [];
+        const all: Record<string, Customer> = {};
+
+        for (const customer of data) {
+          if (!ids.includes(customer.id)) {
+            ids.push(customer.id);
+          }
+          all[customer.id] = customer;
+        }
+        this.all = all;
+        this.ids = ids;
+        this.loaded = true;
+        this.isLoading = false;
+      } catch (error) {
+        this.all = {};
+        this.ids = [];
+        this.loaded = false;
+        this.isLoading = false;
+        console.log('Not loaded, something went wrong loading Customers');
+        console.log({ error });
+      }
     },
     async create(customer: Customer) {
-      await CustomerService.create(customer)
-        .then((response) => {
-          this.all.push(response.data);
-          this.all = _.sortBy(this.all, ['fullName']);
-        })
-        .catch((err) => console.log('Failed to update Customer', customer, err));
+      try {
+        const { data } = await CustomerService.create(customer);
+        this.all[data.id] = data;
+        this.ids.push(data.id);
+      } catch (error) {
+        console.log('Failed to create Customer', customer, error);
+      }
     },
     async update(customer: Customer) {
-      await CustomerService.update(customer)
-        .then((response) => {
-          const i = this.all.findIndex((c) => c.id === response.data.id);
-          if (i > -1) {
-            this.all[i] = response.data;
-          } else {
-            this.all.push(response.data);
-          }
-        })
-        .catch((err) => console.log('Failed to update Customer', customer, err));
-    },
-    selectCustomer(customer: Customer | null) {
-      this.selectedCustomer = customer;
+      try {
+        const { data } = await CustomerService.update(customer);
+        this.all[data.id] = data;
+      } catch (error) {
+        console.log('Failed to update Customer', customer, error);
+      }
     },
   },
 });

@@ -8,13 +8,11 @@ import { getMonth, getYear } from 'date-fns';
 interface AppointmentStore {
   all: Appointment[];
   loaded: boolean;
-  new: Appointment | null;
-  selected: Appointment | null;
 }
 
 export const useAppointmentsStore = defineStore({
   id: 'appointmentsStore',
-  state: (): AppointmentStore => ({ all: [] as Appointment[], loaded: false, new: null, selected: null }),
+  state: (): AppointmentStore => ({ all: [] as Appointment[], loaded: false }),
   getters: {
     getAll(state) {
       return state.all;
@@ -38,12 +36,18 @@ export const useAppointmentsStore = defineStore({
         console.log('State is not loaded.');
       }
     },
-    getNew(state) {
-      return state.new;
-    },
-    getSelected(state) {
-      return state.selected;
-    },
+    getAppointmentsByCustomer:
+      (state) =>
+      (customer: Customer | undefined): Appointment[] => {
+        if (customer) {
+          const customerId: string | undefined = customer.id;
+          const appointments: Appointment[] = state.all.filter((a) =>
+            a.customers?.map((c) => c.id).includes(customerId)
+          );
+          return appointments;
+        }
+        return [];
+      },
   },
   actions: {
     async fetchAll() {

@@ -1,85 +1,109 @@
 <template>
-  <div class="px-0 py-4 md:px-4">
-    <div class="border-2 surface-border border-round surface-card">
-      <div class="surface-section p-5">
-        <div class="flex align-items-start flex-column lg:flex-row lg:justify-content-between">
-          <div class="flex align-items-start flex-column md:flex-row">
-            <div>
-              <span class="text-900 font-medium text-3xl">
-                {{ appointment?.scheduledAt && format(new Date(appointment?.scheduledAt), 'dd/MMMM/yyy hh:mm') }}
-              </span>
-              <span>{{ appointment?.title }}</span>
-            </div>
-          </div>
-          <div class="flex align-items-end">
-            <appointment-modal :appointment="appointment" label="Edit" header="Edit Appointment" />
-          </div>
+  <div class="flex justify-between">
+    <h3 class="text-3xl font-medium text-gray-700">{{ appointment?.title }}</h3>
+    <AppointmentDialog :appointment="appointment" header="Edit Appointment" label="Edit" buttonSize="large" />
+    <MultipleCustomerPickerDialog
+      :currentSelection="appointment?.customers || undefined"
+      header="Pick customers"
+      label="Pick Customers"
+      buttonSize="medium"
+      @submit="pickedCustomers($event)"
+    />
+  </div>
+  <div class="flex flex-col mx-auto gap-8 pt-3">
+    <div class="container border-2 border-gray-400 p-2" v-for="customer in appointment?.customers" :key="customer.id">
+      <div class="flex justify-between">
+        <h4 class="text-1xl font-semibold text-indigo-600">{{ customer.fullName }}</h4>
+        <div class="flex gap-1">
+          <SingleTransactionPickerDialog
+            v-if="spareTransactions(customer)"
+            header="Pick Transaction"
+            label="Pick Transaction"
+            buttonSize="small"
+            :customer="customer"
+            @submit="pickedTransactions($event)"
+          />
+          <BaseConfirm v-if="customerTransactions(customer).value.length < 1" @delete="removeCustomer(customer)" />
+          <TransactionDialog
+            header="Book a Transaction"
+            label="Book Transaction"
+            :customer="customer"
+            :appointment="appointment"
+          />
         </div>
-        <div class="flex align-items-start flex-column lg:flex-row lg:justify-content-between py-2">
-          <div class="flex align-items-start flex-column md:flex-row"></div>
-          <div class="flex align-items-end">
-            <add-customers-modal :appointment="appointment" />
-          </div>
-        </div>
+      </div>
+
+      <div
+        v-if="customerTransactions(customer).value.length > 0"
+        v-for="transaction in customerTransactions(customer).value"
+      >
+        <TransactionCard :transaction="transaction" />
       </div>
     </div>
   </div>
-  <div v-for="customer in customers" :key="customer.id" class="px-0 py-4 md:px-4">
-    <div class="border-2 surface-border border-round surface-card">
-      <customer-vue :id="customer.id" :appointment-id="appointment?.id">
-        <template v-if="customerTransactions(customer).value === 0" #Action>
-          <Button
-            class="p-button-sm"
-            label="Remove Customer From Appointment"
-            @click="removeCustomer(customer)"
-          ></Button>
-        </template>
-      </customer-vue>
-    </div>
-  </div>
+
+  <BaseCardGrid>
+    <TransactionCard
+      v-for="transaction in appointmentTransactionsNoCustomer"
+      :key="transaction.id"
+      :transaction="transaction"
+    />
+  </BaseCardGrid>
 </template>
-<script lang="ts">
-import { defineComponent, computed } from 'vue';
-import { useRoute } from 'vue-router';
+<script setup lang="ts">
+import { computed } from 'vue';
 import { useAppointmentsStore } from '@/store/appointmentsStore';
-import { format } from 'date-fns';
-import { useCustomersStore } from '@/store/customersStore';
-import { useTransactionsStore } from '@/store/transactionsStore';
-import AddCustomersModal from '@/components/appointments/AddCustomersModal.vue';
+import { Appointment } from '@/services/AppointmentService';
+import AppointmentDialog from '@/components/appointments/AppointmentDialog.vue';
+import MultipleCustomerPickerDialog from '@/components/customers/MultipleCustomerPickerDialog.vue';
 import { Customer } from '@/services/CustomerService';
-import CustomerVue from '../customers/Customer.vue';
-import AppointmentModal from '@/components/appointments/AppointmentModal.vue';
+import { useTransactionsStore } from '@/store/transactionsStore';
+import { Transaction } from '@/services/TransactionService';
+import TransactionCard from '@/components/transactions/TransactionCard.vue';
+import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
+import SingleTransactionPickerDialog from '@/components/transactions/SingleTransactionPickerDialog.vue';
+import { useRoute } from 'vue-router';
+import { useCustomersStore } from '@/store/customersStore';
 
-export default defineComponent({
-  components: { AddCustomersModal, CustomerVue, AppointmentModal },
-  setup() {
-    const appointmentsStore = useAppointmentsStore();
-    const customersStore = useCustomersStore();
-    const transactionsStore = useTransactionsStore();
-    const id = useRoute().params.id as string;
+const route = useRoute();
 
+const appointmentsStore = useAppointmentsStore();
+const transactionsStore = useTransactionsStore();
+const customersStore = useCustomersStore();
+
+appointmentsStore.fetchAll();
+transactionsStore.fetchAll();
+
+const appointment = computed<Appointment | undefined>(() =>
+  appointmentsStore.all.find((a) => a.id === route.params.id)
+);
+
+const appointmentTransactionsNoCustomer = computed<Transaction[]>(
+  () => transactionsStore.getTransactionsByAppointmentCustomerNull(appointment.value) || []
+);
+
+const spareTransactions = (customer: Customer): boolean =>
+  0 <
+  computed<Transaction[]>(() => transactionsStore.getTransactionsByCustomerAndAppointmentNull(customer)).value.length;
+
+const pickedCustomers = (customers: Customer[]) => {
+  if (appointment.value && customers.length > 0) {
+    appointment.value?.customers?.push(...customers);
+    appointmentsStore.update(appointment.value);
+  }
+};
+
+const pickedTransactions = (transaction: Transaction) => {
+  if (appointment.value && transaction) {
+    transactionsStore.update({ ...transaction, appointment: appointment.value });
     appointmentsStore.fetchAll();
-    customersStore.fetchAll();
-    transactionsStore.fetchAll();
+  }
+};
 
-    const appointment = computed(() => appointmentsStore.getAppointmentById(id));
-    const customers = computed(() => customersStore.getCustomersByAppointment(appointment.value));
-    // const transactions = computed(() => transactionsStore.getTransactionsByAppointment(appointment.value));
+const customerTransactions = (customer: Customer) =>
+  computed<Transaction[]>(() => transactionsStore.getTransactionsByCustomerAndAppointment(customer, appointment.value));
 
-    if (!appointment.value) {
-      throw Error('Appointment was not found.');
-    }
-
-    const customerTransactions = (customer: Customer) =>
-      computed<number>(
-        () => transactionsStore.getTransactionsByCustomerAndAppointmentId(customer, appointment.value).length
-      );
-
-    const removeCustomer = (customer: Customer) => {
-      appointmentsStore.removeCustomer(appointment.value, customer);
-    };
-
-    return { appointment, format, customers, removeCustomer, customerTransactions };
-  },
-});
+const removeCustomer = (customer: Customer) => {
+  appointmentsStore.removeCustomer(appointment.value, customer);
+};
 </script>
