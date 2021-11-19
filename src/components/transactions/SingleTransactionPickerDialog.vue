@@ -67,10 +67,11 @@ const removeSelection = () => {
 };
 
 const submit = () => {
-  emit('submit', selection.value);
-  selection.value = undefined;
-
-  toggleModal();
+  if (selection.value) {
+    emit('submit', selection.value);
+    selection.value = undefined;
+    toggleModal();
+  }
 };
 
 const cancel = () => {
