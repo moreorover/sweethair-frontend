@@ -2,7 +2,6 @@ import { Customer } from './../services/CustomerService';
 import TransactionService, { Transaction } from './../services/TransactionService';
 import { defineStore } from 'pinia';
 import { Appointment } from '@/services/AppointmentService';
-import { remove } from 'lodash';
 
 interface TransactionStore {
   all: Record<string, Transaction>;
