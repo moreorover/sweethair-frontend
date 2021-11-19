@@ -36,7 +36,9 @@ import CustomerCard from '@/components/customers/CustomerCard.vue';
 import BaseCardGrid from '@/components/base/BaseCardGrid.vue';
 
 const customersStore = useCustomersStore();
-customersStore.fetchAll();
+
+if (customersStore.shouldLoadState) await customersStore.fetchAll();
+
 const customers = computed(() =>
   customersStore.getAll.filter(
     (c) =>
@@ -47,5 +49,6 @@ const customers = computed(() =>
       c.instagram?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase())
   )
 );
+
 const search = ref('');
 </script>

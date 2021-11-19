@@ -11,7 +11,7 @@ import Modal from './views/Modal.vue';
 import Card from './views/Card.vue';
 import Blank from './views/Blank.vue';
 
-import Customers from './views/customers/Customers.vue';
+import ShowCustomers from './views/customers/ShowCustomers.vue';
 import ShowCustomer from './views/customers/ShowCustomer.vue';
 import Appointments from './views/appointments/Appointments.vue';
 import Appointment from './views/appointments/Appointment.vue';
@@ -70,7 +70,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/customers',
     name: 'Customers',
-    component: Customers,
+    component: ShowCustomers,
     meta: { requiresAuth: true },
   },
   {

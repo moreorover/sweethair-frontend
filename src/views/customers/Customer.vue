@@ -30,22 +30,23 @@ import AppointmentCard from '@/components/appointments/AppointmentCard.vue';
 import { useAppointmentsStore } from '@/store/appointmentsStore';
 import { useTransactionsStore } from '@/store/transactionsStore';
 import TransactionCard from '@/components/transactions/TransactionCard.vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
+const router = useRouter();
+const id: string = route.params.id instanceof Array ? route.params.id[0] : route.params.id;
 
 const customersStore = useCustomersStore();
 const appointmentsStore = useAppointmentsStore();
 const transactionsStore = useTransactionsStore();
 
 if (customersStore.shouldLoadState) await customersStore.fetchAll();
+if (!customersStore.getIds.includes(id)) router.replace({ name: 'Customers' });
 
 appointmentsStore.fetchAll();
 transactionsStore.fetchAll();
 
-const customers = customersStore.all;
-
-const customer = computed<Customer | undefined>(() => customers.find((c) => c.id === route.params.id));
+const customer = computed<Customer>(() => customersStore.getCustomerById(id));
 
 const customerAppointments = appointmentsStore.getAppointmentsByCustomer(customer.value);
 

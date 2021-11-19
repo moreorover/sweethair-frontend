@@ -55,8 +55,8 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), { currentSelection: undefined, customersToPick: undefined });
 const emit = defineEmits(['submit']);
 
-const store = useCustomersStore();
-store.fetchAll();
+const customersStore = useCustomersStore();
+
 const { showModal, toggleModal } = useModal();
 
 const search = ref('');
@@ -72,7 +72,7 @@ const customers = computed(() =>
             c.email?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
             c.instagram?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()))
       )
-    : store.getAll.filter(
+    : customersStore.getAll.filter(
         (c) =>
           !fullSelection.value.map((cs) => cs.id).includes(c.id) &&
           (c.fullName.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||

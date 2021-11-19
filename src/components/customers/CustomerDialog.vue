@@ -38,9 +38,9 @@ const store = useCustomersStore();
 const entityCleaner = useEntityCleaner();
 const { showModal, toggleModal } = useModal();
 
-const submit = (customer: Customer) => {
-  const cleanCustomer: Customer = entityCleaner.clean(customer);
-  cleanCustomer.id ? store.update(cleanCustomer) : store.create(cleanCustomer);
+const submit = async (customer: Customer) => {
+  const cleanCustomer: Customer = entityCleaner.clean(customer, true);
+  cleanCustomer.id ? await store.update(cleanCustomer) : await store.create(cleanCustomer);
   toggleModal();
 };
 </script>

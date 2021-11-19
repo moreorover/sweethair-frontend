@@ -73,7 +73,6 @@ const customersStore = useCustomersStore();
 
 appointmentsStore.fetchAll();
 transactionsStore.fetchAll();
-customersStore.fetchAll();
 
 const appointment = computed<Appointment | undefined>(() =>
   appointmentsStore.all.find((a) => a.id === route.params.id)
