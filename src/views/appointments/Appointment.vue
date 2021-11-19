@@ -62,48 +62,46 @@ import { Transaction } from '@/services/TransactionService';
 import TransactionCard from '@/components/transactions/TransactionCard.vue';
 import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
 import SingleTransactionPickerDialog from '@/components/transactions/SingleTransactionPickerDialog.vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useCustomersStore } from '@/store/customersStore';
 
 const route = useRoute();
+const router = useRouter();
+const id: string = route.params.id instanceof Array ? route.params.id[0] : route.params.id;
 
 const appointmentsStore = useAppointmentsStore();
 const transactionsStore = useTransactionsStore();
-const customersStore = useCustomersStore();
 
-appointmentsStore.fetchAll();
+if (appointmentsStore.shouldLoadState) await appointmentsStore.fetchAll();
+if (!appointmentsStore.getIds.includes(id)) router.replace({ name: 'Appointments' });
+
 transactionsStore.fetchAll();
 
-const appointment = computed<Appointment | undefined>(() =>
-  appointmentsStore.all.find((a) => a.id === route.params.id)
-);
+const appointment = computed<Appointment>(() => appointmentsStore.getAppointmentById(id));
 
-const appointmentTransactionsNoCustomer = computed<Transaction[]>(
-  () => transactionsStore.getTransactionsByAppointmentCustomerNull(appointment.value) || []
+const appointmentTransactionsNoCustomer = computed<Transaction[]>(() =>
+  transactionsStore.getTransactionsByAppointmentCustomerNull(appointment.value)
 );
 
 const spareTransactions = (customer: Customer): boolean =>
   0 <
   computed<Transaction[]>(() => transactionsStore.getTransactionsByCustomerAndAppointmentNull(customer)).value.length;
 
-const pickedCustomers = (customers: Customer[]) => {
-  if (appointment.value && customers.length > 0) {
-    appointment.value?.customers?.push(...customers);
-    appointmentsStore.update(appointment.value);
-  }
+const pickedCustomers = async (customers: Customer[]) => {
+  appointment.value.customers
+    ? appointment.value.customers?.push(...customers)
+    : (appointment.value.customers = customers);
+  await appointmentsStore.update(appointment.value);
 };
 
-const pickedTransactions = (transaction: Transaction) => {
-  if (appointment.value && transaction) {
-    transactionsStore.update({ ...transaction, appointment: appointment.value });
-    appointmentsStore.fetchAll();
-  }
+const pickedTransactions = async (transaction: Transaction) => {
+  await transactionsStore.update({ ...transaction, appointment: appointment.value });
 };
 
 const customerTransactions = (customer: Customer) =>
   computed<Transaction[]>(() => transactionsStore.getTransactionsByCustomerAndAppointment(customer, appointment.value));
 
-const removeCustomer = (customer: Customer) => {
-  appointmentsStore.removeCustomer(appointment.value, customer);
+const removeCustomer = async (customer: Customer) => {
+  await appointmentsStore.removeCustomer(appointment.value, customer);
 };
 </script>
