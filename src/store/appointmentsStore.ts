@@ -24,7 +24,7 @@ export const useAppointmentsStore = defineStore({
       return state.all;
     },
     getAll(state): Appointment[] {
-      return state.ids.map((id) => this.all[id]);
+      return state.ids.map((id: string) => this.all[id]);
     },
     getIds(state): string[] {
       return state.ids;
@@ -38,16 +38,18 @@ export const useAppointmentsStore = defineStore({
       (state) =>
       (month: number, year: number): Appointment[] => {
         return state.ids
-          .map((id) => state.all[id])
-          .filter((x) => getMonth(new Date(x.scheduledAt)) == month && getYear(new Date(x.scheduledAt)) == year);
+          .map((id: string) => state.all[id])
+          .filter(
+            (x: Appointment) => getMonth(new Date(x.scheduledAt)) == month && getYear(new Date(x.scheduledAt)) == year
+          );
       },
     getAppointmentsByCustomer:
       (state) =>
       (customer: Customer): Appointment[] => {
         const { id: customerId } = customer;
         const appointments: Appointment[] = state.ids
-          .map((id) => state.all[id])
-          .filter((a) => a.customers?.map((c) => c.id).includes(customerId));
+          .map((id: string) => state.all[id])
+          .filter((a: Appointment) => a.customers?.map((c) => c.id).includes(customerId));
         return appointments;
       },
     shouldLoadState: (state): boolean => !state.loading && !state.loaded,
