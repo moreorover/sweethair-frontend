@@ -31,6 +31,7 @@
       </BaseCardGrid>
     </div>
   </div>
+  <div data-test="cs">{{ customers }}</div>
 </template>
 
 <script setup lang="ts">

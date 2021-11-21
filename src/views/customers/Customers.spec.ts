@@ -812,21 +812,14 @@ const customers: Customer[] = [
   },
 ];
 
-const mock = new MockAdapter(axios);
-
-// mock.onGet('/customers').reply(200, customers);
-
-mock.onAny().reply(() => {
-  console.log('requested something');
-  return [200, customers];
-});
-
 describe('Customers', () => {
   it('jada jada', async () => {
-    const pinia = createTestingPinia();
+    const mock = new MockAdapter(axios);
+    mock.onGet('/customers').reply(200, customers);
+
     const wrapper = mount(ShowCustomers, {
       global: {
-        plugins: [pinia],
+        plugins: [createTestingPinia({ stubActions: false })],
         components: { BaseInput, BaseButton, BaseCardGrid, BaseConfirm, BaseModal, Button, Dialog },
       },
     });
@@ -835,13 +828,12 @@ describe('Customers', () => {
     await flushPromises();
 
     const title = wrapper.find('[data-test="title"]');
-    // const customer = wrapper.find('[data-test="32d0a23f-9f03-4ea4-a5e4-f4edfae56b69"]');
     const cs = wrapper.find('[data-test="cs"]');
 
     expect(title.text()).toEqual('Customers');
     expect(customersStore.fetchAll).toHaveBeenCalledTimes(1);
+    expect(mock.history.get.length).toBe(1);
+    expect(customersStore.all).toEqual(customers);
     expect(customersStore.fetchAll).toHaveBeenLastCalledWith();
-    // expect(customer.text()).toEqual('');
-    expect(cs.text()).toContain('[]');
   });
 });
