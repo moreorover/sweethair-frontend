@@ -47,6 +47,7 @@ describe('Customers', () => {
 
     const title = wrapper.find('[data-test="title"]');
     const cs = wrapper.find('[data-test="customer-card-c40e8d86-d675-4b7c-8a87-efce1858f12f"]');
+    const css = wrapper.findAll('[data-test^="customer-card-"');
 
     expect(title.text()).toEqual('Customers');
     expect(customersStore.fetchAll).toHaveBeenCalledTimes(1);
@@ -54,5 +55,6 @@ describe('Customers', () => {
     expect(customersStore.getAll).toEqual(customers);
     expect(customersStore.fetchAll).toHaveBeenLastCalledWith();
     expect(cs.text()).toContain('1113234234');
+    expect(css.length).toEqual(43);
   });
 });
