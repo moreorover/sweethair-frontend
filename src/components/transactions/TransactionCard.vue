@@ -31,8 +31,25 @@
       </div>
     </div>
     <div class="flex gap-1 justify-items-end pt-2">
-      <router-link v-slot="{ navigate }" :to="{ name: `Transaction`, params: { id: transaction.id } }" custom>
-        <BaseButton @onClick="navigate" label="Show" />
+      <router-link
+        :to="{ name: `Transaction`, params: { id: transaction.id } }"
+        class="
+          tracking-wide
+          text-white
+          capitalize
+          transition-colors
+          duration-200
+          transform
+          bg-indigo-600
+          rounded-md
+          hover:bg-indigo-500
+          focus:outline-none focus:bg-indigo-500
+          px-2
+          py-0
+          font-normal
+        "
+      >
+        Show
       </router-link>
       <TransactionDialog :transaction="transaction" header="Edit Transaction" label="Edit" buttonSize="small" />
       <BaseConfirm @delete="deleteTransaction" />
