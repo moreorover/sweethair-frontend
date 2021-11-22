@@ -22,25 +22,13 @@ jest.mock('vue-router', () => ({
     replace: () => {},
     push: () => {},
   })),
+  beforeEach: jest.fn(),
 }));
 
 const mock = new MockAdapter(apiClient);
 mock.onGet('/customers').reply(200, customers);
 mock.onGet('/appointments').reply(200, appointments);
 mock.onGet('/transactions').reply(200, transactions);
-
-mock.onGet('/auth/me').reply(200, {
-  createdOn: '2021-08-26T20:16:44.175Z',
-  modifiedOn: '2021-08-26T20:16:53.312Z',
-  id: '5a1bfa0a-a988-4fc5-af72-442f7f549fed',
-  firstName: 'Admin',
-  lastName: 'Sweet',
-  email: 'test@gmail.com',
-  role: {
-    id: 1,
-    name: 'Admin',
-  },
-});
 
 function factory(options?: TestingOptions) {
   const wrapper = mount(ShowCustomer, {
