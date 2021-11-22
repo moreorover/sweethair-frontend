@@ -4,7 +4,6 @@ import { flushPromises } from '@vue/test-utils';
 import MockAdapter from 'axios-mock-adapter';
 import apiClient from '@/axios/axios';
 import { createTestingPinia, TestingOptions } from '@pinia/testing';
-import router from '@/router';
 import { useCustomersStore } from '@/store/customersStore';
 import { customers } from './mockData';
 
@@ -35,8 +34,19 @@ mock.onGet('/auth/me').reply(200, {
 function factory(options?: TestingOptions) {
   const wrapper = mount(ShowCustomers, {
     global: {
-      plugins: [createTestingPinia(options), router],
-      components: { BaseInput, BaseButton, BaseCardGrid, BaseConfirm, BaseModal, Button, Dialog },
+      plugins: [createTestingPinia(options)],
+      components: {
+        BaseInput,
+        BaseButton,
+        BaseCardGrid,
+        BaseConfirm,
+        BaseModal,
+        Button,
+        Dialog,
+        RouterLink: {
+          template: '<div data-test="link" />',
+        },
+      },
     },
   });
 
@@ -48,9 +58,9 @@ function factory(options?: TestingOptions) {
 describe('Customers', () => {
   const { wrapper, customersStore } = factory({ stubActions: false });
 
-  it('mocked axios requests called 2 time', async () => {
+  it('mocked axios requests called 1 time', async () => {
     await flushPromises();
-    expect(mock.history.get.length).toBe(2);
+    expect(mock.history.get.length).toBe(1);
   });
 
   it('check store', async () => {

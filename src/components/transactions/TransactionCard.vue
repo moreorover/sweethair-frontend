@@ -31,7 +31,7 @@
       </div>
     </div>
     <div class="flex gap-1 justify-items-end pt-2">
-      <router-link
+      <RouterLink
         :to="{ name: `Transaction`, params: { id: transaction.id } }"
         class="
           tracking-wide
@@ -50,7 +50,7 @@
         "
       >
         Show
-      </router-link>
+      </RouterLink>
       <TransactionDialog :transaction="transaction" header="Edit Transaction" label="Edit" buttonSize="small" />
       <BaseConfirm @delete="deleteTransaction" />
       <SingleCustomerPickerDialog

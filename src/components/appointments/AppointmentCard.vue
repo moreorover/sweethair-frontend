@@ -25,7 +25,7 @@
       </div>
     </div>
     <div class="flex gap-1 justify-items-end pt-2">
-      <router-link
+      <RouterLink
         :to="{ name: `Appointment`, params: { id: appointment.id } }"
         class="
           tracking-wide
@@ -44,7 +44,7 @@
         "
       >
         Show
-      </router-link>
+      </RouterLink>
       <AppointmentDialog :appointment="appointment" header="Edit Appointment" label="Edit" buttonSize="small" />
     </div>
   </div>
