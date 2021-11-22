@@ -2,7 +2,6 @@ import AppointmentService, { Appointment } from '@/services/AppointmentService';
 import { defineStore } from 'pinia';
 import { Customer } from '@/services/CustomerService';
 import { getMonth, getYear } from 'date-fns';
-import router from '@/router';
 
 interface AppointmentStore {
   all: Record<string, Appointment>;
@@ -81,21 +80,21 @@ export const useAppointmentsStore = defineStore({
         console.log({ error });
       }
     },
-    async create(appointment: Appointment) {
+    async create(appointment: Appointment): Promise<Appointment | void> {
       try {
         const { data } = await AppointmentService.create(appointment);
         this.all[data.id] = data;
         this.ids.push(data.id);
-        router.push({ name: 'Appointment', params: { id: data.id } });
+        return data;
       } catch (error) {
         console.log('Failed to create Appointment', appointment, error);
       }
     },
-    async update(appointment: Appointment) {
+    async update(appointment: Appointment): Promise<Appointment | void> {
       try {
         const { data } = await AppointmentService.update(appointment);
         this.all[data.id] = data;
-        router.push({ name: 'Appointment', params: { id: data.id } });
+        return data;
       } catch (error) {
         console.log('Failed to update Appointment', appointment, error);
       }
