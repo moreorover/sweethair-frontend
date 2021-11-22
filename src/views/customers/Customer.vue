@@ -34,7 +34,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
 const router = useRouter();
-const id: string = route.params.id instanceof Array ? route.params.id[0] : route.params.id;
+const id: string = route.params['id'] as string;
 
 const customersStore = useCustomersStore();
 const appointmentsStore = useAppointmentsStore();
