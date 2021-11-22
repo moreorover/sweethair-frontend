@@ -24,14 +24,13 @@
       <BaseCardGrid>
         <customer-card
           v-for="customer in customers"
-          :data-test="customer.id"
+          :data-test="`customer-card-${customer.id}`"
           :key="customer.id"
           :customer="customer"
         ></customer-card>
       </BaseCardGrid>
     </div>
   </div>
-  <div data-test="cs">{{ customers }}</div>
 </template>
 
 <script setup lang="ts">
