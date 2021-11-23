@@ -58,7 +58,7 @@
         header="Pick Customer"
         label="Pick Customer"
         buttonSize="small"
-        :customersToPick="customersToPick"
+        :customers="customersToPick"
         @submit="customerPicked($event)"
       />
     </div>
