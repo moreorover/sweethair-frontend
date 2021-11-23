@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-between">
-    <h3 class="text-3xl font-medium text-gray-700">{{ customer.fullName }}</h3>
+    <h3 data-test="customer-fullname" class="text-3xl font-medium text-gray-700">{{ customer.fullName }}</h3>
     <CustomerDialog :customer="customer" header="Edit Customer" label="Edit" buttonSize="large" />
   </div>
   <div v-if="customer.email || customer.instagram" class="flex space-x-4">
@@ -34,7 +34,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
 const router = useRouter();
-const id: string = route.params.id instanceof Array ? route.params.id[0] : route.params.id;
+const id: string = route.params['id'] as string;
 
 const customersStore = useCustomersStore();
 const appointmentsStore = useAppointmentsStore();

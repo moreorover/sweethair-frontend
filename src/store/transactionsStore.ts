@@ -23,7 +23,7 @@ export const useTransactionsStore = defineStore({
       return state.all;
     },
     getAll(state): Transaction[] {
-      return state.ids.map((id) => this.all[id]);
+      return state.ids.map((id: string) => this.all[id]);
     },
     getIds(state): string[] {
       return state.ids;
@@ -38,8 +38,8 @@ export const useTransactionsStore = defineStore({
       (appointment: Appointment): Transaction[] => {
         const { id: appointmentId } = appointment;
         const transactions: Transaction[] = state.ids
-          .map((id) => state.all[id])
-          .filter((transaction) => transaction.appointment?.id === appointmentId);
+          .map((id: string) => state.all[id])
+          .filter((transaction: Transaction) => transaction.appointment?.id === appointmentId);
         return transactions;
       },
     getTransactionsByAppointmentCustomerNull:
@@ -47,8 +47,8 @@ export const useTransactionsStore = defineStore({
       (appointment: Appointment): Transaction[] => {
         const { id: appointmentId } = appointment;
         const transactions: Transaction[] = state.ids
-          .map((id) => state.all[id])
-          .filter((transaction) => transaction.appointment?.id === appointmentId && !transaction.customer);
+          .map((id: string) => state.all[id])
+          .filter((transaction: Transaction) => transaction.appointment?.id === appointmentId && !transaction.customer);
         return transactions;
       },
     getTransactionsByCustomer:
@@ -56,8 +56,8 @@ export const useTransactionsStore = defineStore({
       (customer: Customer): Transaction[] => {
         const { id: customerId } = customer;
         const transactions: Transaction[] = state.ids
-          .map((id) => state.all[id])
-          .filter((transaction) => transaction.customer?.id === customerId);
+          .map((id: string) => state.all[id])
+          .filter((transaction: Transaction) => transaction.customer?.id === customerId);
         return transactions;
       },
     // TODO check what uses this function
@@ -66,9 +66,10 @@ export const useTransactionsStore = defineStore({
       (customer: Customer, appointment: Appointment): Transaction[] => {
         const { id: customerId } = customer;
         const transactions: Transaction[] = state.ids
-          .map((id) => state.all[id])
+          .map((id: string) => state.all[id])
           .filter(
-            (transaction) => transaction.customer?.id === customerId && transaction.appointment?.id === appointment.id
+            (transaction: Transaction) =>
+              transaction.customer?.id === customerId && transaction.appointment?.id === appointment.id
           );
         return transactions;
       },
@@ -77,8 +78,8 @@ export const useTransactionsStore = defineStore({
       (customer: Customer): Transaction[] => {
         const { id } = customer;
         const transactions: Transaction[] = state.ids
-          .map((id) => state.all[id])
-          .filter((transaction) => transaction.customer?.id === id && !transaction.appointment);
+          .map((id: string) => state.all[id])
+          .filter((transaction: Transaction) => transaction.customer?.id === id && !transaction.appointment);
         return transactions;
       },
     shouldLoadState: (state): boolean => !state.loading && !state.loaded,

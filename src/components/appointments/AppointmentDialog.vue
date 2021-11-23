@@ -12,6 +12,9 @@ import BaseButton from '@/components/base/BaseButton.vue';
 import { Appointment } from '@/services/AppointmentService';
 import { useAppointmentsStore } from '@/store/appointmentsStore';
 import AppointmentForm from './AppointmentForm.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 interface Props {
   appointment?: Appointment;
@@ -37,7 +40,9 @@ const { showModal, toggleModal } = useModal();
 
 const submit = async (appointment: Appointment) => {
   const cleanAppointment: Appointment = entityCleaner.clean(appointment, true);
-  cleanAppointment.id ? await store.update(cleanAppointment) : await store.create(cleanAppointment);
+  let app: Appointment | void;
+  cleanAppointment.id ? (app = await store.update(cleanAppointment)) : (app = await store.create(cleanAppointment));
   toggleModal();
+  if (app) router.push({ name: 'Appointment', params: { id: app.id } });
 };
 </script>

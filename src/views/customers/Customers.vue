@@ -1,5 +1,5 @@
 <template>
-  <h3 class="text-3xl font-medium text-gray-700">Customers</h3>
+  <h3 data-test="title" class="text-3xl font-medium text-gray-700">Customers</h3>
 
   <div class="mt-8">
     <div class="mt-6">
@@ -22,7 +22,12 @@
         Showing {{ customers.length }} out of {{ customersStore.getAll.length }} records.
       </div>
       <BaseCardGrid>
-        <customer-card v-for="customer in customers" :key="customer.id" :customer="customer"></customer-card>
+        <customer-card
+          v-for="customer in customers"
+          :data-test="`customer-card-${customer.id}`"
+          :key="customer.id"
+          :customer="customer"
+        ></customer-card>
       </BaseCardGrid>
     </div>
   </div>

@@ -37,7 +37,6 @@
   </BaseModal>
 </template>
 <script setup lang="ts">
-import { useCustomersStore } from '@/store/customersStore';
 import { Customer } from '@/services/CustomerService';
 import BaseModal from '@/components/base/BaseModal.vue';
 import useModal from '@/hooks/useModal';
@@ -48,46 +47,32 @@ interface Props {
   header: string;
   label: string;
   buttonSize: string;
-  currentSelection?: Customer[];
-  customersToPick?: Customer[];
+  selection: Customer[];
+  customers: Customer[];
 }
 
-const props = withDefaults(defineProps<Props>(), { currentSelection: undefined, customersToPick: undefined });
+const props = defineProps<Props>();
 const emit = defineEmits(['submit']);
-
-const customersStore = useCustomersStore();
 
 const { showModal, toggleModal } = useModal();
 
 const search = ref('');
 
 const customers = computed(() =>
-  props.customersToPick
-    ? props.customersToPick.filter(
-        (c) =>
-          !fullSelection.value.map((cs) => cs.id).includes(c.id) &&
-          (c.fullName.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
-            c.location.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
-            c.about.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
-            c.email?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
-            c.instagram?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()))
-      )
-    : customersStore.getAll.filter(
-        (c) =>
-          !fullSelection.value.map((cs) => cs.id).includes(c.id) &&
-          (c.fullName.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
-            c.location.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
-            c.about.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
-            c.email?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
-            c.instagram?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()))
-      )
+  props.customers.filter(
+    (c) =>
+      !fullSelection.value.map((cs) => cs.id).includes(c.id) &&
+      (c.fullName.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
+        c.location.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
+        c.about.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
+        c.email?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
+        c.instagram?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()))
+  )
 );
 
 const selection = ref<Customer[]>([]);
 
-const fullSelection = computed<Customer[]>(() =>
-  props.currentSelection instanceof Array ? [...props.currentSelection, ...selection.value] : [...selection.value]
-);
+const fullSelection = computed<Customer[]>(() => [...props.selection, ...selection.value]);
 
 const removeSelection = (customer: Customer) => {
   selection.value = selection.value.filter((c) => c.id !== customer.id);

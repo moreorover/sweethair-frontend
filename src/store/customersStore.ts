@@ -22,7 +22,7 @@ export const useCustomersStore = defineStore({
       return state.all;
     },
     getAll(state): Customer[] {
-      return state.ids.map((id) => this.all[id]);
+      return state.ids.map((id: string) => this.all[id]);
     },
     getIds(state): string[] {
       return state.ids;
@@ -42,9 +42,9 @@ export const useCustomersStore = defineStore({
           ? appointment.transactions?.map((transactions) => transactions.id)
           : [];
         const customers: Customer[] = state.ids
-          .map((id) => state.all[id])
-          .filter((customer) => customerIds.includes(customer.id))
-          .map((customer) => {
+          .map((id: string) => state.all[id])
+          .filter((customer: Customer) => customerIds.includes(customer.id))
+          .map((customer: Customer) => {
             customer.transactions = customer.transactions?.filter((t) => transactionIds.includes(t.id));
             return customer;
           });

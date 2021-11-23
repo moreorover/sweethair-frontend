@@ -2,7 +2,6 @@ import AppointmentService, { Appointment } from '@/services/AppointmentService';
 import { defineStore } from 'pinia';
 import { Customer } from '@/services/CustomerService';
 import { getMonth, getYear } from 'date-fns';
-import router from '@/router';
 
 interface AppointmentStore {
   all: Record<string, Appointment>;
@@ -24,7 +23,7 @@ export const useAppointmentsStore = defineStore({
       return state.all;
     },
     getAll(state): Appointment[] {
-      return state.ids.map((id) => this.all[id]);
+      return state.ids.map((id: string) => this.all[id]);
     },
     getIds(state): string[] {
       return state.ids;
@@ -38,16 +37,18 @@ export const useAppointmentsStore = defineStore({
       (state) =>
       (month: number, year: number): Appointment[] => {
         return state.ids
-          .map((id) => state.all[id])
-          .filter((x) => getMonth(new Date(x.scheduledAt)) == month && getYear(new Date(x.scheduledAt)) == year);
+          .map((id: string) => state.all[id])
+          .filter(
+            (x: Appointment) => getMonth(new Date(x.scheduledAt)) == month && getYear(new Date(x.scheduledAt)) == year
+          );
       },
     getAppointmentsByCustomer:
       (state) =>
       (customer: Customer): Appointment[] => {
         const { id: customerId } = customer;
         const appointments: Appointment[] = state.ids
-          .map((id) => state.all[id])
-          .filter((a) => a.customers?.map((c) => c.id).includes(customerId));
+          .map((id: string) => state.all[id])
+          .filter((a: Appointment) => a.customers?.map((c) => c.id).includes(customerId));
         return appointments;
       },
     shouldLoadState: (state): boolean => !state.loading && !state.loaded,
@@ -79,21 +80,21 @@ export const useAppointmentsStore = defineStore({
         console.log({ error });
       }
     },
-    async create(appointment: Appointment) {
+    async create(appointment: Appointment): Promise<Appointment | void> {
       try {
         const { data } = await AppointmentService.create(appointment);
         this.all[data.id] = data;
         this.ids.push(data.id);
-        router.push({ name: 'Appointment', params: { id: data.id } });
+        return data;
       } catch (error) {
         console.log('Failed to create Appointment', appointment, error);
       }
     },
-    async update(appointment: Appointment) {
+    async update(appointment: Appointment): Promise<Appointment | void> {
       try {
         const { data } = await AppointmentService.update(appointment);
         this.all[data.id] = data;
-        router.push({ name: 'Appointment', params: { id: data.id } });
+        return data;
       } catch (error) {
         console.log('Failed to update Appointment', appointment, error);
       }

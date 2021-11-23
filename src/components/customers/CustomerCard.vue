@@ -26,9 +26,7 @@
       </div>
     </div>
     <div class="flex gap-1 justify-items-end pt-2">
-      <router-link v-slot="{ navigate }" :to="{ name: `Customer`, params: { id: customer.id } }" custom>
-        <BaseButton @onClick="navigate" label="Show" />
-      </router-link>
+      <RouterLink :to="{ name: `Customer`, params: { id: customer.id } }" class="btn btn-small"> Show </RouterLink>
       <customer-dialog :customer="customer" header="Edit Customer" label="Edit" buttonSize="small" />
     </div>
   </div>

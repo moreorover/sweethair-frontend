@@ -31,9 +31,9 @@
       </div>
     </div>
     <div class="flex gap-1 justify-items-end pt-2">
-      <router-link v-slot="{ navigate }" :to="{ name: `Transaction`, params: { id: transaction.id } }" custom>
-        <BaseButton @onClick="navigate" label="Show" />
-      </router-link>
+      <RouterLink :to="{ name: `Transaction`, params: { id: transaction.id } }" class="btn btn-small">
+        Show
+      </RouterLink>
       <TransactionDialog :transaction="transaction" header="Edit Transaction" label="Edit" buttonSize="small" />
       <BaseConfirm @delete="deleteTransaction" />
       <SingleCustomerPickerDialog
@@ -41,7 +41,7 @@
         header="Pick Customer"
         label="Pick Customer"
         buttonSize="small"
-        :customersToPick="customersToPick"
+        :customers="customersToPick"
         @submit="customerPicked($event)"
       />
     </div>
