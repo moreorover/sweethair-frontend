@@ -25,26 +25,7 @@
       </div>
     </div>
     <div class="flex gap-1 justify-items-end pt-2">
-      <RouterLink
-        :to="{ name: `Appointment`, params: { id: appointment.id } }"
-        class="
-          tracking-wide
-          text-white
-          capitalize
-          transition-colors
-          duration-200
-          transform
-          bg-indigo-600
-          rounded-md
-          hover:bg-indigo-500
-          focus:outline-none focus:bg-indigo-500
-          px-2
-          py-0
-          font-normal
-        "
-      >
-        Show
-      </RouterLink>
+      <RouterLink :to="{ name: `Appointment`, params: { id: appointment.id } }" class="btn-small"> Show </RouterLink>
       <AppointmentDialog :appointment="appointment" header="Edit Appointment" label="Edit" buttonSize="small" />
     </div>
   </div>
