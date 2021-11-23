@@ -3,7 +3,8 @@
     <h3 class="text-3xl font-medium text-gray-700">{{ appointment.title }}</h3>
     <AppointmentDialog :appointment="appointment" header="Edit Appointment" label="Edit" buttonSize="large" />
     <MultipleCustomerPickerDialog
-      :currentSelection="appointment.customers || undefined"
+      :selection="appointment.customers || []"
+      :customers="allCustomers"
       header="Pick customers"
       label="Pick Customers"
       buttonSize="medium"
@@ -63,6 +64,7 @@ import TransactionCard from '@/components/transactions/TransactionCard.vue';
 import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
 import SingleTransactionPickerDialog from '@/components/transactions/SingleTransactionPickerDialog.vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useCustomersStore } from '@/store/customersStore';
 
 const route = useRoute();
 const router = useRouter();
@@ -70,17 +72,21 @@ const id: string = route.params.id instanceof Array ? route.params.id[0] : route
 
 const appointmentsStore = useAppointmentsStore();
 const transactionsStore = useTransactionsStore();
+const customersStore = useCustomersStore();
 
 if (appointmentsStore.shouldLoadState) await appointmentsStore.fetchAll();
 if (!appointmentsStore.getIds.includes(id)) router.replace({ name: 'Appointments' });
 
 if (transactionsStore.shouldLoadState) await transactionsStore.fetchAll();
+if (customersStore.shouldLoadState) await customersStore.fetchAll();
 
 const appointment = computed<Appointment>(() => appointmentsStore.getAppointmentById(id));
 
 const appointmentTransactionsNoCustomer = computed<Transaction[]>(() =>
   transactionsStore.getTransactionsByAppointmentCustomerNull(appointment.value)
 );
+
+const allCustomers = computed<Customer[]>(() => customersStore.getAll);
 
 const spareTransactions = (customer: Customer): boolean =>
   0 <
