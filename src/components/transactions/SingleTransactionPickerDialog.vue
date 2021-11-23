@@ -44,7 +44,7 @@ interface Props {
   header: string;
   label: string;
   buttonSize: string;
-  customer: Customer;
+  transactions: Transaction[];
 }
 
 const props = defineProps<Props>();
@@ -57,11 +57,7 @@ const { showModal, toggleModal } = useModal();
 
 const search = ref('');
 
-const transactions = computed<Transaction[]>(() =>
-  transactionsStore
-    .getTransactionsByCustomerAndAppointmentNull(props.customer)
-    .filter((t) => t.id !== selection.value?.id)
-);
+const transactions = computed<Transaction[]>(() => props.transactions.filter((t) => t.id !== selection.value?.id));
 
 const selection = ref<Transaction>();
 

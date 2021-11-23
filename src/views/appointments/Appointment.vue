@@ -17,11 +17,11 @@
         <h4 class="text-1xl font-semibold text-indigo-600">{{ customer.fullName }}</h4>
         <div class="flex gap-1">
           <SingleTransactionPickerDialog
-            v-if="spareTransactions(customer)"
+            v-if="spareTransactions(customer).length"
             header="Pick Transaction"
             label="Pick Transaction"
             buttonSize="small"
-            :customer="customer"
+            :transactions="spareTransactions(customer)"
             @submit="pickedTransactions($event)"
           />
           <BaseConfirm v-if="customerTransactions(customer).value.length < 1" @delete="removeCustomer(customer)" />
@@ -88,9 +88,8 @@ const appointmentTransactionsNoCustomer = computed<Transaction[]>(() =>
 
 const allCustomers = computed<Customer[]>(() => customersStore.getAll);
 
-const spareTransactions = (customer: Customer): boolean =>
-  0 <
-  computed<Transaction[]>(() => transactionsStore.getTransactionsByCustomerAndAppointmentNull(customer)).value.length;
+const spareTransactions = (customer: Customer): Transaction[] =>
+  computed<Transaction[]>(() => transactionsStore.getTransactionsByCustomerAndAppointmentNull(customer)).value;
 
 const pickedCustomers = async (customers: Customer[]) => {
   appointment.value.customers
