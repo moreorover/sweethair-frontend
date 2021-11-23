@@ -1,5 +1,5 @@
 <template>
-  <BaseButton :label="props.label" @onClick="toggleModal()" class="mr-2" :size="props.buttonSize" />
+  <BaseButton :label="props.label" @onClick="toggleModal()" :size="props.buttonSize" />
   <BaseModal :header="props.header" :show-footer="false" v-model:visible="showModal" @toggle-modal="toggleModal()">
     <AppointmentForm :appointment="props.appointment" @submit="submit" />
   </BaseModal>
