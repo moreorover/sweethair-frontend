@@ -1,15 +1,18 @@
 <template>
   <div class="flex justify-between">
     <h3 class="text-3xl font-medium text-gray-700">{{ appointment.title }}</h3>
-    <AppointmentDialog :appointment="appointment" header="Edit Appointment" label="Edit" buttonSize="large" />
-    <MultipleCustomerPickerDialog
-      :selection="appointment.customers || []"
-      :customers="allCustomers"
-      header="Pick customers"
-      label="Pick Customers"
-      buttonSize="medium"
-      @submit="pickedCustomers($event)"
-    />
+    <div class="flex gap-1">
+      <AppointmentDialog :appointment="appointment" header="Edit Appointment" label="Edit" buttonSize="large" />
+      <MultipleCustomerPickerDialog
+        :selection="appointment.customers || []"
+        :customers="allCustomers"
+        header="Pick customers"
+        label="Pick Customers"
+        buttonSize="medium"
+        @submit="pickedCustomers($event)"
+      />
+      <TransactionDialog header="Book a Transaction" label="Book Transaction" :appointment="appointment" />
+    </div>
   </div>
   <div class="flex flex-col mx-auto gap-8 pt-3">
     <div class="container border-2 border-gray-400 p-2" v-for="customer in appointment.customers" :key="customer.id">
