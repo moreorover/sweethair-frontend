@@ -31,7 +31,6 @@
   </BaseModal>
 </template>
 <script setup lang="ts">
-import { Customer } from '@/services/CustomerService';
 import BaseModal from '@/components/base/BaseModal.vue';
 import useModal from '@/hooks/useModal';
 import BaseButton from '@/components/base/BaseButton.vue';
