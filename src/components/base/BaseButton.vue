@@ -1,5 +1,5 @@
 <template>
-  <button :label="props.label" @click="emit('onClick')" :class="`btn-${props.size}`" v-bind="attrs">
+  <button :label="props.label" @click="emit('onClick')" :class="`btn btn-${props.size}`" v-bind="attrs">
     {{ props.label }}
   </button>
 </template>

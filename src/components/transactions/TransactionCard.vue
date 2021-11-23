@@ -31,7 +31,9 @@
       </div>
     </div>
     <div class="flex gap-1 justify-items-end pt-2">
-      <RouterLink :to="{ name: `Transaction`, params: { id: transaction.id } }" class="btn-small"> Show </RouterLink>
+      <RouterLink :to="{ name: `Transaction`, params: { id: transaction.id } }" class="btn btn-small">
+        Show
+      </RouterLink>
       <TransactionDialog :transaction="transaction" header="Edit Transaction" label="Edit" buttonSize="small" />
       <BaseConfirm @delete="deleteTransaction" />
       <SingleCustomerPickerDialog
