@@ -2,6 +2,7 @@
   <span
     @click="emit('select')"
     class="
+      hover:cursor-pointer
       flex
       justify-center
       items-center
