@@ -12,13 +12,12 @@
       <div class="flex flex-col w-full lg:w-1/2">
         <p>Selection:</p>
         <ul class="divide-y divide-gray-300">
-          <li
+          <BaseChip
             v-for="customer in fullSelection"
-            @click="removeSelection(customer)"
-            :class="{ 'bg-red-100': selection.includes(customer) }"
-          >
-            {{ customer.fullName }}
-          </li>
+            @remove="removeSelection(customer)"
+            :text="customer.fullName"
+            :show-action="!!selection.map((c) => c.id).find((c) => c === customer.id)"
+          />
         </ul>
       </div>
       <div class="flex flex-col w-full lg:w-1/2">
@@ -28,8 +27,13 @@
         <div class="rounded-lg w-full">
           <p>Options:</p>
           <ul class="divide-y divide-gray-300">
-            <li v-for="customer in customers.slice(0, 8)" @click="selection.push(customer)">{{ customer.fullName }}</li>
-            <li v-if="customers.length > 8">...</li>
+            <BaseChip
+              v-for="customer in customers.slice(0, 8)"
+              @select="selection.push(customer)"
+              :text="customer.fullName"
+              :show-action="false"
+            />
+            <BaseChip v-if="customers.length > 8" text="..." :show-action="false" />
           </ul>
         </div>
       </div>
