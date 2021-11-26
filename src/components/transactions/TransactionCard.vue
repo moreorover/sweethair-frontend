@@ -13,7 +13,7 @@
     "
   >
     <p class="flex items-center text-sm text-gray-600">
-      {{ format(new Date(transaction.date), 'd MMMM yyyy') }}
+      {{ format(new Date(transaction.scheduledAt), 'd MMMM yyyy') }}
     </p>
     <span
       class="text-xs mx-auto px-2 font-medium text-white rounded-full py-0.5"

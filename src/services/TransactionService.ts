@@ -6,7 +6,7 @@ import { AxiosResponse } from 'axios';
 export interface Transaction {
   id: string;
   total: number;
-  date: string;
+  scheduledAt: string;
   isPaid: boolean;
   createdOn?: string;
   modifiedOn?: string;
