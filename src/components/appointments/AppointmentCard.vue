@@ -11,6 +11,7 @@
       lg:border-l-0 lg:border-t lg:border-gray-200 lg:rounded-b-none lg:rounded-r
       my-2
     "
+    :class="{ 'bg-green-100': isBefore() }"
   >
     <p class="flex items-center text-sm text-gray-600">
       {{ format(new Date(appointment.scheduledAt), 'd MMMM yyyy - HH:mm') }}
@@ -36,10 +37,15 @@
 import { Appointment } from '@/services/AppointmentService';
 import AppointmentDialog from './AppointmentDialog.vue';
 import { format } from 'date-fns';
+import moment from 'moment';
 
 interface Props {
   appointment: Appointment;
 }
 
 const props = defineProps<Props>();
+
+const isBefore = () => {
+  return moment(props.appointment.scheduledAt).isBefore(moment());
+};
 </script>
