@@ -6,9 +6,13 @@
       <div class="flex flex-col mt-3 lg:flex-row">
         <AppointmentDialog header="Create new Appointment" label="New" buttonSize="medium" />
       </div>
-      <div class="text-center lg:text-left text-gray-700 font-bold py-2">
-        Showing {{ appointments.length }} out of {{ appointmentsStore.getAll.length }} records.
+      <div class="flex justify-between">
+        <div class="text-center lg:text-left text-gray-700 font-bold py-2">
+          Showing {{ appointments.length }} out of {{ appointmentsStore.getAll.length }} records.
+        </div>
+        <WeekToolBar />
       </div>
+
       <BaseCardGrid>
         <AppointmentCard v-for="appointment in appointments" :key="appointment.id" :appointment="appointment" />
       </BaseCardGrid>
@@ -22,9 +26,16 @@ import BaseCardGrid from '@/components/base/BaseCardGrid.vue';
 import { useAppointmentsStore } from '@/store/appointmentsStore';
 import AppointmentDialog from '@/components/appointments/AppointmentDialog.vue';
 import AppointmentCard from '@/components/appointments/AppointmentCard.vue';
+import moment from 'moment';
+import { useWeek } from '@/hooks/useWeek';
+import WeekToolBar from '@/components/WeekToolBar.vue';
+
+const { weekNumber } = useWeek();
 
 const appointmentsStore = useAppointmentsStore();
 if (appointmentsStore.shouldLoadState) await appointmentsStore.fetchAll();
 
-const appointments = computed(() => appointmentsStore.getAll);
+const appointments = computed(() =>
+  appointmentsStore.getAll.filter((a) => moment(a.scheduledAt).week() == weekNumber.value)
+);
 </script>
