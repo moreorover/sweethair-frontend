@@ -15,6 +15,7 @@
     "axios": "^0.24.0",
     "date-fns": "^2.25.0",
     "lodash": "^4.17.21",
+    "moment": "^2.29.1",
     "pinia": "^2.0.1",
     "primeicons": "^5.0.0",
     "primevue": "^3.8.2",
