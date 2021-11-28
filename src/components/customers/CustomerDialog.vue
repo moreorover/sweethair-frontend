@@ -23,7 +23,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   customer: () => {
     return {
-      id: '',
+      id: -1,
       fullName: '',
       location: '',
       about: '',

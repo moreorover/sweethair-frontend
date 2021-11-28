@@ -27,7 +27,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   transaction: () => {
     return {
-      id: '',
+      id: -1,
       total: 0.0,
       date: new Date().toISOString(),
       isPaid: false,

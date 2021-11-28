@@ -26,7 +26,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   appointment: () => {
     return {
-      id: '',
+      id: -1,
       title: '',
       scheduledAt: new Date().toISOString(),
     };
