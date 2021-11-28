@@ -61,6 +61,6 @@ email.value = props.customer.email;
 instagram.value = props.customer.instagram;
 
 const submit = handleSubmit((values) => {
-  props.customer.id ? emit('submit', { id: props.customer.id, ...values }) : emit('submit', { ...values });
+  props.customer.id > 0 ? emit('submit', { id: props.customer.id, ...values }) : emit('submit', { ...values });
 });
 </script>

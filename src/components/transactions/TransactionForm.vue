@@ -64,6 +64,6 @@ total.value = props.transaction.total;
 isPaid.value = props.transaction.isPaid;
 
 const submit = handleSubmit((values) => {
-  props.transaction.id ? emit('submit', { id: props.transaction.id, ...values }) : emit('submit', { ...values });
+  props.transaction.id > 0 ? emit('submit', { id: props.transaction.id, ...values }) : emit('submit', { ...values });
 });
 </script>

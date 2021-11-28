@@ -60,6 +60,6 @@ scheduledAt.value = props.appointment.scheduledAt;
 title.value = props.appointment.title;
 
 const submit = handleSubmit((values) => {
-  props.appointment.id ? emit('submit', { id: props.appointment.id, ...values }) : emit('submit', { ...values });
+  props.appointment.id > 0 ? emit('submit', { id: props.appointment.id, ...values }) : emit('submit', { ...values });
 });
 </script>
