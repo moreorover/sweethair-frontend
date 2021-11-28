@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
     return {
       id: -1,
       title: '',
-      scheduledAt: moment().toLocaleString(),
+      scheduledAt: moment().toISOString(),
     };
   },
   buttonSize: 'small',

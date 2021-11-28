@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
     return {
       id: -1,
       total: 0.0,
-      scheduledAt: moment().toLocaleString(),
+      scheduledAt: moment().toISOString(),
       isPaid: false,
     };
   },
