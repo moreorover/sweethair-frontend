@@ -13,6 +13,7 @@ import { Appointment } from '@/services/AppointmentService';
 import { useAppointmentsStore } from '@/store/appointmentsStore';
 import AppointmentForm from './AppointmentForm.vue';
 import { useRouter } from 'vue-router';
+import moment from 'moment';
 
 const router = useRouter();
 
@@ -28,7 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
     return {
       id: -1,
       title: '',
-      scheduledAt: new Date().toISOString(),
+      scheduledAt: moment().toLocaleString(),
     };
   },
   buttonSize: 'small',

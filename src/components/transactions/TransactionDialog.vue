@@ -14,6 +14,7 @@ import { Transaction } from '@/services/TransactionService';
 import { useTransactionsStore } from '@/store/transactionsStore';
 import { Customer } from '@/services/CustomerService';
 import { Appointment } from '@/services/AppointmentService';
+import moment from 'moment';
 
 interface Props {
   transaction?: Transaction;
@@ -29,7 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
     return {
       id: -1,
       total: 0.0,
-      scheduledAt: new Date().toISOString(),
+      scheduledAt: moment().toLocaleString(),
       isPaid: false,
     };
   },
