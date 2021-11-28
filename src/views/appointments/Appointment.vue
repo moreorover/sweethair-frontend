@@ -71,7 +71,7 @@ import { useCustomersStore } from '@/store/customersStore';
 
 const route = useRoute();
 const router = useRouter();
-const id: string = route.params.id instanceof Array ? route.params.id[0] : route.params.id;
+const id: number = +route.params.id;
 
 const appointmentsStore = useAppointmentsStore();
 const transactionsStore = useTransactionsStore();

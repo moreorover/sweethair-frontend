@@ -44,7 +44,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
 const router = useRouter();
-const id: string = route.params.id instanceof Array ? route.params.id[0] : route.params.id;
+const id: number = +route.params.id;
 
 const transactionsStore = useTransactionsStore();
 if (transactionsStore.shouldLoadState) await transactionsStore.fetchAll();
