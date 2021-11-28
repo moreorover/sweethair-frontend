@@ -9,8 +9,8 @@ export interface Appointment {
   title: string;
   createdOn?: string;
   modifiedOn?: string;
-  customers?: Customer[] | null;
-  transactions?: Transaction[] | null;
+  customers?: Customer[];
+  transactions?: Transaction[];
 }
 
 class AppointmentService {
