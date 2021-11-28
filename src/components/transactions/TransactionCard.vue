@@ -75,7 +75,6 @@ const appointment = computed<Appointment>(() =>
 
 const customersToPick = computed<Customer[]>(() => {
   if (!props.transaction.customer && appointment.value) {
-    console.log(1);
     return customersStore.getCustomersByAppointment(appointment.value);
   }
 
