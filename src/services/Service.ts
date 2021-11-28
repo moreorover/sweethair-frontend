@@ -1,7 +1,13 @@
 import { AxiosResponse } from 'axios';
 import apiClient from '@/axios/axios';
 
-export default abstract class Service<T> {
+export interface DataEntity {
+  id: number;
+  createdOn?: string;
+  modifiedOn?: string;
+}
+
+export default abstract class Service<T extends DataEntity> {
   apiEndpoint: string;
 
   constructor(apiEndpoint: string) {

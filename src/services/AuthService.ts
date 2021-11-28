@@ -1,18 +1,16 @@
 import apiClient from '@/axios/axios';
 import { AxiosResponse } from 'axios';
+import { DataEntity } from './Service';
 
 export interface Role {
   id: number;
   name: string;
 }
 
-export interface User {
-  id: number;
+export interface User extends DataEntity {
   firstName: string;
   lastName: string;
   email: string;
-  createdOn?: string;
-  modifiedOn?: string;
   role?: Role;
 }
 

@@ -1,9 +1,8 @@
 import { Customer } from '@/services/CustomerService';
 import { Invoice } from './InvoiceService';
-import Service from './Service';
+import Service, { DataEntity } from './Service';
 
-export interface Item {
-  id: number;
+export interface Item extends DataEntity {
   title: string;
   total: number;
   invoices?: Invoice[];

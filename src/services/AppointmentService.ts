@@ -1,13 +1,10 @@
 import { Transaction } from './TransactionService';
 import { Customer } from '@/services/CustomerService';
-import Service from './Service';
+import Service, { DataEntity } from './Service';
 
-export interface Appointment {
-  id: number;
+export interface Appointment extends DataEntity {
   scheduledAt: string;
   title: string;
-  createdOn?: string;
-  modifiedOn?: string;
   customers?: Customer[];
   transactions?: Transaction[];
 }

@@ -1,15 +1,12 @@
 import { Appointment } from '@/services/AppointmentService';
 import { Customer } from '@/services/CustomerService';
 import { Invoice } from './InvoiceService';
-import Service from './Service';
+import Service, { DataEntity } from './Service';
 
-export interface Transaction {
-  id: number;
+export interface Transaction extends DataEntity {
   total: number;
   scheduledAt: string;
   isPaid: boolean;
-  createdOn?: string;
-  modifiedOn?: string;
   customer?: Customer | null;
   appointment?: Appointment | null;
   invoice?: Invoice | null;
