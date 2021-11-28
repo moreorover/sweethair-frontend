@@ -1,7 +1,7 @@
 import { Appointment } from '@/services/AppointmentService';
 import { Customer } from '@/services/CustomerService';
-import apiClient from '@/axios/axios';
-import { AxiosResponse } from 'axios';
+import { Invoice } from './InvoiceService';
+import Service from './Service';
 
 export interface Transaction {
   id: number;
@@ -14,26 +14,6 @@ export interface Transaction {
   appointment?: Appointment | null;
 }
 
-class TransactionService {
-  getAll(): Promise<AxiosResponse<Transaction[]>> {
-    return apiClient.get<Transaction[]>('/transactions');
-  }
+class TransactionService extends Service<Transaction> {}
 
-  get(id: number): Promise<AxiosResponse<Transaction>> {
-    return apiClient.get<Transaction>(`/transactions/${id}`);
-  }
-
-  create(data: Transaction): Promise<AxiosResponse<Transaction>> {
-    return apiClient.post<Transaction>('/transactions', data);
-  }
-
-  update(data: Transaction): Promise<AxiosResponse<Transaction>> {
-    return apiClient.patch<Transaction>(`/transactions/${data.id}`, data);
-  }
-
-  delete(id: number): Promise<void> {
-    return apiClient.delete(`/transactions/${id}`);
-  }
-}
-
-export default new TransactionService();
+export default new TransactionService('transactions');
