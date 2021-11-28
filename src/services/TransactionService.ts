@@ -4,7 +4,7 @@ import apiClient from '@/axios/axios';
 import { AxiosResponse } from 'axios';
 
 export interface Transaction {
-  id: string;
+  id: number;
   total: number;
   scheduledAt: string;
   isPaid: boolean;
@@ -19,7 +19,7 @@ class TransactionService {
     return apiClient.get<Transaction[]>('/transactions');
   }
 
-  get(id: string): Promise<AxiosResponse<Transaction>> {
+  get(id: number): Promise<AxiosResponse<Transaction>> {
     return apiClient.get<Transaction>(`/transactions/${id}`);
   }
 
@@ -31,7 +31,7 @@ class TransactionService {
     return apiClient.patch<Transaction>(`/transactions/${data.id}`, data);
   }
 
-  delete(id: string): Promise<void> {
+  delete(id: number): Promise<void> {
     return apiClient.delete(`/transactions/${id}`);
   }
 }

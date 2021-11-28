@@ -4,7 +4,7 @@ import apiClient from '@/axios/axios';
 import { AxiosResponse } from 'axios';
 
 export interface Appointment {
-  id: string;
+  id: number;
   scheduledAt: string;
   title: string;
   createdOn?: string;
@@ -18,7 +18,7 @@ class AppointmentService {
     return apiClient.get<Appointment[]>('/appointments');
   }
 
-  get(id: string): Promise<AxiosResponse<Appointment>> {
+  get(id: number): Promise<AxiosResponse<Appointment>> {
     return apiClient.get<Appointment>(`/appointments/${id}`);
   }
 
@@ -30,7 +30,7 @@ class AppointmentService {
     return apiClient.patch<Appointment>(`/appointments/${data.id}`, data);
   }
 
-  delete(id: string): void {
+  delete(id: number): void {
     apiClient.delete(`/appointments/${id}`);
   }
 }

@@ -4,7 +4,7 @@ import apiClient from '@/axios/axios';
 import { AxiosResponse } from 'axios';
 
 export interface Customer {
-  id: string;
+  id: number;
   fullName: string;
   location: string;
   about: string;
@@ -21,7 +21,7 @@ class CustomerService {
     return apiClient.get<Customer[]>('/customers');
   }
 
-  get(id: string): Promise<AxiosResponse<Customer>> {
+  get(id: number): Promise<AxiosResponse<Customer>> {
     return apiClient.get<Customer>(`/customers/${id}`);
   }
 
@@ -33,7 +33,7 @@ class CustomerService {
     return apiClient.patch<Customer>(`/customers/${data.id}`, data);
   }
 
-  delete(id: string): void {
+  delete(id: number): void {
     apiClient.delete(`/customers/${id}`);
   }
 }
