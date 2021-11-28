@@ -30,7 +30,7 @@ export const useAppointmentsStore = defineStore({
     },
     getAppointmentById:
       (state) =>
-      (id: string): Appointment => {
+      (id: number): Appointment => {
         return state.all[id];
       },
     getAppointmentsByMonthAndYear:

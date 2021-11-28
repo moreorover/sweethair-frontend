@@ -30,7 +30,7 @@ export const useTransactionsStore = defineStore({
     },
     getTransactionById:
       (state) =>
-      (id: string): Transaction => {
+      (id: number): Transaction => {
         return state.all[id];
       },
     getTransactionsByAppointment:

@@ -29,7 +29,7 @@ export const useCustomersStore = defineStore({
     },
     getCustomerById:
       (state) =>
-      (id: string): Customer => {
+      (id: number): Customer => {
         return state.all[id];
       },
     getCustomersByAppointment:
