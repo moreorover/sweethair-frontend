@@ -5,7 +5,7 @@ import { getMonth, getYear } from 'date-fns';
 
 interface AppointmentStore {
   all: Record<string, Appointment>;
-  ids: string[];
+  ids: number[];
   loaded: boolean;
   loading: boolean;
 }
@@ -23,9 +23,9 @@ export const useAppointmentsStore = defineStore({
       return state.all;
     },
     getAll(state): Appointment[] {
-      return state.ids.map((id: string) => this.all[id]);
+      return state.ids.map((id: number) => this.all[id]);
     },
-    getIds(state): string[] {
+    getIds(state): number[] {
       return state.ids;
     },
     getAppointmentById:
@@ -37,7 +37,7 @@ export const useAppointmentsStore = defineStore({
       (state) =>
       (month: number, year: number): Appointment[] => {
         return state.ids
-          .map((id: string) => state.all[id])
+          .map((id: number) => state.all[id])
           .filter(
             (x: Appointment) => getMonth(new Date(x.scheduledAt)) == month && getYear(new Date(x.scheduledAt)) == year
           );
@@ -47,7 +47,7 @@ export const useAppointmentsStore = defineStore({
       (customer: Customer): Appointment[] => {
         const { id: customerId } = customer;
         const appointments: Appointment[] = state.ids
-          .map((id: string) => state.all[id])
+          .map((id: number) => state.all[id])
           .filter((a: Appointment) => a.customers?.map((c) => c.id).includes(customerId));
         return appointments;
       },
@@ -58,7 +58,7 @@ export const useAppointmentsStore = defineStore({
       this.loading = true;
       try {
         const { data } = await AppointmentService.getAll();
-        const ids: string[] = [];
+        const ids: number[] = [];
         const all: Record<string, Appointment> = {};
 
         for (const appointment of data) {

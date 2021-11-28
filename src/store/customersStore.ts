@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 
 interface CustomerStore {
   all: Record<string, Customer>;
-  ids: string[];
+  ids: number[];
   loaded: boolean;
   loading: boolean;
 }
@@ -22,9 +22,9 @@ export const useCustomersStore = defineStore({
       return state.all;
     },
     getAll(state): Customer[] {
-      return state.ids.map((id: string) => this.all[id]);
+      return state.ids.map((id: number) => this.all[id]);
     },
-    getIds(state): string[] {
+    getIds(state): number[] {
       return state.ids;
     },
     getCustomerById:
@@ -35,14 +35,14 @@ export const useCustomersStore = defineStore({
     getCustomersByAppointment:
       (state) =>
       (appointment: Appointment): Customer[] => {
-        const customerIds: string[] = appointment.customers
+        const customerIds: number[] = appointment.customers
           ? appointment.customers?.map((customer) => customer.id)
           : [];
-        const transactionIds: string[] = appointment.transactions
+        const transactionIds: number[] = appointment.transactions
           ? appointment.transactions?.map((transactions) => transactions.id)
           : [];
         const customers: Customer[] = state.ids
-          .map((id: string) => state.all[id])
+          .map((id: number) => state.all[id])
           .filter((customer: Customer) => customerIds.includes(customer.id))
           .map((customer: Customer) => {
             customer.transactions = customer.transactions?.filter((t) => transactionIds.includes(t.id));
@@ -57,7 +57,7 @@ export const useCustomersStore = defineStore({
       this.loading = true;
       try {
         const { data } = await CustomerService.getAll();
-        const ids: string[] = [];
+        const ids: number[] = [];
         const all: Record<string, Customer> = {};
 
         for (const customer of data) {

@@ -5,7 +5,7 @@ import { Appointment } from '@/services/AppointmentService';
 
 interface TransactionStore {
   all: Record<string, Transaction>;
-  ids: string[];
+  ids: number[];
   loaded: boolean;
   loading: boolean;
 }
@@ -23,9 +23,9 @@ export const useTransactionsStore = defineStore({
       return state.all;
     },
     getAll(state): Transaction[] {
-      return state.ids.map((id: string) => this.all[id]);
+      return state.ids.map((id: number) => this.all[id]);
     },
-    getIds(state): string[] {
+    getIds(state): number[] {
       return state.ids;
     },
     getTransactionById:
@@ -38,7 +38,7 @@ export const useTransactionsStore = defineStore({
       (appointment: Appointment): Transaction[] => {
         const { id: appointmentId } = appointment;
         const transactions: Transaction[] = state.ids
-          .map((id: string) => state.all[id])
+          .map((id: number) => state.all[id])
           .filter((transaction: Transaction) => transaction.appointment?.id === appointmentId);
         return transactions;
       },
@@ -47,7 +47,7 @@ export const useTransactionsStore = defineStore({
       (appointment: Appointment): Transaction[] => {
         const { id: appointmentId } = appointment;
         const transactions: Transaction[] = state.ids
-          .map((id: string) => state.all[id])
+          .map((id: number) => state.all[id])
           .filter((transaction: Transaction) => transaction.appointment?.id === appointmentId && !transaction.customer);
         return transactions;
       },
@@ -56,7 +56,7 @@ export const useTransactionsStore = defineStore({
       (customer: Customer): Transaction[] => {
         const { id: customerId } = customer;
         const transactions: Transaction[] = state.ids
-          .map((id: string) => state.all[id])
+          .map((id: number) => state.all[id])
           .filter((transaction: Transaction) => transaction.customer?.id === customerId);
         return transactions;
       },
@@ -66,7 +66,7 @@ export const useTransactionsStore = defineStore({
       (customer: Customer, appointment: Appointment): Transaction[] => {
         const { id: customerId } = customer;
         const transactions: Transaction[] = state.ids
-          .map((id: string) => state.all[id])
+          .map((id: number) => state.all[id])
           .filter(
             (transaction: Transaction) =>
               transaction.customer?.id === customerId && transaction.appointment?.id === appointment.id
@@ -78,7 +78,7 @@ export const useTransactionsStore = defineStore({
       (customer: Customer): Transaction[] => {
         const { id } = customer;
         const transactions: Transaction[] = state.ids
-          .map((id: string) => state.all[id])
+          .map((id: number) => state.all[id])
           .filter((transaction: Transaction) => transaction.customer?.id === id && !transaction.appointment);
         return transactions;
       },
@@ -89,7 +89,7 @@ export const useTransactionsStore = defineStore({
       this.loading = true;
       try {
         const { data } = await TransactionService.getAll();
-        const ids: string[] = [];
+        const ids: number[] = [];
         const all: Record<string, Transaction> = {};
 
         for (const transaction of data) {
