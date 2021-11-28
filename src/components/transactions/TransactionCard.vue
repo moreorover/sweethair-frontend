@@ -70,12 +70,20 @@ const transactionsStore = useTransactionsStore();
 const customersStore = useCustomersStore();
 
 const appointment = computed<Appointment>(() =>
-  appointmentsStore.getAppointmentById(props.transaction.appointment?.id || '')
+  appointmentsStore.getAppointmentById(props.transaction.appointment?.id || -1)
 );
 
-const customersToPick = computed<Customer[]>(() =>
-  !props.transaction.customer && appointment.value ? customersStore.getCustomersByAppointment(appointment.value) : []
-);
+const customersToPick = computed<Customer[]>(() => {
+  if (!props.transaction.customer && appointment.value) {
+    console.log(1);
+    return customersStore.getCustomersByAppointment(appointment.value);
+  }
+
+  if (!props.transaction.customer && !appointment.value) {
+    return customersStore.getAll;
+  }
+  return [];
+});
 
 const customerPicked = async (customer: Customer) => {
   await transactionsStore.update({ ...props.transaction, customer });
