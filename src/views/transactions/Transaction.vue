@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-between">
     <h3 class="text-3xl font-medium text-gray-700">
-      {{ transaction && format(new Date(transaction.date), 'd MMMM yyyy - HH:mm') }}
+      {{ transaction && format(new Date(transaction.scheduledAt), 'd MMMM yyyy - HH:mm') }}
     </h3>
 
     <TransactionDialog :transaction="transaction" header="Edit Transaction" label="Edit" buttonSize="large" />
