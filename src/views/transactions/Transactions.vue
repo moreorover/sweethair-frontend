@@ -7,10 +7,10 @@
         <TransactionDialog header="Create new Transaction" label="New" buttonSize="medium" />
       </div>
       <div class="text-center lg:text-left text-gray-700 font-bold py-2">
-        Showing {{ tranactions.length }} out of {{ transactionsStore.getAll.length }} records.
+        Showing {{ transactions.length }} out of {{ transactionsStore.getAll.length }} records.
       </div>
       <BaseCardGrid>
-        <TransactionCard v-for="transaction in tranactions" :key="transaction.id" :transaction="transaction" />
+        <TransactionCard v-for="transaction in transactions" :key="transaction.id" :transaction="transaction" />
       </BaseCardGrid>
     </div>
   </div>
@@ -22,8 +22,9 @@ import BaseCardGrid from '@/components/base/BaseCardGrid.vue';
 import { useTransactionsStore } from '@/store/transactionsStore';
 import TransactionCard from '@/components/transactions/TransactionCard.vue';
 import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
+import { Transaction } from '@/services/TransactionService';
 
 const transactionsStore = useTransactionsStore();
 if (transactionsStore.shouldLoadState) await transactionsStore.fetchAll();
-const tranactions = computed(() => transactionsStore.getAll);
+const transactions = computed<Transaction[]>(() => transactionsStore.getAll);
 </script>
