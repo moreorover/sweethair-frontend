@@ -12,6 +12,7 @@ export interface Transaction {
   modifiedOn?: string;
   customer?: Customer | null;
   appointment?: Appointment | null;
+  invoice?: Invoice | null;
 }
 
 class TransactionService extends Service<Transaction> {}
