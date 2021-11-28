@@ -6,11 +6,12 @@
       p-4
       leading-normal
       bg-white
-      border-b border-l border-r border-gray-200
       rounded-b
-      lg:border-l-0 lg:border-t lg:border-gray-200 lg:rounded-b-none lg:rounded-r
+      lg:rounded-b-none lg:rounded-r
       my-2
+      border-b-4 border-solid
     "
+    :class="{ 'border-red-700': transaction.total < 0, 'border-green-700': transaction.total > 0 }"
   >
     <p class="flex items-center text-sm text-gray-600">
       {{ format(new Date(transaction.scheduledAt), 'd MMMM yyyy') }}
@@ -22,13 +23,9 @@
       {{ transaction.isPaid ? 'Paid' : 'Awaiting' }}
     </span>
     <div class="flex">
-      <div class="flex-grow max-h-full mx-6 m-auto">
-        <div class="h-1" :class="{ 'bg-red-700': transaction.total < 0, 'bg-green-700': transaction.total > 0 }"></div>
-      </div>
+      <div class="flex-grow max-h-full mx-6 m-auto"></div>
       <div class="flex flex-none text-xl font-bold text-gray-900 px-6">{{ transaction.total }}</div>
-      <div class="flex-grow max-h-full mx-6 m-auto">
-        <div class="h-1" :class="{ 'bg-red-700': transaction.total < 0, 'bg-green-700': transaction.total > 0 }"></div>
-      </div>
+      <div class="flex-grow max-h-full mx-6 m-auto"></div>
     </div>
     <div class="flex gap-1 justify-items-end pt-2">
       <RouterLink :to="{ name: `Transaction`, params: { id: transaction.id } }" class="btn btn-small">
