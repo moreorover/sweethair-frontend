@@ -14,6 +14,7 @@ export interface Customer {
   modifiedOn?: string;
   appointments?: Appointment[];
   transactions?: Transaction[];
+  items?: Item[];
 }
 
 class CustomerService extends Service<Customer> {}
