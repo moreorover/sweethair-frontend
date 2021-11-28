@@ -1,24 +1,35 @@
 <template>
-  <BaseButton v-if="!delPressed" @onClick="delPressed = !delPressed" label="Delete" />
+  <BaseButton v-if="!confirmClicked" @onClick="confirmClicked = !confirmClicked" :label="props.label" />
 
   <div v-else class="flex space-x-1">
-    <BaseButton @onClick="emit('delete')" class="bg-red-800 hover:bg-red-500" label="Yes" />
-    <BaseButton @onClick="delPressed = !delPressed" label="No" />
+    <BaseButton @onClick="confirm" class="bg-red-800 hover:bg-red-500" label="Yes" />
+    <BaseButton @onClick="confirmClicked = !confirmClicked" label="No" />
   </div>
 </template>
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { debounce } from 'lodash';
 
-const emit = defineEmits(['delete']);
+interface Props {
+  label: string;
+}
 
-const delPressed = ref(false);
+const props = defineProps<Props>();
+
+const emit = defineEmits(['confirm']);
+
+const confirmClicked = ref(false);
 
 watch(
-  delPressed,
+  confirmClicked,
   debounce((newVal) => {
-    if (newVal) delPressed.value = false;
+    if (newVal) confirmClicked.value = false;
   }, 2000),
   { immediate: false }
 );
+
+const confirm = () => {
+  emit('confirm');
+  confirmClicked.value = false;
+};
 </script>
