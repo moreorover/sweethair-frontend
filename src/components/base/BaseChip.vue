@@ -10,7 +10,6 @@
       font-medium
       py-1
       px-2
-      bg-white
       rounded-full
       text-purple-700
       bg-purple-100
