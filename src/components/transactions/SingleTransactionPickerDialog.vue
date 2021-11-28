@@ -8,26 +8,27 @@
     @cancel="cancel"
     @submit="submit"
   >
-    <div class="flex flex-col lg:flex-row justify-center min-w-max gap-4">
-      <div class="flex flex-col w-full lg:w-1/2">
-        <p>Selection:</p>
-        <TransactionCard v-if="selection" @click="removeSelection" :transaction="selection" />
-      </div>
-      <div class="flex flex-col w-full lg:w-1/2">
-        <div>
-          <BaseInput v-model="search" class="" type="text" label="Search" />
+    <BasePicker>
+      <template v-slot:selection>
+        <div v-if="selection" class="flex flex-col border-gray-400 border-solid border-2 px-4">
+          <div>Scheduled At: {{ selection?.scheduledAt }}</div>
+          <div>Total: {{ selection?.total }}</div>
+          <div>Is paid: {{ selection?.isPaid }}</div>
+          <BaseChip @select="removeSelection" text="Remove" :show-action="false" />
         </div>
-        <div class="rounded-lg w-full">
-          <p>Options:</p>
-          <TransactionCard
-            v-for="transaction in transactions"
-            :key="transaction.id"
-            :transaction="transaction"
-            @click="selection = transaction"
-          />
+      </template>
+      <template v-slot:search>
+        <BaseInput v-model="search" type="text" label="Search" />
+      </template>
+      <template v-slot:options>
+        <div class="flex flex-col border-gray-400 border-solid border-2 px-4 my-2" v-for="transaction in transactions">
+          <div>Scheduled At: {{ transaction.scheduledAt }}</div>
+          <div>Total: {{ transaction.total }}</div>
+          <div>Is paid: {{ transaction.isPaid }}</div>
+          <BaseChip @select="selection = transaction" text="Select" :show-action="false" />
         </div>
-      </div>
-    </div>
+      </template>
+    </BasePicker>
   </BaseModal>
 </template>
 <script setup lang="ts">
@@ -37,7 +38,7 @@ import BaseButton from '@/components/base/BaseButton.vue';
 import { computed, ref } from 'vue';
 import { useTransactionsStore } from '@/store/transactionsStore';
 import { Transaction } from '@/services/TransactionService';
-import TransactionCard from '@/components/transactions/TransactionCard.vue';
+import { useSinglePicker } from '@/hooks/usePicker';
 
 interface Props {
   header: string;
@@ -53,16 +54,11 @@ const transactionsStore = useTransactionsStore();
 if (transactionsStore.shouldLoadState) await transactionsStore.fetchAll();
 
 const { showModal, toggleModal } = useModal();
+const { selection, removeSelection } = useSinglePicker<Transaction>();
 
 const search = ref('');
 
 const transactions = computed<Transaction[]>(() => props.transactions.filter((t) => t.id !== selection.value?.id));
-
-const selection = ref<Transaction>();
-
-const removeSelection = () => {
-  selection.value = undefined;
-};
 
 const submit = () => {
   if (selection.value) {

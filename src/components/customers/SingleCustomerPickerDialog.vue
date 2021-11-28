@@ -8,28 +8,23 @@
     @cancel="cancel"
     @submit="submit"
   >
-    <div class="flex flex-col lg:flex-row justify-center min-w-max gap-4">
-      <div class="flex flex-col w-full lg:w-1/2">
-        <p>Selection:</p>
-        <ul class="divide-y divide-gray-300">
-          <li @click="removeSelection" :class="{ 'bg-red-100': selection }">
-            {{ selection?.fullName }}
-          </li>
-        </ul>
-      </div>
-      <div class="flex flex-col w-full lg:w-1/2">
-        <div>
-          <BaseInput v-model="search" class="" type="text" label="Search" />
-        </div>
-        <div class="rounded-lg w-full">
-          <p>Options:</p>
-          <ul class="divide-y divide-gray-300">
-            <li v-for="customer in customers.slice(0, 8)" @click="selection = customer">{{ customer.fullName }}</li>
-            <li v-if="customers.length > 8">...</li>
-          </ul>
-        </div>
-      </div>
-    </div>
+    <BasePicker>
+      <template v-slot:selection>
+        <BaseChip v-if="selection" @remove="removeSelection" :text="selection?.fullName" :show-action="true" />
+      </template>
+      <template v-slot:search>
+        <BaseInput v-model="search" type="text" label="Search" />
+      </template>
+      <template v-slot:options>
+        <BaseChip
+          v-for="customer in customers.slice(0, 8)"
+          @select="selection = customer"
+          :text="customer.fullName"
+          :show-action="false"
+        />
+        <BaseChip v-if="customers.length > 8" text="..." :show-action="false" />
+      </template>
+    </BasePicker>
   </BaseModal>
 </template>
 <script setup lang="ts">
@@ -38,6 +33,7 @@ import BaseModal from '@/components/base/BaseModal.vue';
 import useModal from '@/hooks/useModal';
 import BaseButton from '@/components/base/BaseButton.vue';
 import { computed, ref } from 'vue';
+import { useSinglePicker } from '@/hooks/usePicker';
 
 interface Props {
   header: string;
@@ -50,6 +46,7 @@ const props = defineProps<Props>();
 const emit = defineEmits(['submit']);
 
 const { showModal, toggleModal } = useModal();
+const { selection, removeSelection } = useSinglePicker<Customer>();
 
 const search = ref('');
 
@@ -64,12 +61,6 @@ const customers = computed(() =>
         c.instagram?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()))
   )
 );
-
-const selection = ref<Customer>();
-
-const removeSelection = () => {
-  selection.value = undefined;
-};
 
 const submit = () => {
   emit('submit', selection.value);
