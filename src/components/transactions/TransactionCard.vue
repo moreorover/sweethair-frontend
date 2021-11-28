@@ -35,7 +35,7 @@
         Show
       </RouterLink>
       <TransactionDialog :transaction="transaction" header="Edit Transaction" label="Edit" buttonSize="small" />
-      <BaseConfirm @delete="deleteTransaction" />
+      <BaseConfirm @confirm="deleteTransaction" label="Delete" />
       <SingleCustomerPickerDialog
         v-if="!transaction.customer"
         header="Pick Customer"
@@ -44,6 +44,7 @@
         :customers="customersToPick"
         @submit="customerPicked($event)"
       />
+      <BaseConfirm @confirm="changePaidStatus" :label="props.transaction.isPaid ? 'Mark Unpaid' : 'Mark Paid'" />
     </div>
   </div>
 </template>
@@ -90,5 +91,9 @@ const customerPicked = async (customer: Customer) => {
 
 const deleteTransaction = async () => {
   await transactionsStore.delete(props.transaction);
+};
+
+const changePaidStatus = async () => {
+  await transactionsStore.update({ ...props.transaction, isPaid: !props.transaction.isPaid });
 };
 </script>

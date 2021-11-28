@@ -27,7 +27,11 @@
             :transactions="spareTransactions(customer)"
             @submit="pickedTransactions($event)"
           />
-          <BaseConfirm v-if="customerTransactions(customer).value.length < 1" @delete="removeCustomer(customer)" />
+          <BaseConfirm
+            v-if="customerTransactions(customer).value.length < 1"
+            @confirm="removeCustomer(customer)"
+            label="Remove Customer"
+          />
           <TransactionDialog
             header="Book a Transaction"
             label="Book Transaction"
