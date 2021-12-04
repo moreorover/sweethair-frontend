@@ -4,7 +4,7 @@
   <div class="mt-8">
     <div class="mt-6">
       <div class="flex flex-col mt-3 lg:flex-row">
-        <customer-dialog header="Create new Customer" label="New" buttonSize="medium" />
+        <CustomerDialog header="Create new Customer" label="New" class="btn btn-medium" />
 
         <div class="relative block mt-2 sm:mt-0">
           <span class="absolute inset-y-0 left-0 flex items-center pl-2">
@@ -22,12 +22,12 @@
         Showing {{ customers.length }} out of {{ customersStore.getAll.length }} records.
       </div>
       <BaseCardGrid>
-        <customer-card
+        <CustomerCard
           v-for="customer in customers"
           :data-test="`customer-card-${customer.id}`"
           :key="customer.id"
           :customer="customer"
-        ></customer-card>
+        />
       </BaseCardGrid>
     </div>
   </div>

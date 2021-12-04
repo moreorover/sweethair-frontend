@@ -4,7 +4,7 @@
   <div class="mt-8">
     <div class="mt-6">
       <div class="flex flex-col mt-3 lg:flex-row">
-        <AppointmentDialog header="Create new Appointment" label="New" buttonSize="medium" />
+        <AppointmentDialog header="Create new Appointment" label="New" class="btn btn-medium" />
       </div>
       <div class="flex justify-between">
         <div class="text-center lg:text-left text-gray-700 font-bold py-2">

@@ -1,5 +1,5 @@
 <template>
-  <BaseButton :label="props.label" @onClick="toggleModal" :size="props.buttonSize" />
+  <BaseButton :label="props.label" @onClick="toggleModal" v-bind="attrs" />
   <BaseModal
     :header="props.header"
     :show-footer="true"
@@ -39,14 +39,15 @@ import { computed, ref } from 'vue';
 import { useTransactionsStore } from '@/store/transactionsStore';
 import { Transaction } from '@/services/TransactionService';
 import { useSinglePicker } from '@/hooks/usePicker';
+import { useAttrs } from 'vue';
 
 interface Props {
   header: string;
   label: string;
-  buttonSize: string;
   transactions: Transaction[];
 }
 
+const attrs = useAttrs();
 const props = defineProps<Props>();
 const emit = defineEmits(['submit']);
 

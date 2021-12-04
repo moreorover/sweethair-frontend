@@ -1,5 +1,5 @@
 <template>
-  <BaseButton :label="props.label" @onClick="toggleModal" :size="props.buttonSize" />
+  <BaseButton :label="props.label" @onClick="toggleModal" v-bind="attrs" />
   <BaseModal
     :header="props.header"
     :show-footer="true"
@@ -39,15 +39,16 @@ import useModal from '@/hooks/useModal';
 import { useMultiplePicker } from '@/hooks/usePicker';
 import BaseButton from '@/components/base/BaseButton.vue';
 import { computed, ref } from 'vue';
+import { useAttrs } from 'vue';
 
 interface Props {
   header: string;
   label: string;
-  buttonSize: string;
   selection: Customer[];
   customers: Customer[];
 }
 
+const attrs = useAttrs();
 const props = defineProps<Props>();
 const emit = defineEmits(['submit']);
 

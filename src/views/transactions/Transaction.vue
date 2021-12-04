@@ -4,7 +4,7 @@
       {{ transaction && format(new Date(transaction.scheduledAt), 'd MMMM yyyy - HH:mm') }}
     </h3>
 
-    <TransactionDialog :transaction="transaction" header="Edit Transaction" label="Edit" buttonSize="large" />
+    <TransactionDialog :transaction="transaction" header="Edit Transaction" label="Edit" class="btn btn-large" />
   </div>
   <div class="flex max-w-screen-md">
     <div class="flex-grow max-h-full mx-6 m-auto">

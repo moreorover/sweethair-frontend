@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-between">
     <h3 data-test="customer-fullname" class="text-3xl font-medium text-gray-700">{{ customer.fullName }}</h3>
-    <CustomerDialog :customer="customer" header="Edit Customer" label="Edit" buttonSize="large" />
+    <CustomerDialog :customer="customer" header="Edit Customer" label="Edit" class="btn btn-large" />
   </div>
   <div v-if="customer.email || customer.instagram" class="flex space-x-4">
     <h6 v-if="customer.email" class="text-xl font-light text-gray-800">Email: {{ customer.email }}</h6>

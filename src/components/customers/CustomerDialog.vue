@@ -1,5 +1,5 @@
 <template>
-  <BaseButton :label="props.label" @onClick="toggleModal()" class="mr-2" :size="props.buttonSize" />
+  <BaseButton :label="props.label" @onClick="toggleModal()" v-bind="attrs" />
   <BaseModal :header="props.header" :show-footer="false" v-model:visible="showModal" @toggle-modal="toggleModal">
     <customer-form :customer="props.customer" @submit="submit($event)" />
   </BaseModal>
@@ -12,14 +12,15 @@ import CustomerForm from '@/components/customers/CustomerForm.vue';
 import BaseModal from '@/components/base/BaseModal.vue';
 import useModal from '@/hooks/useModal';
 import BaseButton from '@/components/base/BaseButton.vue';
+import { useAttrs } from 'vue';
 
 interface Props {
   customer?: Customer;
   header: string;
   label: string;
-  buttonSize: string;
 }
 
+const attrs = useAttrs();
 const props = withDefaults(defineProps<Props>(), {
   customer: () => {
     return {
@@ -31,7 +32,6 @@ const props = withDefaults(defineProps<Props>(), {
       instagram: '',
     };
   },
-  buttonSize: 'small',
 });
 
 const store = useCustomersStore();

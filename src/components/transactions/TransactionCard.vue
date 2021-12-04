@@ -31,13 +31,13 @@
       <RouterLink :to="{ name: `Transaction`, params: { id: transaction.id } }" class="btn btn-small">
         Show
       </RouterLink>
-      <TransactionDialog :transaction="transaction" header="Edit Transaction" label="Edit" buttonSize="small" />
+      <TransactionDialog :transaction="transaction" header="Edit Transaction" label="Edit" class="btn btn-small" />
       <BaseConfirm @confirm="deleteTransaction" label="Delete" />
       <SingleCustomerPickerDialog
         v-if="!transaction.customer"
         header="Pick Customer"
         label="Pick Customer"
-        buttonSize="small"
+        class="btn-btn-small"
         :customers="customersToPick"
         @submit="customerPicked($event)"
       />

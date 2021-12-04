@@ -1,5 +1,5 @@
 <template>
-  <BaseButton :label="props.label" @onClick="toggleModal()" :size="props.buttonSize" />
+  <BaseButton :label="props.label" @onClick="toggleModal()" v-bind="attrs" />
   <BaseModal :header="props.header" :show-footer="false" v-model:visible="showModal" @toggle-modal="toggleModal()">
     <TransactionForm :transaction="props.transaction" @submit="submit" />
   </BaseModal>
@@ -15,16 +15,17 @@ import { useTransactionsStore } from '@/store/transactionsStore';
 import { Customer } from '@/services/CustomerService';
 import { Appointment } from '@/services/AppointmentService';
 import moment from 'moment';
+import { useAttrs } from 'vue';
 
 interface Props {
   transaction?: Transaction;
   header: string;
   label: string;
-  buttonSize?: string;
   customer?: Customer;
   appointment?: Appointment;
 }
 
+const attrs = useAttrs();
 const props = withDefaults(defineProps<Props>(), {
   transaction: () => {
     return {
@@ -34,7 +35,6 @@ const props = withDefaults(defineProps<Props>(), {
       isPaid: false,
     };
   },
-  buttonSize: 'small',
   customer: undefined,
   appointment: undefined,
 });

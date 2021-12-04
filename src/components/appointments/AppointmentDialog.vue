@@ -1,5 +1,5 @@
 <template>
-  <BaseButton :label="props.label" @onClick="toggleModal()" :size="props.buttonSize" />
+  <BaseButton :label="props.label" @onClick="toggleModal()" v-bind="attrs" />
   <BaseModal :header="props.header" :show-footer="false" v-model:visible="showModal" @toggle-modal="toggleModal()">
     <AppointmentForm :appointment="props.appointment" @submit="submit" />
   </BaseModal>
@@ -14,6 +14,7 @@ import { useAppointmentsStore } from '@/store/appointmentsStore';
 import AppointmentForm from './AppointmentForm.vue';
 import { useRouter } from 'vue-router';
 import moment from 'moment';
+import { useAttrs } from 'vue';
 
 const router = useRouter();
 
@@ -21,9 +22,9 @@ interface Props {
   appointment?: Appointment;
   header: string;
   label: string;
-  buttonSize: string;
 }
 
+const attrs = useAttrs();
 const props = withDefaults(defineProps<Props>(), {
   appointment: () => {
     return {
@@ -32,7 +33,6 @@ const props = withDefaults(defineProps<Props>(), {
       scheduledAt: moment().toISOString(),
     };
   },
-  buttonSize: 'small',
 });
 
 const store = useAppointmentsStore();
