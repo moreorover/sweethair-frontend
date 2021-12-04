@@ -1,3 +1,5 @@
+import { Appointment } from '@/services/AppointmentService';
+import { Customer } from '@/services/CustomerService';
 import ItemService, { Item } from '@/services/ItemService';
 import { defineStore } from 'pinia';
 
@@ -30,6 +32,16 @@ export const useItemsStore = defineStore({
       (state) =>
       (id: number): Item => {
         return state.all[id];
+      },
+    getItemsByCustomerAndAppointment:
+      (state) =>
+      (customer: Customer, appointment: Appointment): Item[] => {
+        const { id: customerId } = customer;
+        const items: Item[] = state.ids
+          .map((id: number) => state.all[id])
+          .filter((item: Item) => item.customer?.id === customerId && item.appointment?.id === appointment.id);
+        console.log({ items });
+        return items;
       },
     shouldLoadState: (state): boolean => !state.loading && !state.loaded,
   },
