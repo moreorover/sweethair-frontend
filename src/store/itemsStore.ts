@@ -33,6 +33,9 @@ export const useItemsStore = defineStore({
       (id: number): Item => {
         return state.all[id];
       },
+    getAvailableItems(state): Item[] {
+      return state.ids.map((id: number) => this.all[id]).filter((i) => !i.customer && !i.appointment);
+    },
     getItemsByCustomerAndAppointment:
       (state) =>
       (customer: Customer, appointment: Appointment): Item[] => {
@@ -40,7 +43,6 @@ export const useItemsStore = defineStore({
         const items: Item[] = state.ids
           .map((id: number) => state.all[id])
           .filter((item: Item) => item.customer?.id === customerId && item.appointment?.id === appointment.id);
-        console.log({ items });
         return items;
       },
     shouldLoadState: (state): boolean => !state.loading && !state.loaded,
