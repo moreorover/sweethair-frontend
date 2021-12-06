@@ -84,52 +84,33 @@
         </div>
       </div>
     </div>
-  </div>
-  <!-- <div class="flex flex-col mx-auto gap-8 pt-3">
-    <div class="container border-2 border-gray-400 p-2" v-for="customer in appointment.customers" :key="customer.id">
-      <div class="flex justify-between">
-        <h4 class="text-1xl font-semibold text-indigo-600">{{ customer.fullName }}</h4>
-        <div class="flex gap-1">
-          <SingleTransactionPickerDialog
-            v-if="spareTransactions(customer).length"
-            header="Pick Transaction"
-            label="Pick Transaction"
-            class="btn btn-small"
-            :transactions="spareTransactions(customer)"
-            @submit="pickedTransactions($event)"
-          />
-          <BaseConfirm
-            v-if="customerTransactions(customer).value.length < 1"
-            @confirm="removeCustomer(customer)"
-            label="Remove Customer"
-          />
-          <TransactionDialog
-            header="Book a Transaction"
-            label="Book Transaction"
-            :customer="customer"
-            :appointment="appointment"
-            class="btn btn-small"
-          />
-        </div>
-      </div>
 
-      <div
-        v-if="customerTransactions(customer).value.length > 0"
-        v-for="transaction in customerTransactions(customer).value"
-        :key="transaction.id"
-      >
-        <TransactionCard :transaction="transaction" />
+    <div class="container flex flex-col mx-auto" v-if="appointmentTransactionsNoCustomer.length > 0">
+      <div class="shadow-lg rounded-2xl p-4 bg-white dark:bg-gray-700 w-full">
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center">
+            <span class="font-bold text-md text-black ml-2">Spare Transactions</span>
+          </div>
+        </div>
+        <div class="container flex flex-col mx-auto gap-4 pl-8">
+          <div class="flex text-center justify-between">
+            <div class="flex items-center">
+              <span class="font-semibold text-md text-black">Transactions</span>
+            </div>
+            <div class="flex items-center">
+              <TransactionDialog
+                header="Book a Transaction"
+                label="Book Transaction"
+                :appointment="appointment"
+                class="btn btn-small"
+              />
+            </div>
+          </div>
+          <TransactionsTable :transactions="appointmentTransactionsNoCustomer" :appointment="appointment" />
+        </div>
       </div>
     </div>
   </div>
-
-  <BaseCardGrid>
-    <TransactionCard
-      v-for="transaction in appointmentTransactionsNoCustomer"
-      :key="transaction.id"
-      :transaction="transaction"
-    />
-  </BaseCardGrid> -->
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
