@@ -36,6 +36,7 @@
   >
   </BaseModal>
   <SingleCustomerPickerDialog
+    v-if="!props.transaction.customer"
     header="Pick Customer"
     label="Pick Customer"
     :customers="appointment?.customers || []"
