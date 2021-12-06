@@ -25,6 +25,7 @@
     @onClick="togglePriceModal()"
     class="text-link px-1"
   />
+  |
   <BaseModal
     header="Confirm to change Transaction Status"
     :show-footer="true"
@@ -34,6 +35,13 @@
     @cancel="togglePriceModal()"
   >
   </BaseModal>
+  <SingleCustomerPickerDialog
+    header="Pick Customer"
+    label="Pick Customer"
+    :customers="appointment?.customers || []"
+    class="text-link"
+    @submit="customerSelected($event)"
+  />
 </template>
 
 <script setup lang="ts">
@@ -43,6 +51,7 @@ import { Transaction } from '@/services/TransactionService';
 import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
 import { useTransactionsStore } from '@/store/transactionsStore';
 import useModal from '@/hooks/useModal';
+import SingleCustomerPickerDialog from '../customers/SingleCustomerPickerDialog.vue';
 
 type Props = {
   transaction: Transaction;
@@ -65,5 +74,9 @@ const changePaidStatus = async () => {
 const deleteTransaction = async () => {
   toggleDeleteModal();
   await transactionsStore.delete(props.transaction);
+};
+
+const customerSelected = async (customer: Customer) => {
+  await transactionsStore.update({ ...props.transaction, customer });
 };
 </script>
