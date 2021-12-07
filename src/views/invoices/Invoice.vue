@@ -5,49 +5,51 @@
     </h3>
   </div>
 
-  <div class="container flex flex-col mx-auto">
-    <div class="shadow-lg rounded-2xl p-4 bg-white dark:bg-gray-700 w-full">
-      <div class="flex items-center justify-between mb-6">
-        <div class="flex items-center">
-          <span class="font-bold text-md text-black ml-2">Transactions</span>
-        </div>
-      </div>
-      <div class="container flex flex-col mx-auto gap-4 pl-8">
-        <div class="flex text-center justify-between">
+  <div class="flex flex-col mx-auto gap-4 pt-3">
+    <div class="container flex flex-col mx-auto">
+      <div class="shadow-lg rounded-2xl p-4 bg-white dark:bg-gray-700 w-full">
+        <div class="flex items-center justify-between mb-6">
           <div class="flex items-center">
-            <span class="font-semibold text-md text-black">Transactions</span>
-          </div>
-          <div class="flex items-center">
-            <TransactionDialog
-              header="Book a Transaction"
-              label="Book Transaction"
-              :invoice="invoice"
-              class="btn btn-small"
-            />
+            <span class="font-bold text-md text-black ml-2">Transactions</span>
           </div>
         </div>
-        <TransactionsTable :transactions="invoiceTransactions" />
+        <div class="container flex flex-col mx-auto gap-4 pl-8">
+          <div class="flex text-center justify-between">
+            <div class="flex items-center">
+              <span class="font-semibold text-md text-black">Transactions</span>
+            </div>
+            <div class="flex items-center">
+              <TransactionDialog
+                header="Book a Transaction"
+                label="Book Transaction"
+                :invoice="invoice"
+                class="btn btn-small"
+              />
+            </div>
+          </div>
+          <TransactionsTable :transactions="invoiceTransactions" />
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="container flex flex-col mx-auto">
-    <div class="shadow-lg rounded-2xl p-4 bg-white dark:bg-gray-700 w-full">
-      <div class="flex items-center justify-between mb-6">
-        <div class="flex items-center">
-          <span class="font-bold text-md text-black ml-2">Items</span>
-        </div>
-      </div>
-      <div class="container flex flex-col mx-auto gap-4 pl-8">
-        <div class="flex text-center justify-between">
+    <div class="container flex flex-col mx-auto">
+      <div class="shadow-lg rounded-2xl p-4 bg-white dark:bg-gray-700 w-full">
+        <div class="flex items-center justify-between mb-6">
           <div class="flex items-center">
-            <span class="font-semibold text-md text-black">Items</span>
-          </div>
-          <div class="flex items-center">
-            <ItemDialog header="Book a Item" label="Book Item" :invoice="invoice" class="btn btn-small" />
+            <span class="font-bold text-md text-black ml-2">Items</span>
           </div>
         </div>
-        <ItemsTable :items="invoiceItems" />
+        <div class="container flex flex-col mx-auto gap-4 pl-8">
+          <div class="flex text-center justify-between">
+            <div class="flex items-center">
+              <span class="font-semibold text-md text-black">Items</span>
+            </div>
+            <div class="flex items-center">
+              <ItemDialog header="Book a Item" label="Book Item" :invoice="invoice" class="btn btn-small" />
+            </div>
+          </div>
+          <ItemsTable :items="invoiceItems" />
+        </div>
       </div>
     </div>
   </div>
