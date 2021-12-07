@@ -1,3 +1,4 @@
+import { Invoice } from '@/services/InvoiceService';
 import { Appointment } from '@/services/AppointmentService';
 import { Customer } from '@/services/CustomerService';
 import ItemService, { Item } from '@/services/ItemService';
@@ -43,6 +44,15 @@ export const useItemsStore = defineStore({
         const items: Item[] = state.ids
           .map((id: number) => state.all[id])
           .filter((item: Item) => item.customer?.id === customerId && item.appointment?.id === appointment.id);
+        return items;
+      },
+    getItemsByInvoice:
+      (state) =>
+      (invoice: Invoice): Item[] => {
+        const { id: invoiceId } = invoice;
+        const items: Item[] = state.ids
+          .map((id: number) => state.all[id])
+          .filter((item: Item) => item.invoice?.id === invoiceId);
         return items;
       },
     shouldLoadState: (state): boolean => !state.loading && !state.loaded,
