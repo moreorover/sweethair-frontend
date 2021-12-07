@@ -17,6 +17,8 @@ import ShowAppointments from './views/appointments/ShowAppointments.vue';
 import ShowAppointment from './views/appointments/ShowAppointment.vue';
 import ShowTransactions from './views/transactions/ShowTransactions.vue';
 import ShowTransaction from './views/transactions/ShowTransaction.vue';
+import ShowInvoice from './views/invoices/ShowInvoice.vue';
+import ShowInvoices from './views/invoices/ShowInvoices.vue';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -101,6 +103,18 @@ const routes: RouteRecordRaw[] = [
     path: '/transactions/:id',
     name: 'Transaction',
     component: ShowTransaction,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/invoices',
+    name: 'Invoices',
+    component: ShowInvoices,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/invoices/:id',
+    name: 'Invoice',
+    component: ShowInvoice,
     meta: { requiresAuth: true },
   },
 ];
