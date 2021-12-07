@@ -16,6 +16,7 @@ import { Customer } from '@/services/CustomerService';
 import { Appointment } from '@/services/AppointmentService';
 import moment from 'moment';
 import { useAttrs } from 'vue';
+import { Invoice } from '@/services/InvoiceService';
 
 interface Props {
   transaction?: Transaction;
@@ -23,6 +24,7 @@ interface Props {
   label: string;
   customer?: Customer;
   appointment?: Appointment;
+  invoice?: Invoice;
 }
 
 const attrs = useAttrs();
@@ -37,6 +39,7 @@ const props = withDefaults(defineProps<Props>(), {
   },
   customer: undefined,
   appointment: undefined,
+  invoice: undefined,
 });
 
 const transactionsStore = useTransactionsStore();
@@ -49,6 +52,7 @@ const submit = async (transaction: Transaction) => {
       ...transaction,
       customer: props.customer || null,
       appointment: props.appointment || null,
+      invoice: props.invoice || null,
     },
     true
   );

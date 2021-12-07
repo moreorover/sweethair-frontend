@@ -15,6 +15,7 @@ import { useAttrs } from 'vue';
 import { Item } from '@/services/ItemService';
 import { useItemsStore } from '@/store/itemsStore';
 import ItemForm from '@/components/items/ItemForm.vue';
+import { Invoice } from '@/services/InvoiceService';
 
 interface Props {
   item?: Item;
@@ -22,6 +23,7 @@ interface Props {
   label: string;
   customer?: Customer;
   appointment?: Appointment;
+  invoice?: Invoice;
 }
 
 const attrs = useAttrs();
@@ -35,6 +37,7 @@ const props = withDefaults(defineProps<Props>(), {
   },
   customer: undefined,
   appointment: undefined,
+  invoice: undefined,
 });
 
 const itemsStore = useItemsStore();
@@ -47,6 +50,7 @@ const submit = async (item: Item) => {
       ...item,
       customer: props.customer || null,
       appointment: props.appointment || null,
+      invoice: props.invoice || null,
     },
     true
   );
