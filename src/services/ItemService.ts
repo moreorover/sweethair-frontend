@@ -6,7 +6,7 @@ import Service, { DataEntity } from './Service';
 export interface Item extends DataEntity {
   title: string;
   total: number;
-  invoices?: Invoice[];
+  invoice?: Invoice;
   customer?: Customer | null;
   appointment?: Appointment | null;
 }

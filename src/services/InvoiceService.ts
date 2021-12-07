@@ -1,10 +1,13 @@
 import { Transaction } from '@/services/TransactionService';
 import Service, { DataEntity } from './Service';
 import { Item } from './ItemService';
+import { boolean } from 'yup';
 
 export interface Invoice extends DataEntity {
-  title: string;
   total: number;
+  isReceived: boolean;
+  isPaid: boolean;
+  scheduledAt: string;
   transactions?: Transaction[];
   items?: Item[];
 }
