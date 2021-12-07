@@ -2,6 +2,7 @@ import { Customer } from './../services/CustomerService';
 import TransactionService, { Transaction } from './../services/TransactionService';
 import { defineStore } from 'pinia';
 import { Appointment } from '@/services/AppointmentService';
+import { Invoice } from '@/services/InvoiceService';
 
 interface TransactionStore {
   all: Record<string, Transaction>;
@@ -58,6 +59,15 @@ export const useTransactionsStore = defineStore({
         const transactions: Transaction[] = state.ids
           .map((id: number) => state.all[id])
           .filter((transaction: Transaction) => transaction.customer?.id === customerId);
+        return transactions;
+      },
+    getTransactionsByInvoice:
+      (state) =>
+      (invoice: Invoice): Transaction[] => {
+        const { id: invoiceId } = invoice;
+        const transactions: Transaction[] = state.ids
+          .map((id: number) => state.all[id])
+          .filter((transaction: Transaction) => transaction.invoice?.id === invoiceId);
         return transactions;
       },
     // TODO check what uses this function
