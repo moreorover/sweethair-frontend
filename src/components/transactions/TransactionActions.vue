@@ -7,40 +7,27 @@
     :transaction="props.transaction"
     class="text-link px-1"
   />
-  |
 
-  <BaseButton label="Delete" @onClick="toggleDeleteModal()" class="text-link px-1" /> |
-  <BaseModal
+  <BaseConfirmDialog
     header="Confirm to Delete Transaction"
-    :show-footer="true"
-    v-model:visible="showDeleteModal"
-    @submit="deleteTransaction"
-    @toggle-modal="toggleDeleteModal()"
-    @cancel="toggleDeleteModal()"
-  >
-  </BaseModal>
-
-  <BaseButton
-    :label="props.transaction.isPaid ? 'Mark Unpaid' : 'Mark Paid'"
-    @onClick="togglePriceModal()"
+    label="Delete"
+    @confirm="deleteTransaction"
     class="text-link px-1"
   />
-  |
-  <BaseModal
-    header="Confirm to change Transaction Status"
-    :show-footer="true"
-    v-model:visible="showPriceModal"
-    @submit="changePaidStatus"
-    @toggle-modal="togglePriceModal()"
-    @cancel="togglePriceModal()"
-  >
-  </BaseModal>
+
+  <BaseConfirmDialog
+    header="Confirm to change Transaction paid status"
+    :label="props.transaction.isPaid ? 'Mark Unpaid' : 'Mark Paid'"
+    @confirm="changePaidStatus"
+    class="text-link px-1"
+  />
+
   <SingleCustomerPickerDialog
-    v-if="!props.transaction.customer"
+    v-if="!props.transaction.customer && !props.transaction.invoice"
     header="Pick Customer"
     label="Pick Customer"
-    :customers="appointment?.customers || []"
-    class="text-link"
+    :customers="props.appointment?.customers || []"
+    class="text-link px-1"
     @submit="customerSelected($event)"
   />
 </template>
@@ -51,7 +38,6 @@ import { Customer } from '@/services/CustomerService';
 import { Transaction } from '@/services/TransactionService';
 import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
 import { useTransactionsStore } from '@/store/transactionsStore';
-import useModal from '@/hooks/useModal';
 import SingleCustomerPickerDialog from '../customers/SingleCustomerPickerDialog.vue';
 
 type Props = {
@@ -64,16 +50,11 @@ const props = defineProps<Props>();
 
 const transactionsStore = useTransactionsStore();
 
-const { showModal: showDeleteModal, toggleModal: toggleDeleteModal } = useModal();
-const { showModal: showPriceModal, toggleModal: togglePriceModal } = useModal();
-
 const changePaidStatus = async () => {
-  togglePriceModal();
   await transactionsStore.update({ ...props.transaction, isPaid: !props.transaction.isPaid });
 };
 
 const deleteTransaction = async () => {
-  toggleDeleteModal();
   await transactionsStore.delete(props.transaction);
 };
 
