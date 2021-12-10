@@ -57,11 +57,15 @@
               />
             </div>
           </div>
-          <TransactionsTable
-            :transactions="customerTransactions(customer).value"
-            :customer="customer"
-            :appointment="appointment"
-          />
+          <TransactionsTable :transactions="customerTransactions(customer).value">
+            <template v-slot:actions="slotProps">
+              <TransactionActions
+                :transaction="slotProps.transaction"
+                :customer="slotProps.customer"
+                :appointment="slotProps.appointment"
+              />
+            </template>
+          </TransactionsTable>
         </div>
 
         <div class="container flex flex-col mx-auto gap-4 pl-8">
@@ -106,7 +110,11 @@
               />
             </div>
           </div>
-          <TransactionsTable :transactions="appointmentTransactionsNoCustomer" :appointment="appointment" />
+          <TransactionsTable :transactions="appointmentTransactionsNoCustomer">
+            <template v-slot:actions="slotProps">
+              <TransactionActions :transaction="slotProps.transaction" :appointment="appointment" />
+            </template>
+          </TransactionsTable>
         </div>
       </div>
     </div>
