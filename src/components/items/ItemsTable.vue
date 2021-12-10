@@ -43,7 +43,9 @@
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="text-sm text-gray-500">{{ item.total }}</div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"></td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <slot name="actions" :item="item"></slot>
+                </td>
               </tr>
             </tbody>
           </table>
