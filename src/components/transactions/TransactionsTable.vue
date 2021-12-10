@@ -46,11 +46,12 @@
                   </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <TransactionActions
+                  <slot
+                    name="actions"
                     :transaction="transaction"
                     :customer="props.customer"
                     :appointment="props.appointment"
-                  />
+                  ></slot>
                 </td>
               </tr>
             </tbody>
@@ -66,7 +67,6 @@
 import { Appointment } from '@/services/AppointmentService';
 import { Customer } from '@/services/CustomerService';
 import { Transaction } from '@/services/TransactionService';
-import TransactionActions from './TransactionActions.vue';
 import moment from 'moment';
 import { computed } from 'vue';
 
