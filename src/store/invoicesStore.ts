@@ -60,6 +60,21 @@ export const useInvoicesStore = defineStore({
         console.log({ error });
       }
     },
+    async fetchById(invoiceId: number) {
+      this.loading = true;
+      try {
+        const { data } = await InvoiceService.get(invoiceId);
+
+        this.all[invoiceId] = data;
+        if (!this.ids.includes(invoiceId)) this.ids.push(invoiceId);
+        this.loaded = true;
+        this.loading = false;
+      } catch (error) {
+        this.loading = false;
+        console.log('Not loaded, something went wrong loading Invoice');
+        console.log({ error });
+      }
+    },
     async create(invoice: Invoice) {
       try {
         const { data } = await InvoiceService.create(invoice);
