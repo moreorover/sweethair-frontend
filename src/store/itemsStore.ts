@@ -1,3 +1,4 @@
+import { useInvoicesStore } from './invoicesStore';
 import { Invoice } from '@/services/InvoiceService';
 import { Appointment } from '@/services/AppointmentService';
 import { Customer } from '@/services/CustomerService';
@@ -105,6 +106,15 @@ export const useItemsStore = defineStore({
         if (item.invoice) invoicesStore.fetchById(item.invoice.id);
       } catch (error) {
         console.log('Failed to update Item', item, error);
+      }
+    },
+    async delete(item: Item) {
+      try {
+        await ItemService.delete(item.id);
+        this.ids = this.ids.filter((id) => id !== item.id);
+        delete this.getRaw[item.id];
+      } catch (error) {
+        console.log('Failed to delete Item', item, error);
       }
     },
   },
