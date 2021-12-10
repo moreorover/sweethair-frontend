@@ -144,7 +144,7 @@ export const useTransactionsStore = defineStore({
         this.ids = this.ids.filter((id) => id !== transaction.id);
         delete this.getRaw[transaction.id];
       } catch (error) {
-        console.log('Failed to update Transaction', transaction, error);
+        console.log('Failed to delete Transaction', transaction, error);
       }
     },
   },
