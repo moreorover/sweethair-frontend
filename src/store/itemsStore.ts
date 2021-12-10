@@ -89,6 +89,9 @@ export const useItemsStore = defineStore({
         const { data } = await ItemService.create(item);
         this.all[data.id] = data;
         this.ids.push(data.id);
+
+        const invoicesStore = useInvoicesStore();
+        if (item.invoice) invoicesStore.fetchById(item.invoice.id);
       } catch (error) {
         console.log('Failed to create Item', item, error);
       }
@@ -97,6 +100,9 @@ export const useItemsStore = defineStore({
       try {
         const { data } = await ItemService.update(item);
         this.all[data.id] = data;
+
+        const invoicesStore = useInvoicesStore();
+        if (item.invoice) invoicesStore.fetchById(item.invoice.id);
       } catch (error) {
         console.log('Failed to update Item', item, error);
       }
