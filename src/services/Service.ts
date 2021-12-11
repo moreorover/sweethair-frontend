@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+import { AxiosInstance, AxiosResponse } from 'axios';
 import apiClient from '@/axios/axios';
 
 export interface DataEntity {
@@ -9,27 +9,28 @@ export interface DataEntity {
 
 export default abstract class Service<T extends DataEntity> {
   apiEndpoint: string;
+  apiClient: AxiosInstance = apiClient;
 
   constructor(apiEndpoint: string) {
-    this.apiEndpoint = apiEndpoint;
+    this.apiEndpoint = `/${apiEndpoint}`;
   }
   getAll(): Promise<AxiosResponse<T[]>> {
-    return apiClient.get<T[]>(`/${this.apiEndpoint}`);
+    return this.apiClient.get<T[]>(this.apiEndpoint);
   }
 
   get(id: number): Promise<AxiosResponse<T>> {
-    return apiClient.get<T>(`/${this.apiEndpoint}/${id}`);
+    return this.apiClient.get<T>(`${this.apiEndpoint}/${id}`);
   }
 
   create(data: T): Promise<AxiosResponse<T>> {
-    return apiClient.post<T>(`/${this.apiEndpoint}`, data);
+    return this.apiClient.post<T>(`${this.apiEndpoint}`, data);
   }
 
   update(data: T): Promise<AxiosResponse<T>> {
-    return apiClient.patch<T>(`/${this.apiEndpoint}/${data.id}`, data);
+    return this.apiClient.patch<T>(`${this.apiEndpoint}/${data.id}`, data);
   }
 
   delete(id: number): void {
-    apiClient.delete(`/${this.apiEndpoint}/${id}`);
+    this.apiClient.delete(`${this.apiEndpoint}/${id}`);
   }
 }
