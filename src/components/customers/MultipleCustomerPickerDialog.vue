@@ -44,8 +44,8 @@ import { useAttrs } from 'vue';
 interface Props {
   header: string;
   label: string;
-  selection: Customer[];
-  customers: Customer[];
+  selection: Partial<Customer>[];
+  customers: Partial<Customer>[];
 }
 
 const attrs = useAttrs();
