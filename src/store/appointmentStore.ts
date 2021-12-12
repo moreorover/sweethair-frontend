@@ -66,5 +66,17 @@ export const useAppointmentStore = defineStore({
         console.log({ error });
       }
     },
+    async saveCustomersToAppointment(customers: Customer[]) {
+      if (!customers.length) return;
+
+      try {
+        if (!this.appointment) throw 'appointmentStore appointment is null';
+        const { data } = await AppointmentService.addCustomers(this.appointment.id, customers);
+        this.customers = data;
+      } catch (error) {
+        console.log('Not loaded, something went wrong loading Appointment Items');
+        console.log({ error });
+      }
+    },
   },
 });
