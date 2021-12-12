@@ -1,7 +1,7 @@
 import { Transaction } from './../services/TransactionService';
 import AppointmentService, { Appointment } from '@/services/AppointmentService';
 import { defineStore } from 'pinia';
-import { Customer } from '@/services/CustomerService';
+import CustomerService, { Customer } from '@/services/CustomerService';
 import { Item } from '@/services/ItemService';
 
 export const useAppointmentStore = defineStore({
@@ -9,6 +9,7 @@ export const useAppointmentStore = defineStore({
   state: () => ({
     appointment: {} as Appointment,
     customers: [] as Customer[],
+    customersBase: [] as Partial<Customer>[],
     transactions: [] as Transaction[],
     items: [] as Item[],
   }),
@@ -18,6 +19,12 @@ export const useAppointmentStore = defineStore({
     },
     getCustomers(state): Customer[] {
       return state.customers;
+    },
+    getCustomersIds(state): number[] {
+      return state.customers.map((c) => c.id);
+    },
+    getCustomerBase(state): Partial<Customer>[] {
+      return state.customersBase;
     },
     getTransactions(state): Transaction[] {
       return state.transactions;
@@ -75,6 +82,15 @@ export const useAppointmentStore = defineStore({
         this.customers = data;
       } catch (error) {
         console.log('Not loaded, something went wrong loading Appointment Items');
+        console.log({ error });
+      }
+    },
+    async fetchAllCustomersBase() {
+      try {
+        const { data } = await CustomerService.fetchCustomersBase();
+        this.customersBase = data;
+      } catch (error) {
+        console.log('Not loaded, something went wrong loading Customers base');
         console.log({ error });
       }
     },
