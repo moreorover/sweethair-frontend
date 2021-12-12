@@ -19,6 +19,7 @@
       />
     </div>
   </div>
+  {{ appointmentCustomers }}
 </template>
 <script setup lang="ts">
 import { computed, watch } from 'vue';
@@ -44,18 +45,20 @@ const appointmentStore = useAppointmentStore();
 
 // const appointmentsStore = useAppointmentsStore();
 // const transactionsStore = useTransactionsStore();
-const customersStore = useCustomersStore();
+// const customersStore = useCustomersStore();
 // const itemsStore = useItemsStore();
 
 await appointmentStore.fetch(id);
 await appointmentStore.fetchCustomers();
 await appointmentStore.fetchItems();
 await appointmentStore.fetchTransactions();
+await appointmentStore.fetchAllCustomersBase();
 
 const appointment: Appointment = appointmentStore.getAppointment;
-const appointmentCustomers: Customer[] = appointmentStore.getCustomers;
+const appointmentCustomers = computed<Customer[]>(() => appointmentStore.getCustomers);
 const appointmentItems: Item[] = appointmentStore.getItems;
 const appointmentTransactions: Transaction[] = appointmentStore.getTransactions;
+const allCustomers = appointmentStore.getCustomerBase;
 
 // const appointment = computed<Appointment | null>(() => appointmentStore.getAppointment);
 
@@ -63,19 +66,15 @@ const appointmentTransactions: Transaction[] = appointmentStore.getTransactions;
 // if (!appointmentStore.getAppointment) router.replace({ name: 'Appointments' });
 
 // if (transactionsStore.shouldLoadState) await transactionsStore.fetchAll();
-if (customersStore.shouldLoadState) await customersStore.fetchAll();
+// if (customersStore.shouldLoadState) await customersStore.fetchAll();
 // if (itemsStore.shouldLoadState) await itemsStore.fetchAll();
 
-const allCustomers: Customer[] = customersStore.getAll;
+// const allCustomers: Customer[] = customersStore.getAll;
 
 // const allItems = computed<Item[]>(() => itemsStore.getAvailableItems);
 
 const pickedCustomers = async (customers: Customer[]) => {
-  console.log('pickedCustomers: ', { customers });
-  // appointment.value?.customers
-  //   ? appointment.value.customers?.push(...customers)
-  //   : (appointment.value?.customers = customers);
-  // await appointmentsStore.update(appointment.value?);
+  await appointmentStore.saveCustomersToAppointment(customers);
 };
 
 // const pickedItems = async (items: Item[], customer: Customer) => {
