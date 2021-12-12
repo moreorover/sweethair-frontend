@@ -24,6 +24,10 @@ class AppointmentService extends Service<Appointment> {
   fetchItems(appointmentId: number): Promise<AxiosResponse<Item[]>> {
     return this.apiClient.get<Item[]>(`${this.apiEndpoint}/${appointmentId}/items`);
   }
+
+  addCustomers(appointmentId: number, customers: Customer[]): Promise<AxiosResponse<Customer[]>> {
+    return this.apiClient.post<Customer[]>(`${this.apiEndpoint}/${appointmentId}/customers`, { customers });
+  }
 }
 
 export default new AppointmentService('appointments');
