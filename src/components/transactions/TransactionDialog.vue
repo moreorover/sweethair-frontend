@@ -10,26 +10,23 @@
   </BaseModal>
 </template>
 <script setup lang="ts">
-import useEntityCleaner from '@/hooks/entityCleaner';
 import BaseModal from '@/components/base/BaseModal.vue';
 import useModal from '@/hooks/useModal';
 import BaseButton from '@/components/base/BaseButton.vue';
 import TransactionForm from './TransactionForm.vue';
 import { Transaction } from '@/services/TransactionService';
-import { useTransactionsStore } from '@/store/transactionsStore';
 import { Customer } from '@/services/CustomerService';
 import { Appointment } from '@/services/AppointmentService';
 import moment from 'moment';
 import { useAttrs } from 'vue';
 import { Invoice } from '@/services/InvoiceService';
 
+const emit = defineEmits(['submit']);
+
 interface Props {
   transaction?: Transaction;
   header: string;
   label: string;
-  customer?: Customer;
-  appointment?: Appointment;
-  invoice?: Invoice;
 }
 
 const attrs = useAttrs();
@@ -42,28 +39,12 @@ const props = withDefaults(defineProps<Props>(), {
       isPaid: false,
     };
   },
-  customer: undefined,
-  appointment: undefined,
-  invoice: undefined,
 });
 
-const transactionsStore = useTransactionsStore();
-const entityCleaner = useEntityCleaner();
 const { showModal, toggleModal } = useModal();
 
 const submit = async (transaction: Transaction) => {
-  const cleanTransaction: Transaction = entityCleaner.clean(
-    {
-      ...transaction,
-      customer: props.customer || null,
-      appointment: props.appointment || null,
-      invoice: props.invoice || null,
-    },
-    true
-  );
-  cleanTransaction.id
-    ? await transactionsStore.update(cleanTransaction)
-    : await transactionsStore.create(cleanTransaction);
+  emit('submit', transaction);
   toggleModal();
 };
 </script>
