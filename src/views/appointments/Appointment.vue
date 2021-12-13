@@ -7,6 +7,7 @@
         header="Edit Appointment"
         label="Edit"
         class="btn btn-large"
+        @submit="editAppointment($event)"
       />
       <MultipleCustomerPickerDialog
         :selection="appointmentStore.customers"
@@ -19,24 +20,22 @@
       <TransactionDialog
         header="Book a Transaction"
         label="Book Transaction"
-        :appointment="appointment"
         class="btn btn-large"
+        @submit="newTransaction($event)"
       />
     </div>
   </div>
   {{ appointmentCustomers }}
+  <br />
+  {{ appointmentTransactions }}
 </template>
 <script setup lang="ts">
-import { computed, watch } from 'vue';
-import { useAppointmentsStore } from '@/store/appointmentsStore';
+import { computed } from 'vue';
 import AppointmentDialog from '@/components/appointments/AppointmentDialog.vue';
 import MultipleCustomerPickerDialog from '@/components/customers/MultipleCustomerPickerDialog.vue';
 import { Customer } from '@/services/CustomerService';
-import { useTransactionsStore } from '@/store/transactionsStore';
 import { Transaction } from '@/services/TransactionService';
 import { useRoute, useRouter } from 'vue-router';
-import { useCustomersStore } from '@/store/customersStore';
-import { useItemsStore } from '@/store/itemsStore';
 import { Item } from '@/services/ItemService';
 import { useAppointmentStore } from '@/store/appointmentStore';
 import { Appointment } from '@/services/AppointmentService';
@@ -59,12 +58,16 @@ await appointmentStore.fetchItems();
 await appointmentStore.fetchTransactions();
 await appointmentStore.fetchAllCustomersBase();
 
-const appointment: Appointment = appointmentStore.getAppointment;
+const appointment = computed<Appointment>(
+  () => appointmentStore.getAppointment
+);
 const appointmentCustomers = computed<Customer[]>(
   () => appointmentStore.getCustomers
 );
 const appointmentItems: Item[] = appointmentStore.getItems;
-const appointmentTransactions: Transaction[] = appointmentStore.getTransactions;
+const appointmentTransactions = computed<Transaction[]>(
+  () => appointmentStore.getTransactions
+);
 const allCustomers = appointmentStore.getCustomerBase;
 
 // const appointment = computed<Appointment | null>(() => appointmentStore.getAppointment);
@@ -82,6 +85,14 @@ const allCustomers = appointmentStore.getCustomerBase;
 
 const pickedCustomers = async (customers: Customer[]) => {
   await appointmentStore.saveCustomersToAppointment(customers);
+};
+
+const newTransaction = async (transaction: Transaction) => {
+  await appointmentStore.saveTransactionToAppointment(transaction, null);
+};
+
+const editAppointment = async (appointment: Appointment) => {
+  await appointmentStore.updateAppointment(appointment);
 };
 
 // const pickedItems = async (items: Item[], customer: Customer) => {
