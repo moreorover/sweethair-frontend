@@ -113,5 +113,14 @@ export const useAppointmentStore = defineStore({
         console.log({ error });
       }
     },
+    async updateAppointment(appointment: Appointment) {
+      try {
+        const { data } = await AppointmentService.update(appointment);
+        this.appointment = data;
+      } catch (error) {
+        console.log('Not loaded, something went wrong updating Appointment');
+        console.log({ error });
+      }
+    },
   },
 });
