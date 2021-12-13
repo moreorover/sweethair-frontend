@@ -104,6 +104,25 @@ export const useAppointmentStore = defineStore({
         console.log({ error });
       }
     },
+    async saveTransactionToAppointment(
+      transaction: Transaction,
+      customer: Customer | null
+    ) {
+      try {
+        if (!this.appointment) throw 'appointmentStore appointment is null';
+        const { data } = await AppointmentService.addTransaction(
+          this.appointment.id,
+          transaction,
+          customer
+        );
+        this.transactions.push(data);
+      } catch (error) {
+        console.log(
+          'Not saved, something went wrong saving Appointment Transaction'
+        );
+        console.log({ error });
+      }
+    },
     async fetchAllCustomersBase() {
       try {
         const { data } = await CustomerService.fetchCustomersBase();
