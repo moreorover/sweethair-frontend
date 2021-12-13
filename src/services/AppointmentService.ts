@@ -49,7 +49,13 @@ class AppointmentService extends Service<Appointment> {
   ): Promise<AxiosResponse<Transaction>> {
     return this.apiClient.post<Transaction>(
       `${this.apiEndpoint}/${appointmentId}/transactions`,
-      { transaction, customer: customer ? { id: customer.id } : {} }
+      customer
+        ? {
+            ...transaction,
+            appointment: { id: appointmentId },
+            customer: { id: customer.id },
+          }
+        : { ...transaction, appointment: { id: appointmentId } }
     );
   }
 }
