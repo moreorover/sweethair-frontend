@@ -81,7 +81,9 @@ describe('Customers', () => {
 
   it('Specific card is displayed', async () => {
     await flushPromises();
-    const cs = wrapper.find('[data-test="customer-card-c40e8d86-d675-4b7c-8a87-efce1858f12f"]');
+    const cs = wrapper.find(
+      '[data-test="customer-card-c40e8d86-d675-4b7c-8a87-efce1858f12f"]'
+    );
     expect(cs.text()).toContain('1113234234');
   });
 });

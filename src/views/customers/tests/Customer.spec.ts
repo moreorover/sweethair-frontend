@@ -34,7 +34,15 @@ function factory(options?: TestingOptions) {
   const wrapper = mount(ShowCustomer, {
     global: {
       plugins: [createTestingPinia(options)],
-      components: { BaseInput, BaseButton, BaseCardGrid, BaseConfirm, BaseModal, Button, Dialog },
+      components: {
+        BaseInput,
+        BaseButton,
+        BaseCardGrid,
+        BaseConfirm,
+        BaseModal,
+        Button,
+        Dialog,
+      },
     },
   });
 

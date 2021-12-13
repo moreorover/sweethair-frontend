@@ -6,7 +6,9 @@ const currentWeek = currentDate.week();
 const weekNumber = ref(currentWeek);
 
 export const useWeek = () => {
-  const weekStart = computed(() => moment().week(weekNumber.value).startOf('week'));
+  const weekStart = computed(() =>
+    moment().week(weekNumber.value).startOf('week')
+  );
   const weekEnd = computed(() => moment().week(weekNumber.value).endOf('week'));
 
   const increaseWeek = () => {

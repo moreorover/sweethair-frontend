@@ -39,7 +39,9 @@ export const useAppointmentsStore = defineStore({
         return state.ids
           .map((id: number) => state.all[id])
           .filter(
-            (x: Appointment) => getMonth(new Date(x.scheduledAt)) == month && getYear(new Date(x.scheduledAt)) == year
+            (x: Appointment) =>
+              getMonth(new Date(x.scheduledAt)) == month &&
+              getYear(new Date(x.scheduledAt)) == year
           );
       },
     getAppointmentsByCustomer:
@@ -48,7 +50,9 @@ export const useAppointmentsStore = defineStore({
         const { id: customerId } = customer;
         const appointments: Appointment[] = state.ids
           .map((id: number) => state.all[id])
-          .filter((a: Appointment) => a.customers?.map((c) => c.id).includes(customerId));
+          .filter((a: Appointment) =>
+            a.customers?.map((c) => c.id).includes(customerId)
+          );
         return appointments;
       },
     shouldLoadState: (state): boolean => !state.loading && !state.loaded,
@@ -101,7 +105,9 @@ export const useAppointmentsStore = defineStore({
     },
     async removeCustomer(appointment: Appointment, customer: Customer) {
       if (appointment.customers) {
-        appointment.customers = appointment.customers.filter((c) => c.id !== customer.id);
+        appointment.customers = appointment.customers.filter(
+          (c) => c.id !== customer.id
+        );
         await this.update(appointment);
       }
     },

@@ -70,7 +70,8 @@
       "
       type="button"
     >
-      {{ weekStart.format('DD MMM yyyy') }} - {{ weekEnd.format('DD MMM yyyy') }}
+      {{ weekStart.format('DD MMM yyyy') }} -
+      {{ weekEnd.format('DD MMM yyyy') }}
     </button>
 
     <button
@@ -103,5 +104,13 @@
 <script setup lang="ts">
 import { useWeek } from '@/hooks/useWeek';
 
-const { currentWeek, weekNumber, weekStart, weekEnd, increaseWeek, decreaseWeek, reset } = useWeek();
+const {
+  currentWeek,
+  weekNumber,
+  weekStart,
+  weekEnd,
+  increaseWeek,
+  decreaseWeek,
+  reset,
+} = useWeek();
 </script>

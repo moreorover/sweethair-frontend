@@ -2,19 +2,45 @@
   <form @submit.prevent="submit">
     <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
       <div>
-        <BaseInput label="Full Name" v-model="fullName" type="text" :error="errors.fullName" />
+        <BaseInput
+          label="Full Name"
+          v-model="fullName"
+          type="text"
+          :error="errors.fullName"
+        />
       </div>
       <div>
-        <BaseInput label="Location" v-model="location" type="text" :error="errors.location" />
+        <BaseInput
+          label="Location"
+          v-model="location"
+          type="text"
+          :error="errors.location"
+        />
       </div>
       <div>
-        <BaseInput label="About" v-model="about" type="text" :error="errors.about" />
+        <BaseInput
+          label="About"
+          v-model="about"
+          type="text"
+          :error="errors.about"
+        />
       </div>
       <div>
-        <BaseInput label="Email Address" :modelValue="email" @change="emailChange" type="text" :error="errors.email" />
+        <BaseInput
+          label="Email Address"
+          :modelValue="email"
+          @change="emailChange"
+          type="text"
+          :error="errors.email"
+        />
       </div>
       <div>
-        <BaseInput label="Instagram" v-model="instagram" type="text" :error="errors.instagram" />
+        <BaseInput
+          label="Instagram"
+          v-model="instagram"
+          type="text"
+          :error="errors.instagram"
+        />
       </div>
     </div>
 
@@ -61,6 +87,8 @@ email.value = props.customer.email;
 instagram.value = props.customer.instagram;
 
 const submit = handleSubmit((values) => {
-  props.customer.id > 0 ? emit('submit', { id: props.customer.id, ...values }) : emit('submit', { ...values });
+  props.customer.id > 0
+    ? emit('submit', { id: props.customer.id, ...values })
+    : emit('submit', { ...values });
 });
 </script>

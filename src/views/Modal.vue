@@ -24,9 +24,24 @@
         !open && 'opacity-0 pointer-events-none'
       } z-50 fixed w-full h-full top-0 left-0 flex items-center justify-center`"
     >
-      <div @click="open = false" class="absolute w-full h-full bg-gray-900 opacity-50 modal-overlay"></div>
+      <div
+        @click="open = false"
+        class="absolute w-full h-full bg-gray-900 opacity-50 modal-overlay"
+      ></div>
 
-      <div class="z-50 w-11/12 mx-auto overflow-y-auto bg-white rounded shadow-lg modal-container md:max-w-md">
+      <div
+        class="
+          z-50
+          w-11/12
+          mx-auto
+          overflow-y-auto
+          bg-white
+          rounded
+          shadow-lg
+          modal-container
+          md:max-w-md
+        "
+      >
         <div
           class="
             absolute

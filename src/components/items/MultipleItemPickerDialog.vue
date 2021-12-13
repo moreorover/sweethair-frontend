@@ -53,7 +53,8 @@ const props = defineProps<Props>();
 const emit = defineEmits(['submit']);
 
 const { showModal, toggleModal } = useModal();
-const { selection, fullSelection, removeSelection } = useMultiplePicker<Item>(props);
+const { selection, fullSelection, removeSelection } =
+  useMultiplePicker<Item>(props);
 
 const search = ref('');
 

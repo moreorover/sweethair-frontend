@@ -4,17 +4,26 @@
   <div class="mt-8">
     <div class="mt-6">
       <div class="flex flex-col mt-3 lg:flex-row">
-        <AppointmentDialog header="Create new Appointment" label="New" class="btn btn-medium" />
+        <AppointmentDialog
+          header="Create new Appointment"
+          label="New"
+          class="btn btn-medium"
+        />
       </div>
       <div class="flex justify-between">
         <div class="text-center lg:text-left text-gray-700 font-bold py-2">
-          Showing {{ appointments.length }} out of {{ appointmentsStore.getAll.length }} records.
+          Showing {{ appointments.length }} out of
+          {{ appointmentsStore.getAll.length }} records.
         </div>
         <WeekToolBar />
       </div>
 
       <BaseCardGrid>
-        <AppointmentCard v-for="appointment in appointments" :key="appointment.id" :appointment="appointment" />
+        <AppointmentCard
+          v-for="appointment in appointments"
+          :key="appointment.id"
+          :appointment="appointment"
+        />
       </BaseCardGrid>
     </div>
   </div>
@@ -36,6 +45,8 @@ const appointmentsStore = useAppointmentsStore();
 if (appointmentsStore.shouldLoadState) await appointmentsStore.fetchAll();
 
 const appointments = computed(() =>
-  appointmentsStore.getAll.filter((a) => moment(a.scheduledAt).week() == weekNumber.value)
+  appointmentsStore.getAll.filter(
+    (a) => moment(a.scheduledAt).week() == weekNumber.value
+  )
 );
 </script>

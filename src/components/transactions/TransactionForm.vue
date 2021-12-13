@@ -9,21 +9,34 @@
             w-full
             border-gray-200
             rounded-md
-            focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500
+            focus:border-indigo-600
+            focus:ring
+            focus:ring-opacity-40
+            focus:ring-indigo-500
           "
           v-model="scheduledAt"
           :manualInput="true"
           dateFormat="d MM yy"
         />
-        <p v-if="errors.scheduledAt" class="text-xs font-bold text-red-500">{{ errors.scheduledAt }}</p>
+        <p v-if="errors.scheduledAt" class="text-xs font-bold text-red-500">
+          {{ errors.scheduledAt }}
+        </p>
       </div>
       <div>
-        <BaseInput label="Total amount" v-model="total" type="number" :error="errors.total" step=".01" />
+        <BaseInput
+          label="Total amount"
+          v-model="total"
+          type="number"
+          :error="errors.total"
+          step=".01"
+        />
       </div>
       <div>
         <label class="mr-4">Is it paid?</label>
         <InputSwitch v-model="isPaid" />
-        <p v-if="errors.scheduledAt" class="text-xs font-bold text-red-500">{{ errors.scheduledAt }}</p>
+        <p v-if="errors.scheduledAt" class="text-xs font-bold text-red-500">
+          {{ errors.scheduledAt }}
+        </p>
       </div>
     </div>
     <div class="flex justify-end mt-4">
@@ -64,6 +77,8 @@ total.value = props.transaction.total;
 isPaid.value = props.transaction.isPaid;
 
 const submit = handleSubmit((values) => {
-  props.transaction.id > 0 ? emit('submit', { id: props.transaction.id, ...values }) : emit('submit', { ...values });
+  props.transaction.id > 0
+    ? emit('submit', { id: props.transaction.id, ...values })
+    : emit('submit', { ...values });
 });
 </script>

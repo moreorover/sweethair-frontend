@@ -1,6 +1,11 @@
 <template>
   <BaseButton :label="props.label" @onClick="toggleModal()" v-bind="attrs" />
-  <BaseModal :header="props.header" :show-footer="false" v-model:visible="showModal" @toggle-modal="toggleModal()">
+  <BaseModal
+    :header="props.header"
+    :show-footer="false"
+    v-model:visible="showModal"
+    @toggle-modal="toggleModal()"
+  >
     <TransactionForm :transaction="props.transaction" @submit="submit" />
   </BaseModal>
 </template>

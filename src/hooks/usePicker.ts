@@ -4,7 +4,10 @@ import { DataEntity } from '../services/Service';
 export const useMultiplePicker = <T extends DataEntity>(props: any) => {
   const selection = ref<T[]>([]);
 
-  const fullSelection = computed<T[]>(() => [...props.selection, ...selection.value]);
+  const fullSelection = computed<T[]>(() => [
+    ...props.selection,
+    ...selection.value,
+  ]);
 
   const removeSelection = (obj: T) => {
     selection.value = selection.value.filter((c) => c.id !== obj.id);

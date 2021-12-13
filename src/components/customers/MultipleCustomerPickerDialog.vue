@@ -14,7 +14,9 @@
           v-for="customer in fullSelection"
           @remove="removeSelection(customer)"
           :text="customer.fullName"
-          :show-action="!!selection.map((c) => c.id).find((c) => c === customer.id)"
+          :show-action="
+            !!selection.map((c) => c.id).find((c) => c === customer.id)
+          "
         />
       </template>
       <template v-slot:search>
@@ -53,7 +55,8 @@ const props = defineProps<Props>();
 const emit = defineEmits(['submit']);
 
 const { showModal, toggleModal } = useModal();
-const { selection, fullSelection, removeSelection } = useMultiplePicker<Customer>(props);
+const { selection, fullSelection, removeSelection } =
+  useMultiplePicker<Customer>(props);
 
 const search = ref('');
 
@@ -61,11 +64,21 @@ const customers = computed(() =>
   props.customers.filter(
     (c) =>
       !fullSelection.value.map((cs) => cs.id).includes(c.id) &&
-      (c.fullName.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
-        c.location.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
-        c.about.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
-        c.email?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
-        c.instagram?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()))
+      (c.fullName
+        .toLocaleLowerCase()
+        .includes(search.value.toLocaleLowerCase()) ||
+        c.location
+          .toLocaleLowerCase()
+          .includes(search.value.toLocaleLowerCase()) ||
+        c.about
+          .toLocaleLowerCase()
+          .includes(search.value.toLocaleLowerCase()) ||
+        c.email
+          ?.toLocaleLowerCase()
+          .includes(search.value.toLocaleLowerCase()) ||
+        c.instagram
+          ?.toLocaleLowerCase()
+          .includes(search.value.toLocaleLowerCase()))
   )
 );
 

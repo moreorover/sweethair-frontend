@@ -1,6 +1,11 @@
 <template>
   <BaseButton :label="props.label" @onClick="toggleModal()" v-bind="attrs" />
-  <BaseModal :header="props.header" :show-footer="false" v-model:visible="showModal" @toggle-modal="toggleModal()">
+  <BaseModal
+    :header="props.header"
+    :show-footer="false"
+    v-model:visible="showModal"
+    @toggle-modal="toggleModal()"
+  >
     <ItemForm :item="props.item" @submit="submit" />
   </BaseModal>
 </template>
@@ -54,7 +59,9 @@ const submit = async (item: Item) => {
     },
     true
   );
-  cleanItem.id ? await itemsStore.update(cleanItem) : await itemsStore.create(cleanItem);
+  cleanItem.id
+    ? await itemsStore.update(cleanItem)
+    : await itemsStore.create(cleanItem);
   toggleModal();
 };
 </script>

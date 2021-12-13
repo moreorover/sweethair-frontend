@@ -1,6 +1,11 @@
 <template>
   <BaseButton :label="props.label" @onClick="toggleModal()" v-bind="attrs" />
-  <BaseModal :header="props.header" :show-footer="false" v-model:visible="showModal" @toggle-modal="toggleModal">
+  <BaseModal
+    :header="props.header"
+    :show-footer="false"
+    v-model:visible="showModal"
+    @toggle-modal="toggleModal"
+  >
     <customer-form :customer="props.customer" @submit="submit($event)" />
   </BaseModal>
 </template>
@@ -40,7 +45,9 @@ const { showModal, toggleModal } = useModal();
 
 const submit = async (customer: Customer) => {
   const cleanCustomer: Customer = entityCleaner.clean(customer, true);
-  cleanCustomer.id ? await store.update(cleanCustomer) : await store.create(cleanCustomer);
+  cleanCustomer.id
+    ? await store.update(cleanCustomer)
+    : await store.create(cleanCustomer);
   toggleModal();
 };
 </script>

@@ -45,7 +45,9 @@ export const useCustomersStore = defineStore({
           .map((id: number) => state.all[id])
           .filter((customer: Customer) => customerIds.includes(customer.id))
           .map((customer: Customer) => {
-            customer.transactions = customer.transactions?.filter((t) => transactionIds.includes(t.id));
+            customer.transactions = customer.transactions?.filter((t) =>
+              transactionIds.includes(t.id)
+            );
             return customer;
           });
         return customers;

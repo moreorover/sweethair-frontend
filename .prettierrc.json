@@ -2,7 +2,11 @@
   "useTabs": false,
   "tabWidth": 2,
   "singleQuote": true,
-  "printWidth": 120,
+  "printWidth": 80,
   "trailingComma": "es5",
-  "arrowParens": "always"
+  "arrowParens": "always",
+  "proseWrap": "always",
+  "bracketSpacing": true,
+  "jsxBracketSameLine": false,
+  "semi": true
 }

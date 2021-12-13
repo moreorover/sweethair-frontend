@@ -7,8 +7,16 @@
   />
 
   <div v-else class="flex space-x-1">
-    <BaseButton @onClick="confirm" class="btn btn-small bg-red-800 hover:bg-red-500" label="Yes" />
-    <BaseButton @onClick="confirmClicked = !confirmClicked" class="btn btn-small" label="No" />
+    <BaseButton
+      @onClick="confirm"
+      class="btn btn-small bg-red-800 hover:bg-red-500"
+      label="Yes"
+    />
+    <BaseButton
+      @onClick="confirmClicked = !confirmClicked"
+      class="btn btn-small"
+      label="No"
+    />
   </div>
 </template>
 <script setup lang="ts">

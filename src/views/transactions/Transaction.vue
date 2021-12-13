@@ -1,10 +1,18 @@
 <template>
   <div class="flex justify-between">
     <h3 class="text-3xl font-medium text-gray-700">
-      {{ transaction && format(new Date(transaction.scheduledAt), 'd MMMM yyyy - HH:mm') }}
+      {{
+        transaction &&
+        format(new Date(transaction.scheduledAt), 'd MMMM yyyy - HH:mm')
+      }}
     </h3>
 
-    <TransactionDialog :transaction="transaction" header="Edit Transaction" label="Edit" class="btn btn-large" />
+    <TransactionDialog
+      :transaction="transaction"
+      header="Edit Transaction"
+      label="Edit"
+      class="btn btn-large"
+    />
   </div>
   <div class="flex max-w-screen-md">
     <div class="flex-grow max-h-full mx-6 m-auto">
@@ -16,10 +24,15 @@
         }"
       ></div>
     </div>
-    <div class="flex flex-none text-xl font-bold text-gray-900 px-6">{{ transaction && transaction.total }}</div>
+    <div class="flex flex-none text-xl font-bold text-gray-900 px-6">
+      {{ transaction && transaction.total }}
+    </div>
     <span
       class="text-xs mx-auto px-2 font-medium text-white rounded-full py-0.5"
-      :class="{ 'bg-indigo-500': transaction && transaction.isPaid, 'bg-pink-500': transaction && !transaction.isPaid }"
+      :class="{
+        'bg-indigo-500': transaction && transaction.isPaid,
+        'bg-pink-500': transaction && !transaction.isPaid,
+      }"
     >
       {{ transaction && transaction.isPaid ? 'Paid' : 'Awaiting' }}
     </span>
@@ -48,7 +61,10 @@ const id: number = +route.params.id;
 
 const transactionsStore = useTransactionsStore();
 if (transactionsStore.shouldLoadState) await transactionsStore.fetchAll();
-if (!transactionsStore.getIds.includes(id)) router.replace({ name: 'Transactions' });
+if (!transactionsStore.getIds.includes(id))
+  router.replace({ name: 'Transactions' });
 
-const transaction = computed<Transaction>(() => transactionsStore.getTransactionById(id));
+const transaction = computed<Transaction>(() =>
+  transactionsStore.getTransactionById(id)
+);
 </script>

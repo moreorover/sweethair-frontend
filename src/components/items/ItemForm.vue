@@ -2,10 +2,21 @@
   <form @submit.prevent="submit">
     <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
       <div>
-        <BaseInput label="Title" v-model="title" type="text" :error="errors.title" />
+        <BaseInput
+          label="Title"
+          v-model="title"
+          type="text"
+          :error="errors.title"
+        />
       </div>
       <div>
-        <BaseInput label="Total amount" v-model="total" type="number" :error="errors.total" step=".01" />
+        <BaseInput
+          label="Total amount"
+          v-model="total"
+          type="number"
+          :error="errors.total"
+          step=".01"
+        />
       </div>
     </div>
     <div class="flex justify-end mt-4">
@@ -43,6 +54,8 @@ title.value = props.item.title;
 total.value = props.item.total;
 
 const submit = handleSubmit((values) => {
-  props.item.id > 0 ? emit('submit', { id: props.item.id, ...values }) : emit('submit', { ...values });
+  props.item.id > 0
+    ? emit('submit', { id: props.item.id, ...values })
+    : emit('submit', { ...values });
 });
 </script>

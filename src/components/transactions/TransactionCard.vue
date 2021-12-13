@@ -11,27 +11,43 @@
       my-2
       border-b-4 border-solid
     "
-    :class="{ 'border-red-700': transaction.total < 0, 'border-green-700': transaction.total > 0 }"
+    :class="{
+      'border-red-700': transaction.total < 0,
+      'border-green-700': transaction.total > 0,
+    }"
   >
     <p class="flex items-center text-sm text-gray-600">
       {{ format(new Date(transaction.scheduledAt), 'd MMMM yyyy') }}
     </p>
     <span
       class="text-xs mx-auto px-2 font-medium text-white rounded-full py-0.5"
-      :class="{ 'bg-indigo-500': transaction.isPaid, 'bg-pink-500': !transaction.isPaid }"
+      :class="{
+        'bg-indigo-500': transaction.isPaid,
+        'bg-pink-500': !transaction.isPaid,
+      }"
     >
       {{ transaction.isPaid ? 'Paid' : 'Awaiting' }}
     </span>
     <div class="flex">
       <div class="flex-grow max-h-full mx-6 m-auto"></div>
-      <div class="flex flex-none text-xl font-bold text-gray-900 px-6">{{ transaction.total }}</div>
+      <div class="flex flex-none text-xl font-bold text-gray-900 px-6">
+        {{ transaction.total }}
+      </div>
       <div class="flex-grow max-h-full mx-6 m-auto"></div>
     </div>
     <div class="flex gap-1 justify-items-end pt-2">
-      <RouterLink :to="{ name: `Transaction`, params: { id: transaction.id } }" class="btn btn-small">
+      <RouterLink
+        :to="{ name: `Transaction`, params: { id: transaction.id } }"
+        class="btn btn-small"
+      >
         Show
       </RouterLink>
-      <TransactionDialog :transaction="transaction" header="Edit Transaction" label="Edit" class="btn btn-small" />
+      <TransactionDialog
+        :transaction="transaction"
+        header="Edit Transaction"
+        label="Edit"
+        class="btn btn-small"
+      />
       <BaseConfirm @confirm="deleteTransaction" label="Delete" />
       <SingleCustomerPickerDialog
         v-if="!transaction.customer"
@@ -41,7 +57,10 @@
         :customers="customersToPick"
         @submit="customerPicked($event)"
       />
-      <BaseConfirm @confirm="changePaidStatus" :label="props.transaction.isPaid ? 'Mark Unpaid' : 'Mark Paid'" />
+      <BaseConfirm
+        @confirm="changePaidStatus"
+        :label="props.transaction.isPaid ? 'Mark Unpaid' : 'Mark Paid'"
+      />
     </div>
   </div>
 </template>
@@ -91,6 +110,9 @@ const deleteTransaction = async () => {
 };
 
 const changePaidStatus = async () => {
-  await transactionsStore.update({ ...props.transaction, isPaid: !props.transaction.isPaid });
+  await transactionsStore.update({
+    ...props.transaction,
+    isPaid: !props.transaction.isPaid,
+  });
 };
 </script>

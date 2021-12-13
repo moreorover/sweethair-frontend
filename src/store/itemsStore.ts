@@ -36,7 +36,9 @@ export const useItemsStore = defineStore({
         return state.all[id];
       },
     getAvailableItems(state): Item[] {
-      return state.ids.map((id: number) => this.all[id]).filter((i) => !i.customer && !i.appointment);
+      return state.ids
+        .map((id: number) => this.all[id])
+        .filter((i) => !i.customer && !i.appointment);
     },
     getItemsByCustomerAndAppointment:
       (state) =>
@@ -44,7 +46,11 @@ export const useItemsStore = defineStore({
         const { id: customerId } = customer;
         const items: Item[] = state.ids
           .map((id: number) => state.all[id])
-          .filter((item: Item) => item.customer?.id === customerId && item.appointment?.id === appointment.id);
+          .filter(
+            (item: Item) =>
+              item.customer?.id === customerId &&
+              item.appointment?.id === appointment.id
+          );
         return items;
       },
     getItemsByInvoice:

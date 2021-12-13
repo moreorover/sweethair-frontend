@@ -10,8 +10,18 @@
   >
     <slot />
     <template #footer v-if="props.showFooter">
-      <Button label="No" icon="pi pi-times" @click="emit('cancel')" class="p-button-text" />
-      <Button label="Yes" icon="pi pi-check" @click="emit('submit')" autofocus />
+      <Button
+        label="No"
+        icon="pi pi-times"
+        @click="emit('cancel')"
+        class="p-button-text"
+      />
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        @click="emit('submit')"
+        autofocus
+      />
     </template>
   </Dialog>
 </template>

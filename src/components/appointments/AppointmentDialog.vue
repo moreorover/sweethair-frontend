@@ -1,6 +1,11 @@
 <template>
   <BaseButton :label="props.label" @onClick="toggleModal()" v-bind="attrs" />
-  <BaseModal :header="props.header" :show-footer="false" v-model:visible="showModal" @toggle-modal="toggleModal()">
+  <BaseModal
+    :header="props.header"
+    :show-footer="false"
+    v-model:visible="showModal"
+    @toggle-modal="toggleModal()"
+  >
     <AppointmentForm :appointment="props.appointment" @submit="submit" />
   </BaseModal>
 </template>
@@ -42,7 +47,9 @@ const { showModal, toggleModal } = useModal();
 const submit = async (appointment: Appointment) => {
   const cleanAppointment: Appointment = entityCleaner.clean(appointment, true);
   let app: Appointment | void;
-  cleanAppointment.id ? (app = await store.update(cleanAppointment)) : (app = await store.create(cleanAppointment));
+  cleanAppointment.id
+    ? (app = await store.update(cleanAppointment))
+    : (app = await store.create(cleanAppointment));
   toggleModal();
   if (app) router.push({ name: 'Appointment', params: { id: app.id } });
 };

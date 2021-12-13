@@ -1,8 +1,26 @@
 <template>
-  <header class="flex items-center justify-between px-6 py-4 bg-white border-b-4 border-indigo-600">
+  <header
+    class="
+      flex
+      items-center
+      justify-between
+      px-6
+      py-4
+      bg-white
+      border-b-4 border-indigo-600
+    "
+  >
     <div class="flex items-center">
-      <button @click="isOpen = true" class="text-gray-500 focus:outline-none lg:hidden">
-        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <button
+        @click="isOpen = true"
+        class="text-gray-500 focus:outline-none lg:hidden"
+      >
+        <svg
+          class="w-6 h-6"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <path
             d="M4 6H20M4 12H20M4 18H11"
             stroke="currentColor"
@@ -57,10 +75,25 @@
 
         <!-- Menu list -->
         <div
-          class="absolute right-0 z-20 w-48 mt-2 overflow-hidden bg-white rounded-md shadow-xl dark:bg-gray-700"
+          class="
+            absolute
+            right-0
+            z-20
+            w-48
+            mt-2
+            overflow-hidden
+            bg-white
+            rounded-md
+            shadow-xl
+            dark:bg-gray-700
+          "
         ></div>
 
-        <div v-show="dropdownOpen" @click="dropdownOpen = false" class="fixed inset-0 z-10 w-full h-full"></div>
+        <div
+          v-show="dropdownOpen"
+          @click="dropdownOpen = false"
+          class="fixed inset-0 z-10 w-full h-full"
+        ></div>
 
         <transition
           enter-active-class="transition duration-150 ease-out transform"
@@ -70,10 +103,51 @@
           leave-from-class="scale-100 opacity-100"
           leave-to-class="scale-95 opacity-0"
         >
-          <div v-show="dropdownOpen" class="absolute right-0 z-20 w-48 py-2 mt-2 bg-white rounded-md shadow-xl">
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">Profile</a>
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">Products</a>
-            <a @click="logOut()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
+          <div
+            v-show="dropdownOpen"
+            class="
+              absolute
+              right-0
+              z-20
+              w-48
+              py-2
+              mt-2
+              bg-white
+              rounded-md
+              shadow-xl
+            "
+          >
+            <a
+              href="#"
+              class="
+                block
+                px-4
+                py-2
+                text-sm text-gray-700
+                hover:bg-indigo-600 hover:text-white
+              "
+              >Profile</a
+            >
+            <a
+              href="#"
+              class="
+                block
+                px-4
+                py-2
+                text-sm text-gray-700
+                hover:bg-indigo-600 hover:text-white
+              "
+              >Products</a
+            >
+            <a
+              @click="logOut()"
+              class="
+                block
+                px-4
+                py-2
+                text-sm text-gray-700
+                hover:bg-indigo-600 hover:text-white
+              "
               >Log out</a
             >
           </div>

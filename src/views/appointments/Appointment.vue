@@ -2,7 +2,12 @@
   <div class="flex justify-between">
     <h3 class="text-3xl font-medium text-gray-700">{{ appointment.title }}</h3>
     <div class="flex gap-1">
-      <AppointmentDialog :appointment="appointment" header="Edit Appointment" label="Edit" class="btn btn-large" />
+      <AppointmentDialog
+        :appointment="appointment"
+        header="Edit Appointment"
+        label="Edit"
+        class="btn btn-large"
+      />
       <MultipleCustomerPickerDialog
         :selection="appointmentStore.customers"
         :customers="allCustomers"
@@ -55,7 +60,9 @@ await appointmentStore.fetchTransactions();
 await appointmentStore.fetchAllCustomersBase();
 
 const appointment: Appointment = appointmentStore.getAppointment;
-const appointmentCustomers = computed<Customer[]>(() => appointmentStore.getCustomers);
+const appointmentCustomers = computed<Customer[]>(
+  () => appointmentStore.getCustomers
+);
 const appointmentItems: Item[] = appointmentStore.getItems;
 const appointmentTransactions: Transaction[] = appointmentStore.getTransactions;
 const allCustomers = appointmentStore.getCustomerBase;

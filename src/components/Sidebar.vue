@@ -4,7 +4,15 @@
     <div
       :class="isOpen ? 'block' : 'hidden'"
       @click="isOpen = false"
-      class="fixed inset-0 z-20 transition-opacity bg-black opacity-50 lg:hidden"
+      class="
+        fixed
+        inset-0
+        z-20
+        transition-opacity
+        bg-black
+        opacity-50
+        lg:hidden
+      "
     ></div>
     <!-- End Backdrop -->
 
@@ -26,7 +34,12 @@
     >
       <div class="flex items-center justify-center mt-8">
         <div class="flex items-center">
-          <svg class="w-12 h-12" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            class="w-12 h-12"
+            viewBox="0 0 512 512"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M364.61 390.213C304.625 450.196 207.37 450.196 147.386 390.213C117.394 360.22 102.398 320.911 102.398 281.6C102.398 242.291 117.394 202.981 147.386 172.989C147.386 230.4 153.6 281.6 230.4 307.2C230.4 256 256 102.4 294.4 76.7999C320 128 334.618 142.997 364.608 172.989C394.601 202.981 409.597 242.291 409.597 281.6C409.597 320.911 394.601 360.22 364.61 390.213Z"
               fill="#4C51BF"
@@ -41,7 +54,9 @@
             />
           </svg>
 
-          <span class="mx-2 text-2xl font-semibold text-white">Hair Manager</span>
+          <span class="mx-2 text-2xl font-semibold text-white"
+            >Hair Manager</span
+          >
         </div>
       </div>
 
@@ -51,23 +66,42 @@
           :class="[$route.name === 'Customers' ? activeClass : inactiveClass]"
           to="/customers"
         >
-          <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"></svg>
+          <svg
+            class="w-5 h-5"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          ></svg>
           <span class="mx-4">Customers</span>
         </router-link>
         <router-link
           class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
-          :class="[$route.name === 'Appointments' ? activeClass : inactiveClass]"
+          :class="[
+            $route.name === 'Appointments' ? activeClass : inactiveClass,
+          ]"
           to="/appointments"
         >
-          <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"></svg>
+          <svg
+            class="w-5 h-5"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          ></svg>
           <span class="mx-4">Appointments</span>
         </router-link>
         <router-link
           class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
-          :class="[$route.name === 'Transactions' ? activeClass : inactiveClass]"
+          :class="[
+            $route.name === 'Transactions' ? activeClass : inactiveClass,
+          ]"
           to="/transactions"
         >
-          <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"></svg>
+          <svg
+            class="w-5 h-5"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          ></svg>
           <span class="mx-4">Transactions</span>
         </router-link>
         <router-link
@@ -75,7 +109,12 @@
           :class="[$route.name === 'Invoices' ? activeClass : inactiveClass]"
           to="/invoices"
         >
-          <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"></svg>
+          <svg
+            class="w-5 h-5"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          ></svg>
           <span class="mx-4">Invoices</span>
         </router-link>
         <router-link
@@ -83,12 +122,20 @@
           :class="[$route.name === 'Dashboard' ? activeClass : inactiveClass]"
           to="/dashboard"
         >
-          <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            class="w-5 h-5"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M2 10C2 5.58172 5.58172 2 10 2V10H18C18 14.4183 14.4183 18 10 18C5.58172 18 2 14.4183 2 10Z"
               fill="currentColor"
             />
-            <path d="M12 2.25195C14.8113 2.97552 17.0245 5.18877 17.748 8.00004H12V2.25195Z" fill="currentColor" />
+            <path
+              d="M12 2.25195C14.8113 2.97552 17.0245 5.18877 17.748 8.00004H12V2.25195Z"
+              fill="currentColor"
+            />
           </svg>
 
           <span class="mx-4">Dashboard</span>
@@ -99,7 +146,12 @@
           :class="[$route.name === 'UIElements' ? activeClass : inactiveClass]"
           to="/ui-elements"
         >
-          <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            class="w-5 h-5"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M5 3C3.89543 3 3 3.89543 3 5V7C3 8.10457 3.89543 9 5 9H7C8.10457 9 9 8.10457 9 7V5C9 3.89543 8.10457 3 7 3H5Z"
               fill="currentColor"
@@ -126,7 +178,12 @@
           :class="[$route.name === 'Tables' ? activeClass : inactiveClass]"
           to="/tables"
         >
-          <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            class="w-5 h-5"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M7 3C6.44772 3 6 3.44772 6 4C6 4.55228 6.44772 5 7 5H13C13.5523 5 14 4.55228 14 4C14 3.44772 13.5523 3 13 3H7Z"
               fill="currentColor"
@@ -150,7 +207,9 @@
           to="/forms"
         >
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+            <path
+              d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"
+            />
             <path
               fill-rule="evenodd"
               d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
@@ -166,7 +225,12 @@
           :class="[$route.name === 'Cards' ? activeClass : inactiveClass]"
           to="/cards"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
             <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
             <path
               fill-rule="evenodd"
@@ -183,10 +247,21 @@
           :class="[$route.name === 'Modal' ? activeClass : inactiveClass]"
           to="/modal"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3z" />
-            <path d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3S3 8.657 3 7z" />
-            <path d="M17 5c0 1.657-3.134 3-7 3S3 6.657 3 5s3.134-3 7-3 7 1.343 7 3z" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3z"
+            />
+            <path
+              d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3S3 8.657 3 7z"
+            />
+            <path
+              d="M17 5c0 1.657-3.134 3-7 3S3 6.657 3 5s3.134-3 7-3 7 1.343 7 3z"
+            />
           </svg>
 
           <span class="mx-4">Modal</span>
@@ -215,6 +290,10 @@ import { ref } from 'vue';
 import { useSidebar } from '../hooks/useSidebar';
 
 const { isOpen } = useSidebar();
-const activeClass = ref('bg-gray-600 bg-opacity-25 text-gray-100 border-gray-100');
-const inactiveClass = ref('border-gray-900 text-gray-500 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100');
+const activeClass = ref(
+  'bg-gray-600 bg-opacity-25 text-gray-100 border-gray-100'
+);
+const inactiveClass = ref(
+  'border-gray-900 text-gray-500 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100'
+);
 </script>

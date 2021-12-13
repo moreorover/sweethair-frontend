@@ -1,5 +1,7 @@
 import { Customer } from './../services/CustomerService';
-import TransactionService, { Transaction } from './../services/TransactionService';
+import TransactionService, {
+  Transaction,
+} from './../services/TransactionService';
 import { defineStore } from 'pinia';
 import { Appointment } from '@/services/AppointmentService';
 import { Invoice } from '@/services/InvoiceService';
@@ -40,7 +42,10 @@ export const useTransactionsStore = defineStore({
         const { id: appointmentId } = appointment;
         const transactions: Transaction[] = state.ids
           .map((id: number) => state.all[id])
-          .filter((transaction: Transaction) => transaction.appointment?.id === appointmentId);
+          .filter(
+            (transaction: Transaction) =>
+              transaction.appointment?.id === appointmentId
+          );
         return transactions;
       },
     getTransactionsByAppointmentCustomerNull:
@@ -49,7 +54,11 @@ export const useTransactionsStore = defineStore({
         const { id: appointmentId } = appointment;
         const transactions: Transaction[] = state.ids
           .map((id: number) => state.all[id])
-          .filter((transaction: Transaction) => transaction.appointment?.id === appointmentId && !transaction.customer);
+          .filter(
+            (transaction: Transaction) =>
+              transaction.appointment?.id === appointmentId &&
+              !transaction.customer
+          );
         return transactions;
       },
     getTransactionsByCustomer:
@@ -58,7 +67,10 @@ export const useTransactionsStore = defineStore({
         const { id: customerId } = customer;
         const transactions: Transaction[] = state.ids
           .map((id: number) => state.all[id])
-          .filter((transaction: Transaction) => transaction.customer?.id === customerId);
+          .filter(
+            (transaction: Transaction) =>
+              transaction.customer?.id === customerId
+          );
         return transactions;
       },
     getTransactionsByInvoice:
@@ -67,7 +79,9 @@ export const useTransactionsStore = defineStore({
         const { id: invoiceId } = invoice;
         const transactions: Transaction[] = state.ids
           .map((id: number) => state.all[id])
-          .filter((transaction: Transaction) => transaction.invoice?.id === invoiceId);
+          .filter(
+            (transaction: Transaction) => transaction.invoice?.id === invoiceId
+          );
         return transactions;
       },
     // TODO check what uses this function
@@ -79,7 +93,8 @@ export const useTransactionsStore = defineStore({
           .map((id: number) => state.all[id])
           .filter(
             (transaction: Transaction) =>
-              transaction.customer?.id === customerId && transaction.appointment?.id === appointment.id
+              transaction.customer?.id === customerId &&
+              transaction.appointment?.id === appointment.id
           );
         return transactions;
       },
@@ -89,7 +104,10 @@ export const useTransactionsStore = defineStore({
         const { id } = customer;
         const transactions: Transaction[] = state.ids
           .map((id: number) => state.all[id])
-          .filter((transaction: Transaction) => transaction.customer?.id === id && !transaction.appointment);
+          .filter(
+            (transaction: Transaction) =>
+              transaction.customer?.id === id && !transaction.appointment
+          );
         return transactions;
       },
     shouldLoadState: (state): boolean => !state.loading && !state.loaded,

@@ -1,18 +1,24 @@
 <template>
   <div class="flex justify-between">
-    <h3 class="text-3xl font-medium text-gray-700">{{ invoiceFormattedDate }} {{ invoice.total }}</h3>
+    <h3 class="text-3xl font-medium text-gray-700">
+      {{ invoiceFormattedDate }} {{ invoice.total }}
+    </h3>
   </div>
 
   <div class="flex flex-col mx-auto gap-4 pt-3">
     <div class="grid grid-cols-2 gap-4">
       <div class="container flex flex-col max-w text-center">
         <div class="shadow-lg rounded-2xl p-4 bg-white dark:bg-gray-700 w-full">
-          <span class="font-bold text-md text-black ml-2">Transactions total: {{ transactionsTotal.toFixed(2) }}</span>
+          <span class="font-bold text-md text-black ml-2"
+            >Transactions total: {{ transactionsTotal.toFixed(2) }}</span
+          >
         </div>
       </div>
       <div class="container flex flex-col max-w text-center">
         <div class="shadow-lg rounded-2xl p-4 bg-white dark:bg-gray-700 w-full">
-          <span class="font-bold text-md text-black ml-2">Items total: {{ itemsTotal.toFixed(2) }}</span>
+          <span class="font-bold text-md text-black ml-2"
+            >Items total: {{ itemsTotal.toFixed(2) }}</span
+          >
         </div>
       </div>
     </div>
@@ -63,12 +69,23 @@
               <span class="font-semibold text-md text-black">Items</span>
             </div>
             <div class="flex items-center">
-              <ItemDialog header="Book a Item" label="Book Item" :invoice="invoice" class="btn btn-small" />
+              <ItemDialog
+                header="Book a Item"
+                label="Book Item"
+                :invoice="invoice"
+                class="btn btn-small"
+              />
             </div>
           </div>
           <ItemsTable :items="invoiceItems">
             <template v-slot:actions="slotProps">
-              <ItemDialog header="Edit Item" label="Edit" class="text-link" :item="slotProps.item" :invoice="invoice" />
+              <ItemDialog
+                header="Edit Item"
+                label="Edit"
+                class="text-link"
+                :item="slotProps.item"
+                :invoice="invoice"
+              />
               <BaseConfirmDialog
                 header="Confirm to Delete Item"
                 label="Delete"
@@ -107,21 +124,31 @@ const invoicesStore = useInvoicesStore();
 const transactionsStore = useTransactionsStore();
 const itemsStore = useItemsStore();
 if (invoicesStore.shouldLoadState) await invoicesStore.fetchAll();
-if (!invoicesStore.getIds.includes(id)) router.replace({ name: 'Transactions' });
+if (!invoicesStore.getIds.includes(id))
+  router.replace({ name: 'Transactions' });
 
 if (transactionsStore.shouldLoadState) await transactionsStore.fetchAll();
 if (itemsStore.shouldLoadState) await itemsStore.fetchAll();
 
 const invoice = computed<Invoice>(() => invoicesStore.getInvoiceById(id));
 
-const invoiceFormattedDate = computed(() => moment(invoice.value.scheduledAt).format('d MMMM yyyy'));
+const invoiceFormattedDate = computed(() =>
+  moment(invoice.value.scheduledAt).format('d MMMM yyyy')
+);
 
-const invoiceTransactions = computed<Transaction[]>(() => transactionsStore.getTransactionsByInvoice(invoice.value));
+const invoiceTransactions = computed<Transaction[]>(() =>
+  transactionsStore.getTransactionsByInvoice(invoice.value)
+);
 
-const invoiceItems = computed<Item[]>(() => itemsStore.getItemsByInvoice(invoice.value));
+const invoiceItems = computed<Item[]>(() =>
+  itemsStore.getItemsByInvoice(invoice.value)
+);
 
 const transactionsTotal = computed<number>(() =>
-  invoiceTransactions.value.reduce((acc, transaction) => acc + transaction.total, 0)
+  invoiceTransactions.value.reduce(
+    (acc, transaction) => acc + transaction.total,
+    0
+  )
 );
 
 const deleteItem = async (item: Item) => {
@@ -129,5 +156,7 @@ const deleteItem = async (item: Item) => {
   await itemsStore.delete(item);
 };
 
-const itemsTotal = computed<number>(() => invoiceItems.value.reduce((acc, item) => acc + item.total, 0));
+const itemsTotal = computed<number>(() =>
+  invoiceItems.value.reduce((acc, item) => acc + item.total, 0)
+);
 </script>

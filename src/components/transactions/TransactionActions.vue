@@ -51,7 +51,10 @@ const props = defineProps<Props>();
 const transactionsStore = useTransactionsStore();
 
 const changePaidStatus = async () => {
-  await transactionsStore.update({ ...props.transaction, isPaid: !props.transaction.isPaid });
+  await transactionsStore.update({
+    ...props.transaction,
+    isPaid: !props.transaction.isPaid,
+  });
 };
 
 const deleteTransaction = async () => {

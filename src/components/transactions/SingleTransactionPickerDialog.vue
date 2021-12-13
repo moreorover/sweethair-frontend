@@ -10,22 +10,36 @@
   >
     <BasePicker>
       <template v-slot:selection>
-        <div v-if="selection" class="flex flex-col border-gray-400 border-solid border-2 px-4">
+        <div
+          v-if="selection"
+          class="flex flex-col border-gray-400 border-solid border-2 px-4"
+        >
           <div>Scheduled At: {{ selection?.scheduledAt }}</div>
           <div>Total: {{ selection?.total }}</div>
           <div>Is paid: {{ selection?.isPaid }}</div>
-          <BaseChip @select="removeSelection" text="Remove" :show-action="false" />
+          <BaseChip
+            @select="removeSelection"
+            text="Remove"
+            :show-action="false"
+          />
         </div>
       </template>
       <template v-slot:search>
         <BaseInput v-model="search" type="text" label="Search" />
       </template>
       <template v-slot:options>
-        <div class="flex flex-col border-gray-400 border-solid border-2 px-4 my-2" v-for="transaction in transactions">
+        <div
+          class="flex flex-col border-gray-400 border-solid border-2 px-4 my-2"
+          v-for="transaction in transactions"
+        >
           <div>Scheduled At: {{ transaction.scheduledAt }}</div>
           <div>Total: {{ transaction.total }}</div>
           <div>Is paid: {{ transaction.isPaid }}</div>
-          <BaseChip @select="selection = transaction" text="Select" :show-action="false" />
+          <BaseChip
+            @select="selection = transaction"
+            text="Select"
+            :show-action="false"
+          />
         </div>
       </template>
     </BasePicker>
@@ -59,7 +73,9 @@ const { selection, removeSelection } = useSinglePicker<Transaction>();
 
 const search = ref('');
 
-const transactions = computed<Transaction[]>(() => props.transactions.filter((t) => t.id !== selection.value?.id));
+const transactions = computed<Transaction[]>(() =>
+  props.transactions.filter((t) => t.id !== selection.value?.id)
+);
 
 const submit = () => {
   if (selection.value) {

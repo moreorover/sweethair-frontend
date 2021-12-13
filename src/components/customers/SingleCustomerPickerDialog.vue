@@ -10,7 +10,12 @@
   >
     <BasePicker>
       <template v-slot:selection>
-        <BaseChip v-if="selection" @remove="removeSelection" :text="selection?.fullName" :show-action="true" />
+        <BaseChip
+          v-if="selection"
+          @remove="removeSelection"
+          :text="selection?.fullName"
+          :show-action="true"
+        />
       </template>
       <template v-slot:search>
         <BaseInput v-model="search" type="text" label="Search" />
@@ -55,11 +60,21 @@ const customers = computed(() =>
   props.customers.filter(
     (c) =>
       selection.value?.id !== c.id &&
-      (c.fullName.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
-        c.location.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
-        c.about.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
-        c.email?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
-        c.instagram?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()))
+      (c.fullName
+        .toLocaleLowerCase()
+        .includes(search.value.toLocaleLowerCase()) ||
+        c.location
+          .toLocaleLowerCase()
+          .includes(search.value.toLocaleLowerCase()) ||
+        c.about
+          .toLocaleLowerCase()
+          .includes(search.value.toLocaleLowerCase()) ||
+        c.email
+          ?.toLocaleLowerCase()
+          .includes(search.value.toLocaleLowerCase()) ||
+        c.instagram
+          ?.toLocaleLowerCase()
+          .includes(search.value.toLocaleLowerCase()))
   )
 );
 
