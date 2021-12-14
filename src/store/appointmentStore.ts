@@ -1,3 +1,4 @@
+import TransactionService, { Transaction } from '@/services/TransactionService';
 import { Transaction } from './../services/TransactionService';
 import AppointmentService, { Appointment } from '@/services/AppointmentService';
 import { defineStore } from 'pinia';
@@ -12,6 +13,7 @@ export const useAppointmentStore = defineStore({
     customersBase: [] as Partial<Customer>[],
     transactions: [] as Transaction[],
     items: [] as Item[],
+    spareCustomersTransactions: [] as Transaction[],
   }),
   getters: {
     getAppointment(state): Appointment {
@@ -31,6 +33,9 @@ export const useAppointmentStore = defineStore({
     },
     getItems(state): Item[] {
       return state.items;
+    },
+    getSpareCustomersTransactions(state): Transaction[] {
+      return state.spareCustomersTransactions;
     },
   },
   actions: {
@@ -52,6 +57,8 @@ export const useAppointmentStore = defineStore({
           this.appointment.id
         );
         this.customers = data;
+
+        this.fetchSpareCustomersTransactions();
       } catch (error) {
         console.log(
           'Not loaded, something went wrong loading Appointment Customers'
@@ -138,6 +145,36 @@ export const useAppointmentStore = defineStore({
         this.appointment = data;
       } catch (error) {
         console.log('Not loaded, something went wrong updating Appointment');
+        console.log({ error });
+      }
+    },
+    async fetchSpareCustomersTransactions() {
+      try {
+        const { data } = await TransactionService.fetchSpareTransactions(
+          this.customers
+        );
+        this.spareCustomersTransactions = data;
+      } catch (error) {
+        console.log(
+          'Not loaded, something went wrong loading fetchSpareCustomersTransactions'
+        );
+        console.log({ error });
+      }
+    },
+    async assignAppointmentToTransaction(transaction: Transaction) {
+      try {
+        if (!this.appointment) throw 'appointmentStore appointment is null';
+        await TransactionService.update({
+          ...transaction,
+          appointment: this.appointment,
+        });
+
+        this.fetchTransactions();
+        this.fetchSpareCustomersTransactions();
+      } catch (error) {
+        console.log(
+          'Not loaded, something went wrong loading assignAppointmentToTransaction'
+        );
         console.log({ error });
       }
     },

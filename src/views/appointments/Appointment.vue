@@ -21,13 +21,87 @@
         header="Book a Transaction"
         label="Book Transaction"
         class="btn btn-large"
-        @submit="newTransaction($event)"
+        @submit="newTransaction($event, null)"
       />
     </div>
   </div>
-  {{ appointmentCustomers }}
-  <br />
-  {{ appointmentTransactions }}
+  <div class="flex flex-col mx-auto gap-4 pt-3">
+    <div
+      class="container flex flex-col mx-auto"
+      v-for="customer in appointmentCustomers"
+      :key="customer.id"
+    >
+      <div class="shadow-lg rounded-2xl p-4 bg-white dark:bg-gray-700 w-full">
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center">
+            <span class="font-bold text-md text-black ml-2"
+              >{{ customer.fullName }} {{ customer.id }}</span
+            >
+          </div>
+          <div class="flex items-center">
+            <SingleTransactionPickerDialog
+              v-if="customerSpareTransactions(customer.id).value.length"
+              header="Pick Transaction"
+              label="Pick Transaction"
+              class="btn btn-small"
+              :transactions="customerSpareTransactions(customer.id).value"
+              @submit="pickedTransactionForCustomer($event)"
+            />
+            <!-- <BaseConfirm
+              v-if="customerTransactions(customer).value.length < 1"
+              @confirm="removeCustomer(customer)"
+              label="Remove Customer"
+            /> -->
+          </div>
+        </div>
+        <div class="container flex flex-col mx-auto gap-4 pl-8">
+          <div class="flex text-center justify-between">
+            <div class="flex items-center">
+              <span class="font-semibold text-md text-black">Transactions</span>
+            </div>
+            <div class="flex items-center">
+              <TransactionDialog
+                header="Book a Transaction"
+                label="Book Transaction"
+                class="btn btn-small"
+                @submit="newTransaction($event, customer)"
+              />
+            </div>
+          </div>
+          <TransactionsTable
+            :transactions="customerTransactions(customer.id).value"
+          >
+            <template v-slot:actions="slotProps">
+              <TransactionActions
+                :transaction="slotProps.transaction"
+                :customer="customer"
+                :appointment="appointment"
+              />
+            </template>
+          </TransactionsTable>
+        </div>
+
+        <div class="container flex flex-col mx-auto gap-4 pl-8">
+          <div class="flex text-center justify-between">
+            <div class="flex items-center">
+              <span class="font-semibold text-md text-black">Items</span>
+            </div>
+            <div class="flex items-center">
+              <!-- <MultipleItemPickerDialog
+                :selection="[]"
+                :items="allItems"
+                header="Pick Items"
+                label="Pick Items"
+                class="btn btn-small"
+                @submit="pickedItems($event, customer)"
+              /> -->
+            </div>
+          </div>
+          <ItemsTable :items="customerItems(customer.id).value" />
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
@@ -40,6 +114,10 @@ import { Item } from '@/services/ItemService';
 import { useAppointmentStore } from '@/store/appointmentStore';
 import { Appointment } from '@/services/AppointmentService';
 import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
+import TransactionsTable from '@/components/transactions/TransactionsTable.vue';
+import TransactionActions from '@/components/transactions/TransactionActions.vue';
+import ItemsTable from '@/components/items/ItemsTable.vue';
+import SingleTransactionPickerDialog from '@/components/transactions/SingleTransactionPickerDialog.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -47,16 +125,12 @@ const id: number = +route.params.id;
 
 const appointmentStore = useAppointmentStore();
 
-// const appointmentsStore = useAppointmentsStore();
-// const transactionsStore = useTransactionsStore();
-// const customersStore = useCustomersStore();
-// const itemsStore = useItemsStore();
-
 await appointmentStore.fetch(id);
+if (!appointmentStore.getAppointment) router.replace({ name: 'Appointments' });
 await appointmentStore.fetchCustomers();
-await appointmentStore.fetchItems();
-await appointmentStore.fetchTransactions();
-await appointmentStore.fetchAllCustomersBase();
+appointmentStore.fetchItems();
+appointmentStore.fetchTransactions();
+appointmentStore.fetchAllCustomersBase();
 
 const appointment = computed<Appointment>(
   () => appointmentStore.getAppointment
@@ -64,51 +138,49 @@ const appointment = computed<Appointment>(
 const appointmentCustomers = computed<Customer[]>(
   () => appointmentStore.getCustomers
 );
-const appointmentItems: Item[] = appointmentStore.getItems;
-const appointmentTransactions = computed<Transaction[]>(
-  () => appointmentStore.getTransactions
-);
+
 const allCustomers = appointmentStore.getCustomerBase;
 
-// const appointment = computed<Appointment | null>(() => appointmentStore.getAppointment);
+const customerTransactions = (customerId: number) =>
+  computed<Transaction[]>(() =>
+    appointmentStore.getTransactions.filter(
+      (t) => t.customer?.id === customerId
+    )
+  );
 
-// if (appointmentsStore.shouldLoadState) await appointmentsStore.fetchAll();
-// if (!appointmentStore.getAppointment) router.replace({ name: 'Appointments' });
+const customerSpareTransactions = (customerId: number) =>
+  computed<Transaction[]>(() =>
+    appointmentStore.getSpareCustomersTransactions.filter(
+      (t) => t.customer?.id === customerId
+    )
+  );
 
-// if (transactionsStore.shouldLoadState) await transactionsStore.fetchAll();
-// if (customersStore.shouldLoadState) await customersStore.fetchAll();
-// if (itemsStore.shouldLoadState) await itemsStore.fetchAll();
+const spareTransaction = computed<Transaction[]>(
+  () => appointmentStore.getSpareCustomersTransactions
+);
 
-// const allCustomers: Customer[] = customersStore.getAll;
-
-// const allItems = computed<Item[]>(() => itemsStore.getAvailableItems);
+const customerItems = (customerId: number) =>
+  computed<Item[]>(() =>
+    appointmentStore.getItems.filter((i) => i.customer?.id === customerId)
+  );
 
 const pickedCustomers = async (customers: Customer[]) => {
   await appointmentStore.saveCustomersToAppointment(customers);
 };
 
-const newTransaction = async (transaction: Transaction) => {
-  await appointmentStore.saveTransactionToAppointment(transaction, null);
+const newTransaction = async (
+  transaction: Transaction,
+  customer: Customer | null
+) => {
+  await appointmentStore.saveTransactionToAppointment(transaction, customer);
 };
 
 const editAppointment = async (appointment: Appointment) => {
   await appointmentStore.updateAppointment(appointment);
 };
 
-// const pickedItems = async (items: Item[], customer: Customer) => {
-//   for (const item of items) {
-//     item.customer = customer;
-//     item.appointment = appointment.value;
-
-//     await itemsStore.update(item);
-//   }
-// };
-
-// const pickedTransactions = async (transaction: Transaction) => {
-//   await transactionsStore.update({ ...transaction, appointment: appointment.value });
-// };
-
-// const removeCustomer = async (customer: Customer) => {
-//   await appointmentsStore.removeCustomer(appointment.value, customer);
-// };
+const pickedTransactionForCustomer = async (transaction: Transaction) => {
+  console.log({ transaction });
+  await appointmentStore.assignAppointmentToTransaction(transaction);
+};
 </script>
