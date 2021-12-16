@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
-import { useLoggedInUserStore } from '@/store/loggedInUser';
-
 import Dashboard from './views/Dashboard.vue';
 import Forms from './views/Forms.vue';
 import Tables from './views/Tables.vue';
@@ -10,6 +8,7 @@ import Login from './views/Login.vue';
 import Modal from './views/Modal.vue';
 import Card from './views/Card.vue';
 import Blank from './views/Blank.vue';
+import Graphql from './views/Graphql.vue';
 
 import ShowCustomers from './views/customers/ShowCustomers.vue';
 import ShowCustomer from './views/customers/ShowCustomer.vue';
@@ -117,6 +116,12 @@ const routes: RouteRecordRaw[] = [
     component: ShowInvoice,
     meta: { requiresAuth: true },
   },
+  {
+    path: '/graphql',
+    name: 'Graph QL',
+    component: Graphql,
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = createRouter({
@@ -125,22 +130,23 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  const store = useLoggedInUserStore();
+  next();
+  // const store = useLoggedInUserStore();
 
-  await store.me();
+  // await store.me();
 
-  if (!to.meta.requiresAuth) {
-    next();
-    return;
-  }
+  // if (!to.meta.requiresAuth) {
+  //   next();
+  //   return;
+  // }
 
-  if (to.meta.requiresAuth && store.getIsLoggedIn) {
-    return next();
-  } else {
-    return next({
-      path: '/',
-    });
-  }
+  // if (to.meta.requiresAuth && store.getIsLoggedIn) {
+  //   return next();
+  // } else {
+  //   return next({
+  //     path: '/',
+  //   });
+  // }
 });
 
 export default router;
