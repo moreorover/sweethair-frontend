@@ -1,0 +1,11 @@
+query Customers {
+  customers {
+    id
+    fullName
+    transactions {
+      customerId
+      id
+      total
+    }
+  }
+}
