@@ -4,6 +4,7 @@ mutation UpdateTransaction($transaction: TransactionUpdate!) {
     total
     isPaid
     scheduledAt
+    type
     appointmentId
   }
 }

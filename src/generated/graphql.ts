@@ -182,6 +182,7 @@ export type Transaction = {
   modifiedOn: Scalars['DateTime'];
   scheduledAt: Scalars['DateTime'];
   total: Scalars['Float'];
+  type: Scalars['String'];
 };
 
 export type TransactionCreate = {
@@ -191,7 +192,16 @@ export type TransactionCreate = {
   isPaid?: InputMaybe<Scalars['Boolean']>;
   scheduledAt: Scalars['DateTime'];
   total: Scalars['Float'];
+  type: TransactionType;
 };
+
+/** The basic directions */
+export enum TransactionType {
+  /** Marks transaction as income. */
+  In = 'IN',
+  /** Marks transaction as expense. */
+  Out = 'OUT'
+}
 
 export type TransactionUpdate = {
   appointmentId?: InputMaybe<Scalars['Float']>;
@@ -201,6 +211,7 @@ export type TransactionUpdate = {
   isPaid?: InputMaybe<Scalars['Boolean']>;
   scheduledAt: Scalars['DateTime'];
   total: Scalars['Float'];
+  type: TransactionType;
 };
 
 export type User = {
@@ -262,14 +273,14 @@ export type CreateTransactionMutationVariables = Exact<{
 }>;
 
 
-export type CreateTransactionMutation = { __typename?: 'Mutation', createTransaction: { __typename?: 'Transaction', id: number, total: number, isPaid: boolean, scheduledAt: any, customerId?: number | null | undefined, appointmentId?: number | null | undefined, invoiceId?: number | null | undefined } };
+export type CreateTransactionMutation = { __typename?: 'Mutation', createTransaction: { __typename?: 'Transaction', id: number, total: number, isPaid: boolean, scheduledAt: any, type: string, customerId?: number | null | undefined, appointmentId?: number | null | undefined, invoiceId?: number | null | undefined } };
 
 export type UpdateTransactionMutationVariables = Exact<{
   transaction: TransactionUpdate;
 }>;
 
 
-export type UpdateTransactionMutation = { __typename?: 'Mutation', updateTransaction: { __typename?: 'Transaction', id: number, total: number, isPaid: boolean, scheduledAt: any, appointmentId?: number | null | undefined } };
+export type UpdateTransactionMutation = { __typename?: 'Mutation', updateTransaction: { __typename?: 'Transaction', id: number, total: number, isPaid: boolean, scheduledAt: any, type: string, appointmentId?: number | null | undefined } };
 
 export type AppointmentQueryVariables = Exact<{
   appointmentId: Scalars['Int'];
@@ -387,6 +398,7 @@ export const CreateTransactionDocument = gql`
     total
     isPaid
     scheduledAt
+    type
     customerId
     appointmentId
     invoiceId
@@ -404,6 +416,7 @@ export const UpdateTransactionDocument = gql`
     total
     isPaid
     scheduledAt
+    type
     appointmentId
   }
 }

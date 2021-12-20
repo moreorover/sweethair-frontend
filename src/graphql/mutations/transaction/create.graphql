@@ -4,6 +4,7 @@ mutation CreateTransaction($transaction: TransactionCreate!) {
     total
     isPaid
     scheduledAt
+    type
     customerId
     appointmentId
     invoiceId
