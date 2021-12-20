@@ -1,22 +1,7 @@
 query Appointments {
   appointments {
     id
-    title
     scheduledAt
-    transactions {
-      id
-      customerId
-      customer {
-        fullName
-      }
-    }
-    items {
-      id
-      total
-    }
-    customers {
-      id
-      fullName
-    }
+    title
   }
 }

@@ -12,41 +12,49 @@
       </div>
       <div class="flex justify-between">
         <div class="text-center lg:text-left text-gray-700 font-bold py-2">
-          Showing {{ appointments.length }} out of
-          {{ appointmentsStore.getAll.length }} records.
+          Showing {{ appointmentsFiltered.length }} out of
+          {{ appointments.length }} records.
         </div>
         <WeekToolBar />
       </div>
 
-      <BaseCardGrid>
+      <AppointmentsTable :appointments="appointmentsFiltered" />
+
+      <!-- <BaseCardGrid>
         <AppointmentCard
-          v-for="appointment in appointments"
+          v-for="appointment in appointmentsFiltered"
           :key="appointment.id"
           :appointment="appointment"
         />
-      </BaseCardGrid>
+      </BaseCardGrid> -->
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import BaseCardGrid from '@/components/base/BaseCardGrid.vue';
-import { useAppointmentsStore } from '@/store/appointmentsStore';
 import AppointmentDialog from '@/components/appointments/AppointmentDialog.vue';
-import AppointmentCard from '@/components/appointments/AppointmentCard.vue';
 import moment from 'moment';
 import { useWeek } from '@/hooks/useWeek';
 import WeekToolBar from '@/components/WeekToolBar.vue';
+import { useAppointmentsQuery } from '@/generated/graphql';
+import { Appointment } from '@/services/AppointmentService';
+import { sortBy } from 'lodash';
+import AppointmentsTable from '@/components/appointments/AppointmentsTable.vue';
 
 const { weekNumber } = useWeek();
 
-const appointmentsStore = useAppointmentsStore();
-if (appointmentsStore.shouldLoadState) await appointmentsStore.fetchAll();
+const { data, error } = await useAppointmentsQuery();
 
-const appointments = computed(() =>
-  appointmentsStore.getAll.filter(
-    (a) => moment(a.scheduledAt).week() == weekNumber.value
-  )
+const appointments = computed<Appointment[]>(
+  () => data.value?.appointments as Appointment[]
 );
+
+const appointmentsFiltered = computed(() => {
+  const filtered =
+    data.value?.appointments.filter(
+      (a) => moment(a.scheduledAt).week() == weekNumber.value
+    ) || [];
+  return sortBy(filtered, ['scheduledAt']);
+});
 </script>

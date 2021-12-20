@@ -281,7 +281,7 @@ export type AppointmentQuery = { __typename?: 'Query', appointment?: { __typenam
 export type AppointmentsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AppointmentsQuery = { __typename?: 'Query', appointments: Array<{ __typename?: 'Appointment', id: number, title: string, scheduledAt: any, transactions: Array<{ __typename?: 'Transaction', id: number, customerId?: number | null | undefined, customer?: { __typename?: 'Customer', fullName: string } | null | undefined }>, items: Array<{ __typename?: 'Item', id: number, total: number }>, customers: Array<{ __typename?: 'Customer', id: number, fullName: string }> }> };
+export type AppointmentsQuery = { __typename?: 'Query', appointments: Array<{ __typename?: 'Appointment', id: number, scheduledAt: any, title: string }> };
 
 export type CustomersBaseQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -455,23 +455,8 @@ export const AppointmentsDocument = gql`
     query Appointments {
   appointments {
     id
-    title
     scheduledAt
-    transactions {
-      id
-      customerId
-      customer {
-        fullName
-      }
-    }
-    items {
-      id
-      total
-    }
-    customers {
-      id
-      fullName
-    }
+    title
   }
 }
     `;
