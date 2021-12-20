@@ -112,7 +112,7 @@ import moment from 'moment';
 import AppointmentDialog from '@/components/appointments/AppointmentDialog.vue';
 import MultipleCustomerPickerDialog from '@/components/customers/MultipleCustomerPickerDialog.vue';
 import { Customer } from '@/services/CustomerService';
-import { Transaction } from '@/services/TransactionService';
+import { Transaction, TransactionType } from '@/services/TransactionService';
 import { useRoute, useRouter } from 'vue-router';
 import { Item } from '@/services/ItemService';
 import { useAppointmentStore } from '@/store/appointmentStore';
@@ -252,6 +252,7 @@ const pickedTransactionForCustomer = async (transaction: Transaction) => {
       total: transaction.total,
       isPaid: transaction.isPaid,
       scheduledAt: transaction.scheduledAt,
+      type: transaction.type,
       customerId: transaction.customerId,
       invoiceId: transaction.invoiceId,
       appointmentId: id,

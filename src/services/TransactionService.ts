@@ -5,8 +5,8 @@ import { Invoice } from './InvoiceService';
 import Service, { DataEntity } from './Service';
 
 export enum TransactionType {
-  IN = 'IN',
-  OUT = 'OUT',
+  In = 'IN',
+  Out = 'OUT',
 }
 
 export interface Transaction extends DataEntity {
