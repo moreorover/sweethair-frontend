@@ -20,14 +20,6 @@
       </div>
 
       <AppointmentsTable :appointments="appointmentsFiltered" />
-
-      <!-- <BaseCardGrid>
-        <AppointmentCard
-          v-for="appointment in appointmentsFiltered"
-          :key="appointment.id"
-          :appointment="appointment"
-        />
-      </BaseCardGrid> -->
     </div>
   </div>
 </template>
