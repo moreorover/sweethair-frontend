@@ -1,0 +1,10 @@
+query CustomersBase {
+  customers {
+    id
+    fullName
+    location
+    instagram
+    email
+    about
+  }
+}

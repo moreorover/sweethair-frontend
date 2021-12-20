@@ -8,8 +8,11 @@ export interface Transaction extends DataEntity {
   total: number;
   scheduledAt: string;
   isPaid: boolean;
+  customerId: number;
   customer?: Customer | null;
+  appointmentId: number;
   appointment?: Appointment | null;
+  invoiceId: number;
   invoice?: Invoice | null;
 }
 

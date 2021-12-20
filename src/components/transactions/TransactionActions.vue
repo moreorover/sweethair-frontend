@@ -23,7 +23,7 @@
   />
 
   <SingleCustomerPickerDialog
-    v-if="!props.transaction.customer && !props.transaction.invoice"
+    v-if="!props.transaction.customerId && !props.transaction.invoiceId"
     header="Pick Customer"
     label="Pick Customer"
     :customers="props.appointment?.customers || []"

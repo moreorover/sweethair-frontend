@@ -1,6 +1,9 @@
 <template>
   <div class="flex justify-between">
-    <h3 class="text-3xl font-medium text-gray-700">{{ appointment.title }}</h3>
+    <h3 class="text-3xl font-medium text-gray-700">
+      {{ appointment?.title }} -
+      {{ scheduledAtFormatted().value }}
+    </h3>
     <div class="flex gap-1">
       <AppointmentDialog
         :appointment="appointment"
@@ -10,8 +13,9 @@
         @submit="editAppointment($event)"
       />
       <MultipleCustomerPickerDialog
-        :selection="appointmentStore.customers"
-        :customers="allCustomers"
+        v-if="customersBase?.customers"
+        :selection="appointment.customers || []"
+        :customers="customersBase.customers"
         header="Pick customers"
         label="Pick Customers"
         class="btn btn-small"
@@ -28,30 +32,30 @@
   <div class="flex flex-col mx-auto gap-4 pt-3">
     <div
       class="container flex flex-col mx-auto"
-      v-for="customer in appointmentCustomers"
+      v-for="customer in appointment.customers"
       :key="customer.id"
     >
       <div class="shadow-lg rounded-2xl p-4 bg-white dark:bg-gray-700 w-full">
         <div class="flex items-center justify-between mb-6">
           <div class="flex items-center">
             <span class="font-bold text-md text-black ml-2"
-              >{{ customer.fullName }} {{ customer.id }}</span
+              >{{ customer.id }} | {{ customer.fullName }}</span
             >
           </div>
           <div class="flex items-center">
             <SingleTransactionPickerDialog
-              v-if="customerSpareTransactions(customer.id).value.length"
+              v-if="customerSpareTransactions(customer).value.length"
               header="Pick Transaction"
               label="Pick Transaction"
               class="btn btn-small"
-              :transactions="customerSpareTransactions(customer.id).value"
+              :transactions="customerSpareTransactions(customer).value"
               @submit="pickedTransactionForCustomer($event)"
             />
-            <!-- <BaseConfirm
-              v-if="customerTransactions(customer).value.length < 1"
+            <BaseConfirm
+              v-if="showCustomerRemoveButton(customer).value"
               @confirm="removeCustomer(customer)"
               label="Remove Customer"
-            /> -->
+            />
           </div>
         </div>
         <div class="container flex flex-col mx-auto gap-4 pl-8">
@@ -80,7 +84,6 @@
             </template>
           </TransactionsTable>
         </div>
-
         <div class="container flex flex-col mx-auto gap-4 pl-8">
           <div class="flex text-center justify-between">
             <div class="flex items-center">
@@ -105,6 +108,7 @@
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
+import moment from 'moment';
 import AppointmentDialog from '@/components/appointments/AppointmentDialog.vue';
 import MultipleCustomerPickerDialog from '@/components/customers/MultipleCustomerPickerDialog.vue';
 import { Customer } from '@/services/CustomerService';
@@ -118,69 +122,140 @@ import TransactionsTable from '@/components/transactions/TransactionsTable.vue';
 import TransactionActions from '@/components/transactions/TransactionActions.vue';
 import ItemsTable from '@/components/items/ItemsTable.vue';
 import SingleTransactionPickerDialog from '@/components/transactions/SingleTransactionPickerDialog.vue';
+import {
+  useAddCustomerToAppointmentMutation,
+  useAppointmentQuery,
+  useCreateTransactionMutation,
+  useCustomersBaseQuery,
+  useRemoveCustomerToAppointmentMutation,
+  useUpdateAppointmentMutation,
+  useUpdateTransactionMutation,
+} from '@/generated/graphql';
+import { transactions } from '../customers/tests/mockData';
 
 const route = useRoute();
 const router = useRouter();
 const id: number = +route.params.id;
 
-const appointmentStore = useAppointmentStore();
+const { data, error } = await useAppointmentQuery({
+  variables: { appointmentId: id },
+});
 
-await appointmentStore.fetch(id);
-if (!appointmentStore.getAppointment) router.replace({ name: 'Appointments' });
-await appointmentStore.fetchCustomers();
-appointmentStore.fetchItems();
-appointmentStore.fetchTransactions();
-appointmentStore.fetchAllCustomersBase();
+if (data.value?.appointment == null) router.replace({ name: 'Appointments' });
 
 const appointment = computed<Appointment>(
-  () => appointmentStore.getAppointment
-);
-const appointmentCustomers = computed<Customer[]>(
-  () => appointmentStore.getCustomers
+  () => data.value?.appointment as Appointment
 );
 
-const allCustomers = appointmentStore.getCustomerBase;
+const updateAppointment = useUpdateAppointmentMutation();
+const addCustomerToAppointment = useAddCustomerToAppointmentMutation();
+const createTransaction = useCreateTransactionMutation();
+const updateTransaction = useUpdateTransactionMutation();
+const removeCustomerFromAppointment = useRemoveCustomerToAppointmentMutation();
+
+const scheduledAtFormatted = () =>
+  computed(() =>
+    moment(appointment.value?.scheduledAt).format('DD MMM YYYY HH:mm')
+  );
+
+const { data: customersBase, error: customersBaseError } =
+  useCustomersBaseQuery();
+
+// const appointment = computed<Appointment>(
+//   () => appointmentStore.getAppointment
+// );
+
+// const allCustomers = appointmentStore.getCustomerBase;
+
+// const customerTransactions = (customerId: number) =>
+//   computed<Transaction[]>(() =>
+//     appointmentStore.getTransactions.filter(
+//       (t) => t.customer?.id === customerId
+//     )
+//   );
+
+const showCustomerRemoveButton = (customer: Customer) =>
+  computed<Boolean>(
+    () =>
+      !customer.transactions?.map((t) => t.appointmentId).includes(id) || false
+  );
+
+const customerSpareTransactions = (customer: Customer) =>
+  computed<Transaction[]>(() =>
+    customer.transactions?.length
+      ? customer.transactions.filter((t) => t.appointmentId !== id)
+      : []
+  );
 
 const customerTransactions = (customerId: number) =>
   computed<Transaction[]>(() =>
-    appointmentStore.getTransactions.filter(
-      (t) => t.customer?.id === customerId
-    )
+    appointment.value.transactions?.length
+      ? appointment.value.transactions.filter(
+          (t) => t.customerId === customerId
+        )
+      : []
   );
 
-const customerSpareTransactions = (customerId: number) =>
-  computed<Transaction[]>(() =>
-    appointmentStore.getSpareCustomersTransactions.filter(
-      (t) => t.customer?.id === customerId
-    )
-  );
-
-const spareTransaction = computed<Transaction[]>(
-  () => appointmentStore.getSpareCustomersTransactions
-);
+// const spareTransaction = computed<Transaction[]>(
+//   () => appointmentStore.getSpareCustomersTransactions
+// );
 
 const customerItems = (customerId: number) =>
   computed<Item[]>(() =>
-    appointmentStore.getItems.filter((i) => i.customer?.id === customerId)
+    appointment.value.items?.length
+      ? appointment.value.items.filter((t) => t.customerId === customerId)
+      : []
   );
 
+const removeCustomer = async (customer: Customer) => {
+  await removeCustomerFromAppointment.executeMutation({
+    appointmentId: id,
+    customerId: customer.id,
+  });
+};
+
 const pickedCustomers = async (customers: Customer[]) => {
-  await appointmentStore.saveCustomersToAppointment(customers);
+  await Promise.all(
+    customers.map((c) =>
+      addCustomerToAppointment.executeMutation({
+        appointmentId: id,
+        customerId: c.id,
+      })
+    )
+  );
 };
 
 const newTransaction = async (
   transaction: Transaction,
   customer: Customer | null
 ) => {
-  await appointmentStore.saveTransactionToAppointment(transaction, customer);
+  await createTransaction.executeMutation({
+    transaction: {
+      ...transaction,
+      invoiceId: null,
+      appointmentId: id,
+      customerId: customer ? customer.id : null,
+    },
+  });
 };
 
 const editAppointment = async (appointment: Appointment) => {
-  await appointmentStore.updateAppointment(appointment);
+  await updateAppointment.executeMutation({
+    appointment,
+  });
 };
 
 const pickedTransactionForCustomer = async (transaction: Transaction) => {
-  console.log({ transaction });
-  await appointmentStore.assignAppointmentToTransaction(transaction);
+  await updateTransaction.executeMutation({
+    transaction: {
+      id: transaction.id,
+      total: transaction.total,
+      isPaid: transaction.isPaid,
+      scheduledAt: transaction.scheduledAt,
+      customerId: transaction.customerId,
+      invoiceId: transaction.invoiceId,
+      appointmentId: id,
+    },
+  });
 };
 </script>

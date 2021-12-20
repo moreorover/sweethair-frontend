@@ -1,0 +1,11 @@
+mutation AddCustomerToAppointment($appointmentId: Float!, $customerId: Float!) {
+  addCustomerToAppointment(
+    appointmentId: $appointmentId
+    customerId: $customerId
+  ) {
+    id
+    customers {
+      id
+    }
+  }
+}
