@@ -8,6 +8,7 @@
           header="Create new Appointment"
           label="New"
           class="btn btn-medium"
+          @submit="handleCreateAppointment($event)"
         />
       </div>
       <div class="flex justify-between">
@@ -37,10 +38,14 @@ import AppointmentDialog from '@/components/appointments/AppointmentDialog.vue';
 import moment from 'moment';
 import { useWeek } from '@/hooks/useWeek';
 import WeekToolBar from '@/components/WeekToolBar.vue';
-import { useAppointmentsQuery } from '@/generated/graphql';
+import {
+  useAppointmentsQuery,
+  useCreateAppointmentMutation,
+} from '@/generated/graphql';
 import { Appointment } from '@/services/AppointmentService';
 import { sortBy } from 'lodash';
 import AppointmentsTable from '@/components/appointments/AppointmentsTable.vue';
+import router from '@/router';
 
 const { weekNumber } = useWeek();
 
@@ -50,6 +55,8 @@ const appointments = computed<Appointment[]>(
   () => data.value?.appointments as Appointment[]
 );
 
+const createAppointment = useCreateAppointmentMutation();
+
 const appointmentsFiltered = computed(() => {
   const filtered =
     data.value?.appointments.filter(
@@ -57,4 +64,17 @@ const appointmentsFiltered = computed(() => {
     ) || [];
   return sortBy(filtered, ['scheduledAt']);
 });
+
+const handleCreateAppointment = async (appointment: Appointment) => {
+  await createAppointment
+    .executeMutation({
+      appointment: {
+        scheduledAt: appointment.scheduledAt,
+        title: appointment.title,
+      },
+    })
+    .then((result) =>
+      router.push(`/appointments/${result.data?.createAppointment.id}`)
+    );
+};
 </script>
