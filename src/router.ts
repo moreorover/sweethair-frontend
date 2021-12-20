@@ -8,7 +8,6 @@ import Login from './views/Login.vue';
 import Modal from './views/Modal.vue';
 import Card from './views/Card.vue';
 import Blank from './views/Blank.vue';
-import Graphql from './views/Graphql.vue';
 
 import ShowCustomers from './views/customers/ShowCustomers.vue';
 import ShowCustomer from './views/customers/ShowCustomer.vue';
@@ -114,12 +113,6 @@ const routes: RouteRecordRaw[] = [
     path: '/invoices/:id',
     name: 'Invoice',
     component: ShowInvoice,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/graphql',
-    name: 'Graph QL',
-    component: Graphql,
     meta: { requiresAuth: true },
   },
 ];
