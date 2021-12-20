@@ -4,10 +4,16 @@ import { AxiosResponse } from 'axios';
 import { Invoice } from './InvoiceService';
 import Service, { DataEntity } from './Service';
 
+export enum TransactionType {
+  IN = 'IN',
+  OUT = 'OUT',
+}
+
 export interface Transaction extends DataEntity {
   total: number;
   scheduledAt: string;
   isPaid: boolean;
+  type: TransactionType;
   customerId: number;
   customer?: Customer | null;
   appointmentId: number;
