@@ -2,6 +2,24 @@
   <form @submit.prevent="submit">
     <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
       <div>
+        <div class="flex flex-row items-stretch max-w-full justify-around">
+          <div
+            @click="transactionType = TransactionType.In"
+            class="px-8 py-4 bg-green-50 hover:cursor-pointer"
+            :class="{ 'bg-green-400': transactionType === TransactionType.In }"
+          >
+            IN
+          </div>
+          <div
+            @click="transactionType = TransactionType.Out"
+            class="px-8 py-4 bg-red-50 hover:cursor-pointer"
+            :class="{ 'bg-red-400': transactionType === TransactionType.Out }"
+          >
+            OUT
+          </div>
+        </div>
+      </div>
+      <div>
         <label for="time24">Scheduled Date</label>
         <Calendar
           id="time24"
@@ -45,8 +63,9 @@
   </form>
 </template>
 <script setup lang="ts">
-import { Transaction } from '@/services/TransactionService';
+import { Transaction, TransactionType } from '@/services/TransactionService';
 import { useField, useForm } from 'vee-validate';
+import { ref } from 'vue';
 import { object, string, number, boolean } from 'yup';
 import BaseInput from '../base/BaseInput.vue';
 
@@ -76,9 +95,15 @@ scheduledAt.value = props.transaction.scheduledAt;
 total.value = props.transaction.total;
 isPaid.value = props.transaction.isPaid;
 
+const transactionType = ref<TransactionType>(props.transaction.type);
+
 const submit = handleSubmit((values) => {
   props.transaction.id > 0
-    ? emit('submit', { id: props.transaction.id, ...values })
-    : emit('submit', { ...values });
+    ? emit('submit', {
+        id: props.transaction.id,
+        type: transactionType.value,
+        ...values,
+      })
+    : emit('submit', { type: transactionType.value, ...values });
 });
 </script>

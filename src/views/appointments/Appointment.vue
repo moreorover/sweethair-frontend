@@ -115,7 +115,6 @@ import { Customer } from '@/services/CustomerService';
 import { Transaction, TransactionType } from '@/services/TransactionService';
 import { useRoute, useRouter } from 'vue-router';
 import { Item } from '@/services/ItemService';
-import { useAppointmentStore } from '@/store/appointmentStore';
 import { Appointment } from '@/services/AppointmentService';
 import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
 import TransactionsTable from '@/components/transactions/TransactionsTable.vue';
@@ -131,7 +130,6 @@ import {
   useUpdateAppointmentMutation,
   useUpdateTransactionMutation,
 } from '@/generated/graphql';
-import { transactions } from '../customers/tests/mockData';
 
 const route = useRoute();
 const router = useRouter();

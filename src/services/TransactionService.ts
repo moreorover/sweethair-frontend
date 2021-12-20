@@ -14,11 +14,11 @@ export interface Transaction extends DataEntity {
   scheduledAt: string;
   isPaid: boolean;
   type: TransactionType;
-  customerId: number;
+  customerId?: number;
   customer?: Customer | null;
-  appointmentId: number;
+  appointmentId?: number;
   appointment?: Appointment | null;
-  invoiceId: number;
+  invoiceId?: number;
   invoice?: Invoice | null;
 }
 
