@@ -28,12 +28,12 @@
 </template>
 
 <script setup lang="ts">
-import { Invoice } from '@/services/InvoiceService';
-import { useInvoicesStore } from '@/store/invoicesStore';
-import { computed } from 'vue';
 import InvoicesTable from '@/components/invoices/InvoicesTable.vue';
+import { useInvoicesQuery } from '@/generated/graphql';
+import { Invoice } from '@/services/InvoiceService';
+import { computed } from 'vue';
 
-const invoicesStore = useInvoicesStore();
-if (invoicesStore.shouldLoadState) await invoicesStore.fetchAll();
-const invoices = computed<Invoice[]>(() => invoicesStore.getAll);
+const { data, error } = await useInvoicesQuery();
+
+const invoices = computed<Invoice[]>(() => data.value?.invoices as Invoice[]);
 </script>

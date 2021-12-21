@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-between">
     <h3 class="text-3xl font-medium text-gray-700">
-      {{ invoiceFormattedDate }} {{ invoice.total }}
+      {{ invoiceFormattedDate }}
     </h3>
   </div>
 
@@ -43,7 +43,7 @@
               />
             </div>
           </div>
-          <TransactionsTable :transactions="invoiceTransactions">
+          <TransactionsTable :transactions="invoice.transactions || []">
             <template v-slot:actions="slotProps">
               <TransactionActions
                 :transaction="slotProps.transaction"
@@ -77,7 +77,7 @@
               />
             </div>
           </div>
-          <ItemsTable :items="invoiceItems">
+          <ItemsTable :items="invoice.items || []">
             <template v-slot:actions="slotProps">
               <ItemDialog
                 header="Edit Item"
@@ -103,60 +103,48 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useInvoicesStore } from '@/store/invoicesStore';
 import { Invoice } from '@/services/InvoiceService';
 import moment from 'moment';
 import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
-import { Transaction } from '@/services/TransactionService';
-import { useTransactionsStore } from '@/store/transactionsStore';
 import TransactionsTable from '@/components/transactions/TransactionsTable.vue';
-import { useItemsStore } from '@/store/itemsStore';
 import { Item } from '@/services/ItemService';
 import ItemsTable from '@/components/items/ItemsTable.vue';
 import ItemDialog from '@/components/items/ItemDialog.vue';
 import TransactionActions from '@/components/transactions/TransactionActions.vue';
+import { useInvoiceQuery } from '@/generated/graphql';
 
 const route = useRoute();
 const router = useRouter();
 const id: number = +route.params.id;
 
-const invoicesStore = useInvoicesStore();
-const transactionsStore = useTransactionsStore();
-const itemsStore = useItemsStore();
-if (invoicesStore.shouldLoadState) await invoicesStore.fetchAll();
-if (!invoicesStore.getIds.includes(id))
-  router.replace({ name: 'Transactions' });
+const { data, error } = await useInvoiceQuery({
+  variables: { invoiceId: id },
+});
 
-if (transactionsStore.shouldLoadState) await transactionsStore.fetchAll();
-if (itemsStore.shouldLoadState) await itemsStore.fetchAll();
+if (data.value?.invoice == null) router.replace({ name: 'Invoices' });
 
-const invoice = computed<Invoice>(() => invoicesStore.getInvoiceById(id));
+const invoice = computed<Invoice>(() => data.value?.invoice as Invoice);
 
 const invoiceFormattedDate = computed(() =>
-  moment(invoice.value.scheduledAt).format('d MMMM yyyy')
+  moment(invoice.value.scheduledAt).format('DD MMMM yyyy')
 );
 
-const invoiceTransactions = computed<Transaction[]>(() =>
-  transactionsStore.getTransactionsByInvoice(invoice.value)
-);
-
-const invoiceItems = computed<Item[]>(() =>
-  itemsStore.getItemsByInvoice(invoice.value)
-);
-
-const transactionsTotal = computed<number>(() =>
-  invoiceTransactions.value.reduce(
-    (acc, transaction) => acc + transaction.total,
-    0
-  )
+const transactionsTotal = computed<number>(
+  () =>
+    invoice.value.transactions?.reduce(
+      (acc, transaction) =>
+        transaction.type === 'IN'
+          ? acc + transaction.total
+          : acc - transaction.total,
+      0
+    ) || 0
 );
 
 const deleteItem = async (item: Item) => {
-  console.log({ item });
-  await itemsStore.delete(item);
+  console.log('deleteItem', { item });
 };
 
-const itemsTotal = computed<number>(() =>
-  invoiceItems.value.reduce((acc, item) => acc + item.total, 0)
+const itemsTotal = computed<number>(
+  () => invoice.value.items?.reduce((acc, item) => acc + item.total, 0) || 0
 );
 </script>

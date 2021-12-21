@@ -1,0 +1,11 @@
+query Invoices {
+  invoices {
+    id
+    total
+    isReceived
+    isPaid
+    scheduledAt
+    createdOn
+    modifiedOn
+  }
+}

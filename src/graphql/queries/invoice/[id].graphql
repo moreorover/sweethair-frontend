@@ -1,0 +1,23 @@
+query Invoice($invoiceId: Int!) {
+  invoice(invoiceId: $invoiceId) {
+    id
+    total
+    isReceived
+    isPaid
+    scheduledAt
+    transactions {
+      id
+      total
+      isPaid
+      scheduledAt
+      type
+    }
+    items {
+      id
+      title
+      total
+    }
+    createdOn
+    modifiedOn
+  }
+}

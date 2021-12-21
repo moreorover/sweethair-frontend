@@ -91,6 +91,21 @@ export type Invoice = {
   transactions: Array<Transaction>;
 };
 
+export type InvoiceCreate = {
+  isPaid?: InputMaybe<Scalars['Boolean']>;
+  isReceived?: InputMaybe<Scalars['Boolean']>;
+  scheduledAt: Scalars['DateTime'];
+  total: Scalars['Float'];
+};
+
+export type InvoiceUpdate = {
+  id: Scalars['Int'];
+  isPaid?: InputMaybe<Scalars['Boolean']>;
+  isReceived?: InputMaybe<Scalars['Boolean']>;
+  scheduledAt: Scalars['DateTime'];
+  total: Scalars['Float'];
+};
+
 export type Item = {
   __typename?: 'Item';
   appointment?: Maybe<Appointment>;
@@ -111,12 +126,14 @@ export type Mutation = {
   addCustomerToAppointment: Appointment;
   createAppointment: Appointment;
   createCustomer: Customer;
+  createInvoice: Invoice;
   createTransaction: Transaction;
   login: UserResponse;
   logout: Scalars['Boolean'];
   removeCustomerToAppointment: Appointment;
   updateAppointment: Appointment;
   updateCustomer: Customer;
+  updateInvoice: Invoice;
   updateTransaction: Transaction;
 };
 
@@ -134,6 +151,11 @@ export type MutationCreateAppointmentArgs = {
 
 export type MutationCreateCustomerArgs = {
   customer: CustomerCreate;
+};
+
+
+export type MutationCreateInvoiceArgs = {
+  invoice: InvoiceCreate;
 };
 
 
@@ -164,6 +186,11 @@ export type MutationUpdateCustomerArgs = {
 };
 
 
+export type MutationUpdateInvoiceArgs = {
+  invoice: InvoiceUpdate;
+};
+
+
 export type MutationUpdateTransactionArgs = {
   transaction: TransactionUpdate;
 };
@@ -174,6 +201,8 @@ export type Query = {
   appointments: Array<Appointment>;
   customer?: Maybe<Customer>;
   customers: Array<Customer>;
+  invoice?: Maybe<Invoice>;
+  invoices: Array<Invoice>;
   items: Array<Item>;
   me?: Maybe<User>;
   transactions: Array<Transaction>;
@@ -187,6 +216,11 @@ export type QueryAppointmentArgs = {
 
 export type QueryCustomerArgs = {
   customerId: Scalars['Int'];
+};
+
+
+export type QueryInvoiceArgs = {
+  invoiceId: Scalars['Int'];
 };
 
 export type Transaction = {
@@ -345,6 +379,18 @@ export type CustomerQueryVariables = Exact<{
 
 
 export type CustomerQuery = { __typename?: 'Query', customer?: { __typename?: 'Customer', id: number, fullName: string, location?: string | null | undefined, about?: string | null | undefined, email?: string | null | undefined, instagram?: string | null | undefined, createdOn: any, modifiedOn: any, appointments: Array<{ __typename?: 'Appointment', id: number, scheduledAt: any, title: string }>, transactions: Array<{ __typename?: 'Transaction', id: number, total: number, isPaid: boolean, scheduledAt: any, type: string }>, items: Array<{ __typename?: 'Item', id: number, title: string, total: number }> } | null | undefined };
+
+export type InvoicesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type InvoicesQuery = { __typename?: 'Query', invoices: Array<{ __typename?: 'Invoice', id: number, total: number, isReceived: boolean, isPaid: boolean, scheduledAt: any, createdOn: any, modifiedOn: any }> };
+
+export type InvoiceQueryVariables = Exact<{
+  invoiceId: Scalars['Int'];
+}>;
+
+
+export type InvoiceQuery = { __typename?: 'Query', invoice?: { __typename?: 'Invoice', id: number, total: number, isReceived: boolean, isPaid: boolean, scheduledAt: any, createdOn: any, modifiedOn: any, transactions: Array<{ __typename?: 'Transaction', id: number, total: number, isPaid: boolean, scheduledAt: any, type: string }>, items: Array<{ __typename?: 'Item', id: number, title: string, total: number }> } | null | undefined };
 
 export type LogOutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -610,6 +656,52 @@ export const CustomerDocument = gql`
 
 export function useCustomerQuery(options: Omit<Urql.UseQueryArgs<never, CustomerQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<CustomerQuery>({ query: CustomerDocument, ...options });
+};
+export const InvoicesDocument = gql`
+    query Invoices {
+  invoices {
+    id
+    total
+    isReceived
+    isPaid
+    scheduledAt
+    createdOn
+    modifiedOn
+  }
+}
+    `;
+
+export function useInvoicesQuery(options: Omit<Urql.UseQueryArgs<never, InvoicesQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<InvoicesQuery>({ query: InvoicesDocument, ...options });
+};
+export const InvoiceDocument = gql`
+    query Invoice($invoiceId: Int!) {
+  invoice(invoiceId: $invoiceId) {
+    id
+    total
+    isReceived
+    isPaid
+    scheduledAt
+    transactions {
+      id
+      total
+      isPaid
+      scheduledAt
+      type
+    }
+    items {
+      id
+      title
+      total
+    }
+    createdOn
+    modifiedOn
+  }
+}
+    `;
+
+export function useInvoiceQuery(options: Omit<Urql.UseQueryArgs<never, InvoiceQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<InvoiceQuery>({ query: InvoiceDocument, ...options });
 };
 export const LogOutDocument = gql`
     mutation LogOut {
