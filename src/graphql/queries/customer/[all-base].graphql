@@ -3,8 +3,10 @@ query CustomersBase {
     id
     fullName
     location
-    instagram
-    email
     about
+    email
+    instagram
+    createdOn
+    modifiedOn
   }
 }

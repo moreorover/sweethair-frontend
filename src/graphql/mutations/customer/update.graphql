@@ -1,0 +1,5 @@
+mutation UpdateCustomer($customer: CustomerUpdate!) {
+  updateCustomer(customer: $customer) {
+    id
+  }
+}

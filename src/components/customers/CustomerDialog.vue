@@ -10,8 +10,6 @@
   </BaseModal>
 </template>
 <script setup lang="ts">
-import { useCustomersStore } from '@/store/customersStore';
-import useEntityCleaner from '@/hooks/entityCleaner';
 import { Customer } from '@/services/CustomerService';
 import CustomerForm from '@/components/customers/CustomerForm.vue';
 import BaseModal from '@/components/base/BaseModal.vue';
@@ -25,6 +23,7 @@ interface Props {
   label: string;
 }
 
+const emit = defineEmits(['submit']);
 const attrs = useAttrs();
 const props = withDefaults(defineProps<Props>(), {
   customer: () => {
@@ -39,15 +38,10 @@ const props = withDefaults(defineProps<Props>(), {
   },
 });
 
-const store = useCustomersStore();
-const entityCleaner = useEntityCleaner();
 const { showModal, toggleModal } = useModal();
 
 const submit = async (customer: Customer) => {
-  const cleanCustomer: Customer = entityCleaner.clean(customer, true);
-  cleanCustomer.id
-    ? await store.update(cleanCustomer)
-    : await store.create(cleanCustomer);
+  emit('submit', customer);
   toggleModal();
 };
 </script>

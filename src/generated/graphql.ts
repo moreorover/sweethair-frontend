@@ -42,25 +42,34 @@ export type AppointmentUpdate = {
 
 export type Customer = {
   __typename?: 'Customer';
-  about: Scalars['String'];
+  about?: Maybe<Scalars['String']>;
   appointments: Array<Appointment>;
   createdOn: Scalars['DateTime'];
-  email: Scalars['String'];
+  email?: Maybe<Scalars['String']>;
   fullName: Scalars['String'];
   id: Scalars['Int'];
-  instagram: Scalars['String'];
+  instagram?: Maybe<Scalars['String']>;
   items: Array<Item>;
-  location: Scalars['String'];
+  location?: Maybe<Scalars['String']>;
   modifiedOn: Scalars['DateTime'];
   transactions: Array<Transaction>;
 };
 
-export type CustomerInput = {
-  about: Scalars['String'];
-  email: Scalars['String'];
+export type CustomerCreate = {
+  about?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
   fullName: Scalars['String'];
-  instagram: Scalars['String'];
-  location: Scalars['String'];
+  instagram?: InputMaybe<Scalars['String']>;
+  location?: InputMaybe<Scalars['String']>;
+};
+
+export type CustomerUpdate = {
+  about?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  fullName: Scalars['String'];
+  id: Scalars['Int'];
+  instagram?: InputMaybe<Scalars['String']>;
+  location?: InputMaybe<Scalars['String']>;
 };
 
 export type FieldError = {
@@ -107,6 +116,7 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   removeCustomerToAppointment: Appointment;
   updateAppointment: Appointment;
+  updateCustomer: Customer;
   updateTransaction: Transaction;
 };
 
@@ -123,7 +133,7 @@ export type MutationCreateAppointmentArgs = {
 
 
 export type MutationCreateCustomerArgs = {
-  input: CustomerInput;
+  customer: CustomerCreate;
 };
 
 
@@ -149,6 +159,11 @@ export type MutationUpdateAppointmentArgs = {
 };
 
 
+export type MutationUpdateCustomerArgs = {
+  customer: CustomerUpdate;
+};
+
+
 export type MutationUpdateTransactionArgs = {
   transaction: TransactionUpdate;
 };
@@ -157,6 +172,7 @@ export type Query = {
   __typename?: 'Query';
   appointment?: Maybe<Appointment>;
   appointments: Array<Appointment>;
+  customer?: Maybe<Customer>;
   customers: Array<Customer>;
   items: Array<Item>;
   me?: Maybe<User>;
@@ -166,6 +182,11 @@ export type Query = {
 
 export type QueryAppointmentArgs = {
   appointmentId: Scalars['Int'];
+};
+
+
+export type QueryCustomerArgs = {
+  customerId: Scalars['Int'];
 };
 
 export type Transaction = {
@@ -260,6 +281,20 @@ export type UpdateAppointmentMutationVariables = Exact<{
 
 export type UpdateAppointmentMutation = { __typename?: 'Mutation', updateAppointment: { __typename?: 'Appointment', id: number, title: string, scheduledAt: any } };
 
+export type CreateCustomerMutationVariables = Exact<{
+  customer: CustomerCreate;
+}>;
+
+
+export type CreateCustomerMutation = { __typename?: 'Mutation', createCustomer: { __typename?: 'Customer', id: number } };
+
+export type UpdateCustomerMutationVariables = Exact<{
+  customer: CustomerUpdate;
+}>;
+
+
+export type UpdateCustomerMutation = { __typename?: 'Mutation', updateCustomer: { __typename?: 'Customer', id: number } };
+
 export type LoginMutationVariables = Exact<{
   password: Scalars['String'];
   userEmail: Scalars['String'];
@@ -297,12 +332,19 @@ export type AppointmentsQuery = { __typename?: 'Query', appointments: Array<{ __
 export type CustomersBaseQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CustomersBaseQuery = { __typename?: 'Query', customers: Array<{ __typename?: 'Customer', id: number, fullName: string, location: string, instagram: string, email: string, about: string }> };
+export type CustomersBaseQuery = { __typename?: 'Query', customers: Array<{ __typename?: 'Customer', id: number, fullName: string, location?: string | null | undefined, about?: string | null | undefined, email?: string | null | undefined, instagram?: string | null | undefined, createdOn: any, modifiedOn: any }> };
 
 export type CustomersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CustomersQuery = { __typename?: 'Query', customers: Array<{ __typename?: 'Customer', id: number, fullName: string, transactions: Array<{ __typename?: 'Transaction', customerId?: number | null | undefined, id: number, total: number }> }> };
+
+export type CustomerQueryVariables = Exact<{
+  customerId: Scalars['Int'];
+}>;
+
+
+export type CustomerQuery = { __typename?: 'Query', customer?: { __typename?: 'Customer', id: number, fullName: string, location?: string | null | undefined, about?: string | null | undefined, email?: string | null | undefined, instagram?: string | null | undefined, createdOn: any, modifiedOn: any, appointments: Array<{ __typename?: 'Appointment', id: number, scheduledAt: any, title: string }>, transactions: Array<{ __typename?: 'Transaction', id: number, total: number, isPaid: boolean, scheduledAt: any, type: string }>, items: Array<{ __typename?: 'Item', id: number, title: string, total: number }> } | null | undefined };
 
 export type LogOutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -371,6 +413,28 @@ export const UpdateAppointmentDocument = gql`
 
 export function useUpdateAppointmentMutation() {
   return Urql.useMutation<UpdateAppointmentMutation, UpdateAppointmentMutationVariables>(UpdateAppointmentDocument);
+};
+export const CreateCustomerDocument = gql`
+    mutation CreateCustomer($customer: CustomerCreate!) {
+  createCustomer(customer: $customer) {
+    id
+  }
+}
+    `;
+
+export function useCreateCustomerMutation() {
+  return Urql.useMutation<CreateCustomerMutation, CreateCustomerMutationVariables>(CreateCustomerDocument);
+};
+export const UpdateCustomerDocument = gql`
+    mutation UpdateCustomer($customer: CustomerUpdate!) {
+  updateCustomer(customer: $customer) {
+    id
+  }
+}
+    `;
+
+export function useUpdateCustomerMutation() {
+  return Urql.useMutation<UpdateCustomerMutation, UpdateCustomerMutationVariables>(UpdateCustomerDocument);
 };
 export const LoginDocument = gql`
     mutation Login($password: String!, $userEmail: String!) {
@@ -483,9 +547,11 @@ export const CustomersBaseDocument = gql`
     id
     fullName
     location
-    instagram
-    email
     about
+    email
+    instagram
+    createdOn
+    modifiedOn
   }
 }
     `;
@@ -509,6 +575,41 @@ export const CustomersDocument = gql`
 
 export function useCustomersQuery(options: Omit<Urql.UseQueryArgs<never, CustomersQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<CustomersQuery>({ query: CustomersDocument, ...options });
+};
+export const CustomerDocument = gql`
+    query Customer($customerId: Int!) {
+  customer(customerId: $customerId) {
+    id
+    fullName
+    location
+    about
+    email
+    instagram
+    appointments {
+      id
+      scheduledAt
+      title
+    }
+    transactions {
+      id
+      total
+      isPaid
+      scheduledAt
+      type
+    }
+    items {
+      id
+      title
+      total
+    }
+    createdOn
+    modifiedOn
+  }
+}
+    `;
+
+export function useCustomerQuery(options: Omit<Urql.UseQueryArgs<never, CustomerQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<CustomerQuery>({ query: CustomerDocument, ...options });
 };
 export const LogOutDocument = gql`
     mutation LogOut {
