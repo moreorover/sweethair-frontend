@@ -6,11 +6,11 @@ import Service, { DataEntity } from './Service';
 export interface Item extends DataEntity {
   title: string;
   total: number;
-  invoiceId: number;
+  invoiceId?: number;
   invoice?: Invoice;
-  customerId: number;
+  customerId?: number;
   customer?: Customer | null;
-  appointmentId: number;
+  appointmentId?: number;
   appointment?: Appointment | null;
 }
 

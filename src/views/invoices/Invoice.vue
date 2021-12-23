@@ -40,6 +40,7 @@
                 label="Book Transaction"
                 :invoice="invoice"
                 class="btn btn-small"
+                @submit="handleCreateTransaction($event)"
               />
             </div>
           </div>
@@ -74,6 +75,7 @@
                 label="Book Item"
                 :invoice="invoice"
                 class="btn btn-small"
+                @submit="handleCreateItem($event)"
               />
             </div>
           </div>
@@ -111,7 +113,12 @@ import { Item } from '@/services/ItemService';
 import ItemsTable from '@/components/items/ItemsTable.vue';
 import ItemDialog from '@/components/items/ItemDialog.vue';
 import TransactionActions from '@/components/transactions/TransactionActions.vue';
-import { useInvoiceQuery } from '@/generated/graphql';
+import {
+  useCreateItemMutation,
+  useCreateTransactionMutation,
+  useInvoiceQuery,
+} from '@/generated/graphql';
+import { Transaction } from '@/services/TransactionService';
 
 const route = useRoute();
 const router = useRouter();
@@ -122,6 +129,9 @@ const { data, error } = await useInvoiceQuery({
 });
 
 if (data.value?.invoice == null) router.replace({ name: 'Invoices' });
+
+const createItemMutation = useCreateItemMutation();
+const createTransactionMutation = useCreateTransactionMutation();
 
 const invoice = computed<Invoice>(() => data.value?.invoice as Invoice);
 
@@ -147,4 +157,20 @@ const deleteItem = async (item: Item) => {
 const itemsTotal = computed<number>(
   () => invoice.value.items?.reduce((acc, item) => acc + item.total, 0) || 0
 );
+
+const handleCreateItem = async (item: Item) => {
+  await createItemMutation.executeMutation({
+    item: { ...item, invoiceId: id },
+  });
+};
+const handleCreateTransaction = async (transaction: Transaction) => {
+  await createTransactionMutation.executeMutation({
+    transaction: {
+      ...transaction,
+      invoiceId: id,
+      appointmentId: null,
+      customerId: null,
+    },
+  });
+};
 </script>

@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import { Item } from '@/services/ItemService';
 import { useField, useForm } from 'vee-validate';
-import { object, string, number, boolean } from 'yup';
+import { object, string, number } from 'yup';
 import BaseInput from '../base/BaseInput.vue';
 
 type Props = {

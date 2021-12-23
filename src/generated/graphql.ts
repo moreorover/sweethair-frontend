@@ -121,12 +121,30 @@ export type Item = {
   total: Scalars['Float'];
 };
 
+export type ItemCreate = {
+  appointmentId?: InputMaybe<Scalars['Float']>;
+  customerId?: InputMaybe<Scalars['Float']>;
+  invoiceId?: InputMaybe<Scalars['Float']>;
+  title: Scalars['String'];
+  total: Scalars['Float'];
+};
+
+export type ItemUpdate = {
+  appointmentId?: InputMaybe<Scalars['Float']>;
+  customerId?: InputMaybe<Scalars['Float']>;
+  id: Scalars['Int'];
+  invoiceId?: InputMaybe<Scalars['Float']>;
+  title: Scalars['String'];
+  total: Scalars['Float'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addCustomerToAppointment: Appointment;
   createAppointment: Appointment;
   createCustomer: Customer;
   createInvoice: Invoice;
+  createItem: Item;
   createTransaction: Transaction;
   login: UserResponse;
   logout: Scalars['Boolean'];
@@ -134,6 +152,7 @@ export type Mutation = {
   updateAppointment: Appointment;
   updateCustomer: Customer;
   updateInvoice: Invoice;
+  updateItem: Item;
   updateTransaction: Transaction;
 };
 
@@ -156,6 +175,11 @@ export type MutationCreateCustomerArgs = {
 
 export type MutationCreateInvoiceArgs = {
   invoice: InvoiceCreate;
+};
+
+
+export type MutationCreateItemArgs = {
+  item: ItemCreate;
 };
 
 
@@ -191,6 +215,11 @@ export type MutationUpdateInvoiceArgs = {
 };
 
 
+export type MutationUpdateItemArgs = {
+  item: ItemUpdate;
+};
+
+
 export type MutationUpdateTransactionArgs = {
   transaction: TransactionUpdate;
 };
@@ -203,6 +232,7 @@ export type Query = {
   customers: Array<Customer>;
   invoice?: Maybe<Invoice>;
   invoices: Array<Invoice>;
+  item?: Maybe<Item>;
   items: Array<Item>;
   me?: Maybe<User>;
   transactions: Array<Transaction>;
@@ -221,6 +251,11 @@ export type QueryCustomerArgs = {
 
 export type QueryInvoiceArgs = {
   invoiceId: Scalars['Int'];
+};
+
+
+export type QueryItemArgs = {
+  itemId: Scalars['Int'];
 };
 
 export type Transaction = {
@@ -328,6 +363,34 @@ export type UpdateCustomerMutationVariables = Exact<{
 
 
 export type UpdateCustomerMutation = { __typename?: 'Mutation', updateCustomer: { __typename?: 'Customer', id: number } };
+
+export type CreateInvoiceMutationVariables = Exact<{
+  invoice: InvoiceCreate;
+}>;
+
+
+export type CreateInvoiceMutation = { __typename?: 'Mutation', createInvoice: { __typename?: 'Invoice', id: number } };
+
+export type UpdateInvoiceMutationVariables = Exact<{
+  invoice: InvoiceUpdate;
+}>;
+
+
+export type UpdateInvoiceMutation = { __typename?: 'Mutation', updateInvoice: { __typename?: 'Invoice', id: number } };
+
+export type CreateItemMutationVariables = Exact<{
+  item: ItemCreate;
+}>;
+
+
+export type CreateItemMutation = { __typename?: 'Mutation', createItem: { __typename?: 'Item', id: number } };
+
+export type UpdateItemMutationVariables = Exact<{
+  item: ItemUpdate;
+}>;
+
+
+export type UpdateItemMutation = { __typename?: 'Mutation', updateItem: { __typename?: 'Item', id: number } };
 
 export type LoginMutationVariables = Exact<{
   password: Scalars['String'];
@@ -481,6 +544,50 @@ export const UpdateCustomerDocument = gql`
 
 export function useUpdateCustomerMutation() {
   return Urql.useMutation<UpdateCustomerMutation, UpdateCustomerMutationVariables>(UpdateCustomerDocument);
+};
+export const CreateInvoiceDocument = gql`
+    mutation CreateInvoice($invoice: InvoiceCreate!) {
+  createInvoice(invoice: $invoice) {
+    id
+  }
+}
+    `;
+
+export function useCreateInvoiceMutation() {
+  return Urql.useMutation<CreateInvoiceMutation, CreateInvoiceMutationVariables>(CreateInvoiceDocument);
+};
+export const UpdateInvoiceDocument = gql`
+    mutation UpdateInvoice($invoice: InvoiceUpdate!) {
+  updateInvoice(invoice: $invoice) {
+    id
+  }
+}
+    `;
+
+export function useUpdateInvoiceMutation() {
+  return Urql.useMutation<UpdateInvoiceMutation, UpdateInvoiceMutationVariables>(UpdateInvoiceDocument);
+};
+export const CreateItemDocument = gql`
+    mutation CreateItem($item: ItemCreate!) {
+  createItem(item: $item) {
+    id
+  }
+}
+    `;
+
+export function useCreateItemMutation() {
+  return Urql.useMutation<CreateItemMutation, CreateItemMutationVariables>(CreateItemDocument);
+};
+export const UpdateItemDocument = gql`
+    mutation UpdateItem($item: ItemUpdate!) {
+  updateItem(item: $item) {
+    id
+  }
+}
+    `;
+
+export function useUpdateItemMutation() {
+  return Urql.useMutation<UpdateItemMutation, UpdateItemMutationVariables>(UpdateItemDocument);
 };
 export const LoginDocument = gql`
     mutation Login($password: String!, $userEmail: String!) {
