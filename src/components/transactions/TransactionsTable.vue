@@ -33,6 +33,18 @@
                     uppercase
                     tracking-wider
                   "
+                ></th>
+                <th
+                  scope="col"
+                  class="
+                    px-6
+                    py-3
+                    text-left text-xs
+                    font-medium
+                    text-gray-500
+                    uppercase
+                    tracking-wider
+                  "
                 >
                   Total
                 </th>
@@ -72,8 +84,39 @@
                   </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <span
+                      class="
+                        relative
+                        inline-block
+                        px-3
+                        py-1
+                        font-semibold
+                        leading-tight
+                      "
+                      :class="
+                        transaction.type === 'IN'
+                          ? 'text-green-900'
+                          : 'text-red-900'
+                      "
+                    >
+                      <span
+                        aria-hidden
+                        class="absolute inset-0 opacity-50 rounded-full"
+                        :class="
+                          transaction.type === 'IN'
+                            ? 'bg-green-200'
+                            : 'bg-red-200'
+                        "
+                      ></span>
+                      <span class="relative">{{ transaction.type }}</span>
+                    </span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
                   <div class="text-sm text-gray-500">
-                    {{ transaction.total }}
+                    <span v-if="transaction.type === 'OUT'">-</span
+                    >{{ transaction.total }}
                   </div>
                 </td>
                 <td
