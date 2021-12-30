@@ -29,6 +29,10 @@ app.use(createPinia());
 
 app.use(urql, {
   url: 'http://localhost:3000/graphql',
+  suspense: true,
+  fetchOptions: {
+    credentials: 'include',
+  },
 });
 
 app.mount('#app');
