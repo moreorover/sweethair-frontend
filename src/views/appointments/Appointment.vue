@@ -43,14 +43,6 @@
             >
           </div>
           <div class="flex items-center">
-            <SingleTransactionPickerDialog
-              v-if="customerSpareTransactions(customer).value.length"
-              header="Pick Transaction"
-              label="Pick Transaction"
-              class="btn btn-small"
-              :transactions="customerSpareTransactions(customer).value"
-              @submit="pickedTransactionForCustomer($event)"
-            />
             <BaseConfirm
               v-if="showCustomerRemoveButton(customer).value"
               @confirm="removeCustomer(customer)"
@@ -176,13 +168,6 @@ const showCustomerRemoveButton = (customer: Customer) =>
   computed<Boolean>(
     () =>
       !customer.transactions?.map((t) => t.appointmentId).includes(id) || false
-  );
-
-const customerSpareTransactions = (customer: Customer) =>
-  computed<Transaction[]>(() =>
-    customer.transactions?.length
-      ? customer.transactions.filter((t) => t.appointmentId !== id)
-      : []
   );
 
 const customerTransactions = (customerId: number) =>
