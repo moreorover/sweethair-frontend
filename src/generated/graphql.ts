@@ -149,6 +149,7 @@ export type Mutation = {
   login: UserResponse;
   logout: Scalars['Boolean'];
   removeCustomerToAppointment: Appointment;
+  removeTransaction?: Maybe<Transaction>;
   updateAppointment: Appointment;
   updateCustomer: Customer;
   updateInvoice: Invoice;
@@ -197,6 +198,11 @@ export type MutationLoginArgs = {
 export type MutationRemoveCustomerToAppointmentArgs = {
   appointmentId: Scalars['Float'];
   customerId: Scalars['Float'];
+};
+
+
+export type MutationRemoveTransactionArgs = {
+  transactionId: Scalars['Int'];
 };
 
 
@@ -406,6 +412,13 @@ export type CreateTransactionMutationVariables = Exact<{
 
 
 export type CreateTransactionMutation = { __typename?: 'Mutation', createTransaction: { __typename?: 'Transaction', id: number, total: number, isPaid: boolean, scheduledAt: any, type: string, customerId?: number | null | undefined, appointmentId?: number | null | undefined, invoiceId?: number | null | undefined } };
+
+export type DeleteTransactionMutationVariables = Exact<{
+  transactionId: Scalars['Int'];
+}>;
+
+
+export type DeleteTransactionMutation = { __typename?: 'Mutation', removeTransaction?: { __typename?: 'Transaction', id: number, total: number, isPaid: boolean, scheduledAt: any, type: string, customerId?: number | null | undefined, appointmentId?: number | null | undefined, invoiceId?: number | null | undefined } | null | undefined };
 
 export type UpdateTransactionMutationVariables = Exact<{
   transaction: TransactionUpdate;
@@ -625,6 +638,24 @@ export const CreateTransactionDocument = gql`
 
 export function useCreateTransactionMutation() {
   return Urql.useMutation<CreateTransactionMutation, CreateTransactionMutationVariables>(CreateTransactionDocument);
+};
+export const DeleteTransactionDocument = gql`
+    mutation DeleteTransaction($transactionId: Int!) {
+  removeTransaction(transactionId: $transactionId) {
+    id
+    total
+    isPaid
+    scheduledAt
+    type
+    customerId
+    appointmentId
+    invoiceId
+  }
+}
+    `;
+
+export function useDeleteTransactionMutation() {
+  return Urql.useMutation<DeleteTransactionMutation, DeleteTransactionMutationVariables>(DeleteTransactionDocument);
 };
 export const UpdateTransactionDocument = gql`
     mutation UpdateTransaction($transaction: TransactionUpdate!) {
