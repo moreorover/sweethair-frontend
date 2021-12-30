@@ -113,5 +113,5 @@ interface Props {
 const props = defineProps<Props>();
 
 const formattedDate = (scheduledAt: string) =>
-  moment(scheduledAt).format('dddd MMM YYYY HH:mm');
+  moment(scheduledAt).format('dddd DD MMM YYYY HH:mm');
 </script>
