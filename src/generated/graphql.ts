@@ -419,7 +419,7 @@ export type AppointmentQueryVariables = Exact<{
 }>;
 
 
-export type AppointmentQuery = { __typename?: 'Query', appointment?: { __typename?: 'Appointment', id: number, title: string, scheduledAt: any, customers: Array<{ __typename?: 'Customer', fullName: string, id: number, transactions: Array<{ __typename?: 'Transaction', id: number, appointmentId?: number | null | undefined, total: number, isPaid: boolean, scheduledAt: any, customerId?: number | null | undefined, invoiceId?: number | null | undefined }> }>, transactions: Array<{ __typename?: 'Transaction', id: number, total: number, isPaid: boolean, scheduledAt: any, customerId?: number | null | undefined }>, items: Array<{ __typename?: 'Item', id: number, title: string, total: number, customerId?: number | null | undefined }> } | null | undefined };
+export type AppointmentQuery = { __typename?: 'Query', appointment?: { __typename?: 'Appointment', id: number, title: string, scheduledAt: any, customers: Array<{ __typename?: 'Customer', fullName: string, id: number, transactions: Array<{ __typename?: 'Transaction', id: number, appointmentId?: number | null | undefined, total: number, isPaid: boolean, scheduledAt: any, customerId?: number | null | undefined, invoiceId?: number | null | undefined, type: string }> }>, transactions: Array<{ __typename?: 'Transaction', id: number, total: number, isPaid: boolean, scheduledAt: any, customerId?: number | null | undefined, type: string }>, items: Array<{ __typename?: 'Item', id: number, title: string, total: number, customerId?: number | null | undefined }> } | null | undefined };
 
 export type AppointmentsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -434,7 +434,7 @@ export type CustomersBaseQuery = { __typename?: 'Query', customers: Array<{ __ty
 export type CustomersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CustomersQuery = { __typename?: 'Query', customers: Array<{ __typename?: 'Customer', id: number, fullName: string, transactions: Array<{ __typename?: 'Transaction', customerId?: number | null | undefined, id: number, total: number }> }> };
+export type CustomersQuery = { __typename?: 'Query', customers: Array<{ __typename?: 'Customer', id: number, fullName: string, transactions: Array<{ __typename?: 'Transaction', customerId?: number | null | undefined, id: number, total: number, type: string }> }> };
 
 export type CustomerQueryVariables = Exact<{
   customerId: Scalars['Int'];
@@ -659,6 +659,7 @@ export const AppointmentDocument = gql`
         scheduledAt
         customerId
         invoiceId
+        type
       }
     }
     transactions {
@@ -667,6 +668,7 @@ export const AppointmentDocument = gql`
       isPaid
       scheduledAt
       customerId
+      type
     }
     items {
       id
@@ -721,6 +723,7 @@ export const CustomersDocument = gql`
       customerId
       id
       total
+      type
     }
   }
 }

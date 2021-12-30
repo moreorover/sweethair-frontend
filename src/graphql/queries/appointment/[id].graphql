@@ -14,6 +14,7 @@ query Appointment($appointmentId: Int!) {
         scheduledAt
         customerId
         invoiceId
+        type
       }
     }
     transactions {
@@ -22,6 +23,7 @@ query Appointment($appointmentId: Int!) {
       isPaid
       scheduledAt
       customerId
+      type
     }
     items {
       id
