@@ -1,32 +1,6 @@
 <template>
   <div class="flex items-center justify-center mb-4">
     <button
-      v-if="weekNumber != currentWeek"
-      @click="reset"
-      class="
-        text-purple-500
-        bg-transparent
-        border-l border-t border-b border-purple-500
-        hover:bg-purple-500 hover:text-white
-        active:bg-purple-600
-        font-bold
-        uppercase
-        text-xs
-        px-4
-        py-2
-        rounded-l
-        outline-none
-        focus:outline-none
-        mb-1
-        ease-linear
-        transition-all
-        duration-150
-      "
-      type="button"
-    >
-      Reset
-    </button>
-    <button
       @click="decreaseWeek"
       class="
         text-purple-500
@@ -52,6 +26,7 @@
       - Week
     </button>
     <button
+      @click="reset"
       class="
         border border-solid border-purple-500
         text-white
