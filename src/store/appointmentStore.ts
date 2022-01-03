@@ -1,5 +1,4 @@
 import TransactionService, { Transaction } from '@/services/TransactionService';
-import { Transaction } from './../services/TransactionService';
 import AppointmentService, { Appointment } from '@/services/AppointmentService';
 import { defineStore } from 'pinia';
 import CustomerService, { Customer } from '@/services/CustomerService';
