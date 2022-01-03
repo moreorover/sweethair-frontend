@@ -82,14 +82,15 @@
               <span class="font-semibold text-md text-black">Items</span>
             </div>
             <div class="flex items-center">
-              <!-- <MultipleItemPickerDialog
+              <MultipleItemPickerDialog
+                v-if="allItems?.items"
                 :selection="[]"
-                :items="allItems"
+                :items="allItems?.items"
                 header="Pick Items"
                 label="Pick Items"
                 class="btn btn-small"
                 @submit="pickedItems($event, customer)"
-              /> -->
+              />
             </div>
           </div>
           <ItemsTable :items="customerItems(customer.id).value" />
@@ -104,7 +105,7 @@ import moment from 'moment';
 import AppointmentDialog from '@/components/appointments/AppointmentDialog.vue';
 import MultipleCustomerPickerDialog from '@/components/customers/MultipleCustomerPickerDialog.vue';
 import { Customer } from '@/services/CustomerService';
-import { Transaction, TransactionType } from '@/services/TransactionService';
+import { Transaction } from '@/services/TransactionService';
 import { useRoute, useRouter } from 'vue-router';
 import { Item } from '@/services/ItemService';
 import { Appointment } from '@/services/AppointmentService';
@@ -112,12 +113,13 @@ import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
 import TransactionsTable from '@/components/transactions/TransactionsTable.vue';
 import TransactionActions from '@/components/transactions/TransactionActions.vue';
 import ItemsTable from '@/components/items/ItemsTable.vue';
-import SingleTransactionPickerDialog from '@/components/transactions/SingleTransactionPickerDialog.vue';
+import MultipleItemPickerDialog from '@/components/items/MultipleItemPickerDialog.vue';
 import {
   useAddCustomerToAppointmentMutation,
   useAppointmentQuery,
   useCreateTransactionMutation,
   useCustomersBaseQuery,
+  useItemsQuery,
   useRemoveCustomerToAppointmentMutation,
   useUpdateAppointmentMutation,
   useUpdateTransactionMutation,
@@ -150,6 +152,8 @@ const scheduledAtFormatted = () =>
 
 const { data: customersBase, error: customersBaseError } =
   useCustomersBaseQuery();
+
+const { data: allItems, error: itemsError } = useItemsQuery();
 
 // const appointment = computed<Appointment>(
 //   () => appointmentStore.getAppointment
@@ -206,6 +210,11 @@ const pickedCustomers = async (customers: Customer[]) => {
       })
     )
   );
+};
+
+const pickedItems = async (items: Item[], customer: Customer) => {
+  console.log({ items });
+  console.log({ customer });
 };
 
 const newTransaction = async (
