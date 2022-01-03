@@ -35,6 +35,9 @@ const props = withDefaults(defineProps<Props>(), {
       scheduledAt: moment().toISOString(),
       isPaid: false,
       type: TransactionType.In,
+      customerId: null,
+      appointmentId: null,
+      invoiceId: null,
     };
   },
 });
