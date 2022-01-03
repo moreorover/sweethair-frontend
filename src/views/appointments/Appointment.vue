@@ -10,25 +10,19 @@
         @submit="editAppointment($event)"
       />
       <MultipleCustomerPickerDialog
-        :selection="appointmentStore.customers"
+        :selection="appointment.customers"
         :customers="allCustomers"
         header="Pick customers"
         label="Pick Customers"
         class="btn btn-small"
         @submit="pickedCustomers($event)"
       />
-      <TransactionDialog
-        header="Book a Transaction"
-        label="Book Transaction"
-        class="btn btn-large"
-        @submit="newTransaction($event, null)"
-      />
     </div>
   </div>
   <div class="flex flex-col mx-auto gap-4 pt-3">
     <div
       class="container flex flex-col mx-auto"
-      v-for="customer in appointmentCustomers"
+      v-for="customer in appointment.customers"
       :key="customer.id"
     >
       <div class="shadow-lg rounded-2xl p-4 bg-white dark:bg-gray-700 w-full">
@@ -39,14 +33,6 @@
             >
           </div>
           <div class="flex items-center">
-            <SingleTransactionPickerDialog
-              v-if="customerSpareTransactions(customer.id).value.length"
-              header="Pick Transaction"
-              label="Pick Transaction"
-              class="btn btn-small"
-              :transactions="customerSpareTransactions(customer.id).value"
-              @submit="pickedTransactionForCustomer($event)"
-            />
             <!-- <BaseConfirm
               v-if="customerTransactions(customer).value.length < 1"
               @confirm="removeCustomer(customer)"
@@ -64,7 +50,7 @@
                 header="Book a Transaction"
                 label="Book Transaction"
                 class="btn btn-small"
-                @submit="newTransaction($event, customer)"
+                @submit="newTransaction($event, customer.id)"
               />
             </div>
           </div>
@@ -117,7 +103,6 @@ import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
 import TransactionsTable from '@/components/transactions/TransactionsTable.vue';
 import TransactionActions from '@/components/transactions/TransactionActions.vue';
 import ItemsTable from '@/components/items/ItemsTable.vue';
-import SingleTransactionPickerDialog from '@/components/transactions/SingleTransactionPickerDialog.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -127,60 +112,39 @@ const appointmentStore = useAppointmentStore();
 
 await appointmentStore.fetch(id);
 if (!appointmentStore.getAppointment) router.replace({ name: 'Appointments' });
-await appointmentStore.fetchCustomers();
-appointmentStore.fetchItems();
-appointmentStore.fetchTransactions();
 appointmentStore.fetchAllCustomersBase();
 
 const appointment = computed<Appointment>(
   () => appointmentStore.getAppointment
 );
-const appointmentCustomers = computed<Customer[]>(
-  () => appointmentStore.getCustomers
-);
 
-const allCustomers = appointmentStore.getCustomerBase;
+const allCustomers = computed<Partial<Customer>[]>(
+  () => appointmentStore.getCustomerBase
+);
 
 const customerTransactions = (customerId: number) =>
-  computed<Transaction[]>(() =>
-    appointmentStore.getTransactions.filter(
-      (t) => t.customer?.id === customerId
-    )
+  computed<Transaction[]>(
+    () =>
+      appointment.value.transactions?.filter(
+        (t) => t.customerId === customerId
+      ) || []
   );
-
-const customerSpareTransactions = (customerId: number) =>
-  computed<Transaction[]>(() =>
-    appointmentStore.getSpareCustomersTransactions.filter(
-      (t) => t.customer?.id === customerId
-    )
-  );
-
-const spareTransaction = computed<Transaction[]>(
-  () => appointmentStore.getSpareCustomersTransactions
-);
 
 const customerItems = (customerId: number) =>
-  computed<Item[]>(() =>
-    appointmentStore.getItems.filter((i) => i.customer?.id === customerId)
+  computed<Item[]>(
+    () =>
+      appointment.value.items?.filter((i) => i.customerId === customerId) || []
   );
 
 const pickedCustomers = async (customers: Customer[]) => {
   await appointmentStore.saveCustomersToAppointment(customers);
 };
 
-const newTransaction = async (
-  transaction: Transaction,
-  customer: Customer | null
-) => {
-  await appointmentStore.saveTransactionToAppointment(transaction, customer);
+const newTransaction = async (transaction: Transaction, customerId: number) => {
+  await appointmentStore.saveTransactionToAppointment(customerId, transaction);
 };
 
 const editAppointment = async (appointment: Appointment) => {
   await appointmentStore.updateAppointment(appointment);
-};
-
-const pickedTransactionForCustomer = async (transaction: Transaction) => {
-  console.log({ transaction });
-  await appointmentStore.assignAppointmentToTransaction(transaction);
 };
 </script>

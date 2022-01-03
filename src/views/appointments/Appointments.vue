@@ -8,6 +8,7 @@
           header="Create new Appointment"
           label="New"
           class="btn btn-medium"
+          @submit="handleCreateAppointment($event)"
         />
       </div>
       <div class="flex justify-between">
@@ -34,9 +35,18 @@ import BaseCardGrid from '@/components/base/BaseCardGrid.vue';
 import { useAppointmentsStore } from '@/store/appointmentsStore';
 import AppointmentDialog from '@/components/appointments/AppointmentDialog.vue';
 import AppointmentCard from '@/components/appointments/AppointmentCard.vue';
+import { Appointment } from '@/services/AppointmentService';
+import router from '@/router';
 
 const appointmentsStore = useAppointmentsStore();
 if (appointmentsStore.shouldLoadState) await appointmentsStore.fetchAll();
 
 const appointments = computed(() => appointmentsStore.getAll);
+
+const handleCreateAppointment = async (appointment: Appointment) => {
+  const savedAppointment: Appointment | void = await appointmentsStore.create(
+    appointment
+  );
+  if (savedAppointment) router.push(`/appointments/${savedAppointment.id}`);
+};
 </script>
