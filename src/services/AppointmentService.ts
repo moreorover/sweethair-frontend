@@ -42,6 +42,14 @@ class AppointmentService extends Service<Appointment> {
       { customers }
     );
   }
+  removeCustomer(
+    appointmentId: number,
+    customer: Customer
+  ): Promise<AxiosResponse<Customer[]>> {
+    return this.apiClient.delete<Customer[]>(
+      `${this.apiEndpoint}/${appointmentId}/customers/${customer.id}`
+    );
+  }
   addTransaction(
     appointmentId: number,
     customerId: number,

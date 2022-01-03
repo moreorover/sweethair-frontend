@@ -33,11 +33,11 @@
             >
           </div>
           <div class="flex items-center">
-            <!-- <BaseConfirm
-              v-if="customerTransactions(customer).value.length < 1"
+            <BaseConfirm
+              v-if="!customerTransactions(customer.id).value.length"
               @confirm="removeCustomer(customer)"
               label="Remove Customer"
-            /> -->
+            />
           </div>
         </div>
         <div class="container flex flex-col mx-auto gap-4 pl-8">
@@ -146,5 +146,9 @@ const newTransaction = async (transaction: Transaction, customerId: number) => {
 
 const editAppointment = async (appointment: Appointment) => {
   await appointmentStore.updateAppointment(appointment);
+};
+
+const removeCustomer = async (customer: Customer) => {
+  await appointmentStore.removeCustomerFromAppointment(customer);
 };
 </script>

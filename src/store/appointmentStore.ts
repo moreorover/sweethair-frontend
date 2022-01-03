@@ -46,6 +46,21 @@ export const useAppointmentStore = defineStore({
         console.log({ error });
       }
     },
+    async removeCustomerFromAppointment(customer: Customer) {
+      try {
+        if (!this.appointment) throw 'appointmentStore appointment is null';
+        const { data } = await AppointmentService.removeCustomer(
+          this.appointment.id,
+          customer
+        );
+        this.appointment.customers = data;
+      } catch (error) {
+        console.log(
+          'Not loaded, something went wrong loading Appointment Customers'
+        );
+        console.log({ error });
+      }
+    },
     async saveTransactionToAppointment(
       customerId: number,
       transaction: Transaction
