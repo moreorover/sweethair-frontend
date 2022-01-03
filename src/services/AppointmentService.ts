@@ -7,9 +7,9 @@ import { AxiosResponse } from 'axios';
 export interface Appointment extends DataEntity {
   scheduledAt: string;
   title: string;
-  customers?: Customer[];
-  transactions?: Transaction[];
-  items?: Item[];
+  customers: Array<Customer>;
+  transactions: Array<Transaction>;
+  items: Array<Item>;
 }
 
 class AppointmentService extends Service<Appointment> {
@@ -42,20 +42,26 @@ class AppointmentService extends Service<Appointment> {
       { customers }
     );
   }
+  removeCustomer(
+    appointmentId: number,
+    customer: Customer
+  ): Promise<AxiosResponse<Customer[]>> {
+    return this.apiClient.delete<Customer[]>(
+      `${this.apiEndpoint}/${appointmentId}/customers/${customer.id}`
+    );
+  }
   addTransaction(
     appointmentId: number,
-    transaction: Transaction,
-    customer: Customer | null
+    customerId: number,
+    transaction: Transaction
   ): Promise<AxiosResponse<Transaction>> {
     return this.apiClient.post<Transaction>(
       `${this.apiEndpoint}/${appointmentId}/transactions`,
-      customer
-        ? {
-            ...transaction,
-            appointment: { id: appointmentId },
-            customer: { id: customer.id },
-          }
-        : { ...transaction, appointment: { id: appointmentId } }
+      {
+        transaction,
+        appointmentId,
+        customerId,
+      }
     );
   }
 }

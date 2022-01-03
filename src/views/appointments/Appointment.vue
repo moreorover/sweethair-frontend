@@ -13,19 +13,12 @@
         @submit="editAppointment($event)"
       />
       <MultipleCustomerPickerDialog
-        v-if="customersBase?.customers"
-        :selection="appointment.customers || []"
-        :customers="customersBase.customers"
+        :selection="appointment.customers"
+        :customers="allCustomers"
         header="Pick customers"
         label="Pick Customers"
         class="btn btn-small"
         @submit="pickedCustomers($event)"
-      />
-      <TransactionDialog
-        header="Book a Transaction"
-        label="Book Transaction"
-        class="btn btn-large"
-        @submit="newTransaction($event, null)"
       />
     </div>
   </div>
@@ -44,7 +37,8 @@
           </div>
           <div class="flex items-center">
             <BaseConfirm
-              v-if="showCustomerRemoveButton(customer).value"
+              v-if="!customerTransactions(customer.id).value.length"
+
               @confirm="removeCustomer(customer)"
               label="Remove Customer"
             />
@@ -60,7 +54,7 @@
                 header="Book a Transaction"
                 label="Book Transaction"
                 class="btn btn-small"
-                @submit="newTransaction($event, customer)"
+                @submit="newTransaction($event, customer.id)"
               />
             </div>
           </div>
@@ -112,16 +106,6 @@ import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
 import TransactionsTable from '@/components/transactions/TransactionsTable.vue';
 import TransactionActions from '@/components/transactions/TransactionActions.vue';
 import ItemsTable from '@/components/items/ItemsTable.vue';
-import SingleTransactionPickerDialog from '@/components/transactions/SingleTransactionPickerDialog.vue';
-import {
-  useAddCustomerToAppointmentMutation,
-  useAppointmentQuery,
-  useCreateTransactionMutation,
-  useCustomersBaseQuery,
-  useRemoveCustomerToAppointmentMutation,
-  useUpdateAppointmentMutation,
-  useUpdateTransactionMutation,
-} from '@/generated/graphql';
 
 const route = useRoute();
 const router = useRouter();
@@ -131,63 +115,30 @@ const { data, error } = await useAppointmentQuery({
   variables: { appointmentId: id },
 });
 
-if (data.value?.appointment == null) router.replace({ name: 'Appointments' });
+await appointmentStore.fetch(id);
+if (!appointmentStore.getAppointment) router.replace({ name: 'Appointments' });
+appointmentStore.fetchAllCustomersBase();
 
 const appointment = computed<Appointment>(
-  () => data.value?.appointment as Appointment
+  () => appointmentStore.getAppointment
 );
 
-const updateAppointment = useUpdateAppointmentMutation();
-const addCustomerToAppointment = useAddCustomerToAppointmentMutation();
-const createTransaction = useCreateTransactionMutation();
-const updateTransaction = useUpdateTransactionMutation();
-const removeCustomerFromAppointment = useRemoveCustomerToAppointmentMutation();
-
-const scheduledAtFormatted = () =>
-  computed(() =>
-    moment(appointment.value?.scheduledAt).format('DD MMM YYYY HH:mm')
-  );
-
-const { data: customersBase, error: customersBaseError } =
-  useCustomersBaseQuery();
-
-// const appointment = computed<Appointment>(
-//   () => appointmentStore.getAppointment
-// );
-
-// const allCustomers = appointmentStore.getCustomerBase;
-
-// const customerTransactions = (customerId: number) =>
-//   computed<Transaction[]>(() =>
-//     appointmentStore.getTransactions.filter(
-//       (t) => t.customer?.id === customerId
-//     )
-//   );
-
-const showCustomerRemoveButton = (customer: Customer) =>
-  computed<Boolean>(
-    () =>
-      !customer.transactions?.map((t) => t.appointmentId).includes(id) || false
-  );
+const allCustomers = computed<Partial<Customer>[]>(
+  () => appointmentStore.getCustomerBase
+);
 
 const customerTransactions = (customerId: number) =>
-  computed<Transaction[]>(() =>
-    appointment.value.transactions?.length
-      ? appointment.value.transactions.filter(
-          (t) => t.customerId === customerId
-        )
-      : []
+  computed<Transaction[]>(
+    () =>
+      appointment.value.transactions?.filter(
+        (t) => t.customerId === customerId
+      ) || []
   );
 
-// const spareTransaction = computed<Transaction[]>(
-//   () => appointmentStore.getSpareCustomersTransactions
-// );
-
 const customerItems = (customerId: number) =>
-  computed<Item[]>(() =>
-    appointment.value.items?.length
-      ? appointment.value.items.filter((t) => t.customerId === customerId)
-      : []
+  computed<Item[]>(
+    () =>
+      appointment.value.items?.filter((i) => i.customerId === customerId) || []
   );
 
 const removeCustomer = async (customer: Customer) => {
@@ -208,18 +159,8 @@ const pickedCustomers = async (customers: Customer[]) => {
   );
 };
 
-const newTransaction = async (
-  transaction: Transaction,
-  customer: Customer | null
-) => {
-  await createTransaction.executeMutation({
-    transaction: {
-      ...transaction,
-      invoiceId: null,
-      appointmentId: id,
-      customerId: customer ? customer.id : null,
-    },
-  });
+const newTransaction = async (transaction: Transaction, customerId: number) => {
+  await appointmentStore.saveTransactionToAppointment(customerId, transaction);
 };
 
 const editAppointment = async (appointment: Appointment) => {
@@ -228,18 +169,7 @@ const editAppointment = async (appointment: Appointment) => {
   });
 };
 
-const pickedTransactionForCustomer = async (transaction: Transaction) => {
-  await updateTransaction.executeMutation({
-    transaction: {
-      id: transaction.id,
-      total: transaction.total,
-      isPaid: transaction.isPaid,
-      scheduledAt: transaction.scheduledAt,
-      type: transaction.type,
-      customerId: transaction.customerId,
-      invoiceId: transaction.invoiceId,
-      appointmentId: id,
-    },
-  });
+const removeCustomer = async (customer: Customer) => {
+  await appointmentStore.removeCustomerFromAppointment(customer);
 };
 </script>
