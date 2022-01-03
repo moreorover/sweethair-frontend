@@ -1,0 +1,8 @@
+query Items {
+  items {
+    id
+    title
+    total
+    customerId
+  }
+}

@@ -468,6 +468,11 @@ export type InvoiceQueryVariables = Exact<{
 
 export type InvoiceQuery = { __typename?: 'Query', invoice?: { __typename?: 'Invoice', id: number, total: number, isReceived: boolean, isPaid: boolean, scheduledAt: any, createdOn: any, modifiedOn: any, transactions: Array<{ __typename?: 'Transaction', id: number, total: number, isPaid: boolean, scheduledAt: any, type: string }>, items: Array<{ __typename?: 'Item', id: number, title: string, total: number }> } | null | undefined };
 
+export type ItemsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ItemsQuery = { __typename?: 'Query', items: Array<{ __typename?: 'Item', id: number, title: string, total: number, customerId?: number | null | undefined }> };
+
 export type LogOutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -843,6 +848,20 @@ export const InvoiceDocument = gql`
 
 export function useInvoiceQuery(options: Omit<Urql.UseQueryArgs<never, InvoiceQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<InvoiceQuery>({ query: InvoiceDocument, ...options });
+};
+export const ItemsDocument = gql`
+    query Items {
+  items {
+    id
+    title
+    total
+    customerId
+  }
+}
+    `;
+
+export function useItemsQuery(options: Omit<Urql.UseQueryArgs<never, ItemsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<ItemsQuery>({ query: ItemsDocument, ...options });
 };
 export const LogOutDocument = gql`
     mutation LogOut {
