@@ -47,6 +47,7 @@ import { computed, ref } from 'vue';
 import CustomerDialog from '@/components/customers/CustomerDialog.vue';
 import CustomerCard from '@/components/customers/CustomerCard.vue';
 import BaseCardGrid from '@/components/base/BaseCardGrid.vue';
+import { Customer } from '@/services/CustomerService';
 
 const customersStore = useCustomersStore();
 
