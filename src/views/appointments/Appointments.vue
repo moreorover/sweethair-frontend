@@ -13,24 +13,26 @@
       </div>
       <div class="flex justify-between">
         <div class="text-center lg:text-left text-gray-700 font-bold py-2">
-          Showing {{ appointmentsFiltered.length }} out of
-          {{ appointments.length }} records.
+          Showing {{ appointments.length }} out of
+          {{ appointmentsStore.getAll.length }} records.
         </div>
       </div>
 
-      <AppointmentsTable :appointments="appointmentsFiltered" />
+      <AppointmentsTable :appointments="appointments" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useAppointmentsStore } from '@/store/appointmentsStore';
 import AppointmentDialog from '@/components/appointments/AppointmentDialog.vue';
-import AppointmentCard from '@/components/appointments/AppointmentCard.vue';
 import { Appointment } from '@/services/AppointmentService';
 import router from '@/router';
+import AppointmentsTable from '@/components/appointments/AppointmentsTable.vue';
 
-const { data, error } = await useAppointmentsQuery();
+const appointmentsStore = useAppointmentsStore();
+if (appointmentsStore.shouldLoadState) await appointmentsStore.fetchAll();
 
 const appointments = computed(() => appointmentsStore.getAll);
 

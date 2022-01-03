@@ -1,5 +1,0 @@
-mutation CreateInvoice($invoice: InvoiceCreate!) {
-  createInvoice(invoice: $invoice) {
-    id
-  }
-}

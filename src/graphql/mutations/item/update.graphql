@@ -1,5 +1,0 @@
-mutation UpdateItem($item: ItemUpdate!) {
-  updateItem(item: $item) {
-    id
-  }
-}

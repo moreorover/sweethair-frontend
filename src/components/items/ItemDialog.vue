@@ -32,6 +32,9 @@ const props = withDefaults(defineProps<Props>(), {
       id: -1,
       total: 0.0,
       title: '',
+      invoiceId: null,
+      appointmentId: null,
+      customerId: null,
     };
   },
   customer: undefined,

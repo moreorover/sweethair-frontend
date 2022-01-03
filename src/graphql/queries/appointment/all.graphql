@@ -1,7 +1,0 @@
-query Appointments {
-  appointments {
-    id
-    scheduledAt
-    title
-  }
-}

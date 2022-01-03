@@ -29,7 +29,6 @@ import { Customer } from '@/services/CustomerService';
 import { Transaction } from '@/services/TransactionService';
 import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
 import { useTransactionsStore } from '@/store/transactionsStore';
-import { useDeleteTransactionMutation } from '@/generated/graphql';
 
 type Props = {
   transaction: Transaction;
@@ -41,8 +40,6 @@ const props = defineProps<Props>();
 
 const transactionsStore = useTransactionsStore();
 
-const removeTransactionMutation = useDeleteTransactionMutation();
-
 const changePaidStatus = async () => {
   await transactionsStore.update({
     ...props.transaction,
@@ -51,8 +48,6 @@ const changePaidStatus = async () => {
 };
 
 const deleteTransaction = async () => {
-  await removeTransactionMutation.executeMutation({
-    transactionId: props.transaction.id,
-  });
+  await transactionsStore.delete(props.transaction);
 };
 </script>

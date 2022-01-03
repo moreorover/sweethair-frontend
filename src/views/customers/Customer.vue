@@ -38,7 +38,7 @@
   <h3 class="text-2xl font-medium text-gray-700">Customer appointments</h3>
   <BaseCardGrid>
     <AppointmentCard
-      v-for="appointment in customer.appointments"
+      v-for="appointment in customerAppointments"
       :key="appointment.id"
       :appointment="appointment"
     />
@@ -46,7 +46,7 @@
   <h3 class="text-2xl font-medium text-gray-700">Customer transactions</h3>
   <BaseCardGrid>
     <TransactionCard
-      v-for="transaction in customer.transactions"
+      v-for="transaction in customerTransactions"
       :key="transaction.id"
       :transaction="transaction"
     />
@@ -54,34 +54,41 @@
 </template>
 <script setup lang="ts">
 import { Customer } from '@/services/CustomerService';
+import { useCustomersStore } from '@/store/customersStore';
 import { computed } from 'vue';
 import CustomerDialog from '@/components/customers/CustomerDialog.vue';
 import BaseCardGrid from '@/components/base/BaseCardGrid.vue';
 import AppointmentCard from '@/components/appointments/AppointmentCard.vue';
+import { useAppointmentsStore } from '@/store/appointmentsStore';
+import { useTransactionsStore } from '@/store/transactionsStore';
 import TransactionCard from '@/components/transactions/TransactionCard.vue';
 import { useRoute, useRouter } from 'vue-router';
-import {
-  useCustomerQuery,
-  useUpdateCustomerMutation,
-} from '@/generated/graphql';
 
 const route = useRoute();
 const router = useRouter();
 const id: number = +route.params.id;
 
-const updateCustomerMutation = useUpdateCustomerMutation();
+const customersStore = useCustomersStore();
+const appointmentsStore = useAppointmentsStore();
+const transactionsStore = useTransactionsStore();
 
-const { data, error } = await useCustomerQuery({
-  variables: { customerId: id },
-});
+if (customersStore.shouldLoadState) await customersStore.fetchAll();
+if (!customersStore.getIds.includes(id)) router.replace({ name: 'Customers' });
 
-if (data.value?.customer == null) router.replace({ name: 'Customers' });
+if (appointmentsStore.shouldLoadState) await appointmentsStore.fetchAll();
 
-const customer = computed<Customer>(() => data.value?.customer as Customer);
+if (transactionsStore.shouldLoadState) await transactionsStore.fetchAll();
 
-const handleCustomerUpdate = async (customer: Customer) => {
-  await updateCustomerMutation.executeMutation({
-    customer,
-  });
+const customer = computed<Customer>(() => customersStore.getCustomerById(id));
+
+const customerAppointments = appointmentsStore.getAppointmentsByCustomer(
+  customer.value
+);
+
+const customerTransactions =
+  transactionsStore.getTransactionsByCustomerAndAppointmentNull(customer.value);
+
+const handleCustomerUpdate = (customer: Customer) => {
+  console.log({ customer });
 };
 </script>

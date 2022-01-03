@@ -1,8 +1,7 @@
 <template>
   <div class="flex justify-between">
     <h3 class="text-3xl font-medium text-gray-700">
-      {{ appointment?.title }} -
-      {{ scheduledAtFormatted().value }}
+      {{ appointment?.title }}
     </h3>
     <div class="flex gap-1">
       <AppointmentDialog
@@ -38,7 +37,6 @@
           <div class="flex items-center">
             <BaseConfirm
               v-if="!customerTransactions(customer.id).value.length"
-
               @confirm="removeCustomer(customer)"
               label="Remove Customer"
             />
@@ -94,13 +92,13 @@
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
-import moment from 'moment';
 import AppointmentDialog from '@/components/appointments/AppointmentDialog.vue';
 import MultipleCustomerPickerDialog from '@/components/customers/MultipleCustomerPickerDialog.vue';
 import { Customer } from '@/services/CustomerService';
-import { Transaction, TransactionType } from '@/services/TransactionService';
+import { Transaction } from '@/services/TransactionService';
 import { useRoute, useRouter } from 'vue-router';
 import { Item } from '@/services/ItemService';
+import { useAppointmentStore } from '@/store/appointmentStore';
 import { Appointment } from '@/services/AppointmentService';
 import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
 import TransactionsTable from '@/components/transactions/TransactionsTable.vue';
@@ -111,9 +109,7 @@ const route = useRoute();
 const router = useRouter();
 const id: number = +route.params.id;
 
-const { data, error } = await useAppointmentQuery({
-  variables: { appointmentId: id },
-});
+const appointmentStore = useAppointmentStore();
 
 await appointmentStore.fetch(id);
 if (!appointmentStore.getAppointment) router.replace({ name: 'Appointments' });
@@ -141,22 +137,8 @@ const customerItems = (customerId: number) =>
       appointment.value.items?.filter((i) => i.customerId === customerId) || []
   );
 
-const removeCustomer = async (customer: Customer) => {
-  await removeCustomerFromAppointment.executeMutation({
-    appointmentId: id,
-    customerId: customer.id,
-  });
-};
-
 const pickedCustomers = async (customers: Customer[]) => {
-  await Promise.all(
-    customers.map((c) =>
-      addCustomerToAppointment.executeMutation({
-        appointmentId: id,
-        customerId: c.id,
-      })
-    )
-  );
+  await appointmentStore.saveCustomersToAppointment(customers);
 };
 
 const newTransaction = async (transaction: Transaction, customerId: number) => {
@@ -164,9 +146,7 @@ const newTransaction = async (transaction: Transaction, customerId: number) => {
 };
 
 const editAppointment = async (appointment: Appointment) => {
-  await updateAppointment.executeMutation({
-    appointment,
-  });
+  await appointmentStore.updateAppointment(appointment);
 };
 
 const removeCustomer = async (customer: Customer) => {

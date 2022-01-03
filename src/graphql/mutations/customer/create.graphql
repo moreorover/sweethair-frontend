@@ -1,5 +1,0 @@
-mutation CreateCustomer($customer: CustomerCreate!) {
-  createCustomer(customer: $customer) {
-    id
-  }
-}
