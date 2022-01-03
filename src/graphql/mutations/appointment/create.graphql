@@ -1,7 +1,0 @@
-mutation CreateAppointment($appointment: AppointmentCreate!) {
-  createAppointment(appointment: $appointment) {
-    id
-    scheduledAt
-    title
-  }
-}

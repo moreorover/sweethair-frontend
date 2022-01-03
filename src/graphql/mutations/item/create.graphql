@@ -1,5 +1,0 @@
-mutation CreateItem($item: ItemCreate!) {
-  createItem(item: $item) {
-    id
-  }
-}

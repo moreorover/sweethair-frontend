@@ -1,5 +1,0 @@
-mutation UpdateInvoice($invoice: InvoiceUpdate!) {
-  updateInvoice(invoice: $invoice) {
-    id
-  }
-}
