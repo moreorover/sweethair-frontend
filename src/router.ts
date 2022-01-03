@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
-import { useLoggedInUserStore } from '@/store/loggedInUser';
-
 import Dashboard from './views/Dashboard.vue';
 import Forms from './views/Forms.vue';
 import Tables from './views/Tables.vue';
@@ -111,22 +109,23 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  const store = useLoggedInUserStore();
+  next();
+  // const store = useLoggedInUserStore();
 
-  await store.me();
+  // await store.me();
 
-  if (!to.meta.requiresAuth) {
-    next();
-    return;
-  }
+  // if (!to.meta.requiresAuth) {
+  //   next();
+  //   return;
+  // }
 
-  if (to.meta.requiresAuth && store.getIsLoggedIn) {
-    return next();
-  } else {
-    return next({
-      path: '/',
-    });
-  }
+  // if (to.meta.requiresAuth && store.getIsLoggedIn) {
+  //   return next();
+  // } else {
+  //   return next({
+  //     path: '/',
+  //   });
+  // }
 });
 
 export default router;

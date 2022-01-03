@@ -4,7 +4,7 @@
     :header="props.header"
     :show-footer="true"
     v-model:visible="showModal"
-    @submit="emit('confirm')"
+    @submit="submit"
     @toggle-modal="toggleModal()"
     @cancel="toggleModal()"
   >
@@ -27,4 +27,9 @@ type Props = {
 const props = defineProps<Props>();
 
 const { showModal, toggleModal } = useModal();
+
+const submit = () => {
+  emit('confirm');
+  toggleModal();
+};
 </script>

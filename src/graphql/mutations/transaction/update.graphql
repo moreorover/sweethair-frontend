@@ -1,0 +1,10 @@
+mutation UpdateTransaction($transaction: TransactionUpdate!) {
+  updateTransaction(transaction: $transaction) {
+    id
+    total
+    isPaid
+    scheduledAt
+    type
+    appointmentId
+  }
+}

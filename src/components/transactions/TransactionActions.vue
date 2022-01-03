@@ -21,15 +21,6 @@
     @confirm="changePaidStatus"
     class="text-link px-1"
   />
-
-  <SingleCustomerPickerDialog
-    v-if="!props.transaction.customer && !props.transaction.invoice"
-    header="Pick Customer"
-    label="Pick Customer"
-    :customers="props.appointment?.customers || []"
-    class="text-link px-1"
-    @submit="customerSelected($event)"
-  />
 </template>
 
 <script setup lang="ts">
@@ -38,7 +29,7 @@ import { Customer } from '@/services/CustomerService';
 import { Transaction } from '@/services/TransactionService';
 import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
 import { useTransactionsStore } from '@/store/transactionsStore';
-import SingleCustomerPickerDialog from '../customers/SingleCustomerPickerDialog.vue';
+import { useDeleteTransactionMutation } from '@/generated/graphql';
 
 type Props = {
   transaction: Transaction;
@@ -50,6 +41,8 @@ const props = defineProps<Props>();
 
 const transactionsStore = useTransactionsStore();
 
+const removeTransactionMutation = useDeleteTransactionMutation();
+
 const changePaidStatus = async () => {
   await transactionsStore.update({
     ...props.transaction,
@@ -58,10 +51,8 @@ const changePaidStatus = async () => {
 };
 
 const deleteTransaction = async () => {
-  await transactionsStore.delete(props.transaction);
-};
-
-const customerSelected = async (customer: Customer) => {
-  await transactionsStore.update({ ...props.transaction, customer });
+  await removeTransactionMutation.executeMutation({
+    transactionId: props.transaction.id,
+  });
 };
 </script>

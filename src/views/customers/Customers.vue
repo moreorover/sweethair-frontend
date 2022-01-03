@@ -10,6 +10,7 @@
           header="Create new Customer"
           label="New"
           class="btn btn-medium"
+          @submit="handleCreateCustomer($event)"
         />
 
         <div class="relative block mt-2 sm:mt-0">
@@ -25,8 +26,7 @@
         </div>
       </div>
       <div class="text-center lg:text-left text-gray-700 font-bold py-2">
-        Showing {{ customers.length }} out of
-        {{ customersStore.getAll.length }} records.
+        Showing {{ customers.length }} out of {{ allCustomersCount }} records.
       </div>
       <BaseCardGrid>
         <CustomerCard
@@ -41,32 +41,59 @@
 </template>
 
 <script setup lang="ts">
-import { useCustomersStore } from '@/store/customersStore';
 import { computed, ref } from 'vue';
 import CustomerDialog from '@/components/customers/CustomerDialog.vue';
 import CustomerCard from '@/components/customers/CustomerCard.vue';
 import BaseCardGrid from '@/components/base/BaseCardGrid.vue';
+import {
+  useCreateCustomerMutation,
+  useCustomersBaseQuery,
+} from '@/generated/graphql';
+import { Customer } from '@/services/CustomerService';
+import router from '@/router';
 
-const customersStore = useCustomersStore();
+const { data, error } = await useCustomersBaseQuery();
 
-if (customersStore.shouldLoadState) await customersStore.fetchAll();
+const allCustomersCount = computed(() => data.value?.customers.length || 0);
+const createCustomerMutation = useCreateCustomerMutation();
 
-const customers = computed(() =>
-  customersStore.getAll.filter(
-    (c) =>
-      c.fullName
-        .toLocaleLowerCase()
-        .includes(search.value.toLocaleLowerCase()) ||
-      c.location
-        .toLocaleLowerCase()
-        .includes(search.value.toLocaleLowerCase()) ||
-      c.about.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
-      c.email?.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()) ||
-      c.instagram
-        ?.toLocaleLowerCase()
-        .includes(search.value.toLocaleLowerCase())
-  )
+const customers = computed(
+  () =>
+    data.value?.customers.filter(
+      (c) =>
+        c.fullName
+          .toLocaleLowerCase()
+          .includes(search.value.toLocaleLowerCase()) ||
+        c.location
+          .toLocaleLowerCase()
+          .includes(search.value.toLocaleLowerCase()) ||
+        c.about
+          .toLocaleLowerCase()
+          .includes(search.value.toLocaleLowerCase()) ||
+        c.email
+          ?.toLocaleLowerCase()
+          .includes(search.value.toLocaleLowerCase()) ||
+        c.instagram
+          ?.toLocaleLowerCase()
+          .includes(search.value.toLocaleLowerCase())
+    ) || []
 );
 
 const search = ref('');
+
+const handleCreateCustomer = async (customer: Customer) => {
+  await createCustomerMutation
+    .executeMutation({
+      customer: {
+        fullName: customer.fullName,
+        location: customer.location,
+        about: customer.about,
+        email: customer.email,
+        instagram: customer.instagram,
+      },
+    })
+    .then((result) => {
+      router.push(`/customers/${result.data?.createCustomer.id}`);
+    });
+};
 </script>

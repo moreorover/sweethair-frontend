@@ -1,6 +1,9 @@
 <template>
   <div class="flex justify-between">
-    <h3 class="text-3xl font-medium text-gray-700">{{ appointment.title }}</h3>
+    <h3 class="text-3xl font-medium text-gray-700">
+      {{ appointment?.title }} -
+      {{ scheduledAtFormatted().value }}
+    </h3>
     <div class="flex gap-1">
       <AppointmentDialog
         :appointment="appointment"
@@ -29,12 +32,13 @@
         <div class="flex items-center justify-between mb-6">
           <div class="flex items-center">
             <span class="font-bold text-md text-black ml-2"
-              >{{ customer.fullName }} {{ customer.id }}</span
+              >{{ customer.id }} | {{ customer.fullName }}</span
             >
           </div>
           <div class="flex items-center">
             <BaseConfirm
               v-if="!customerTransactions(customer.id).value.length"
+
               @confirm="removeCustomer(customer)"
               label="Remove Customer"
             />
@@ -66,7 +70,6 @@
             </template>
           </TransactionsTable>
         </div>
-
         <div class="container flex flex-col mx-auto gap-4 pl-8">
           <div class="flex text-center justify-between">
             <div class="flex items-center">
@@ -91,13 +94,13 @@
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
+import moment from 'moment';
 import AppointmentDialog from '@/components/appointments/AppointmentDialog.vue';
 import MultipleCustomerPickerDialog from '@/components/customers/MultipleCustomerPickerDialog.vue';
 import { Customer } from '@/services/CustomerService';
-import { Transaction } from '@/services/TransactionService';
+import { Transaction, TransactionType } from '@/services/TransactionService';
 import { useRoute, useRouter } from 'vue-router';
 import { Item } from '@/services/ItemService';
-import { useAppointmentStore } from '@/store/appointmentStore';
 import { Appointment } from '@/services/AppointmentService';
 import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
 import TransactionsTable from '@/components/transactions/TransactionsTable.vue';
@@ -108,7 +111,9 @@ const route = useRoute();
 const router = useRouter();
 const id: number = +route.params.id;
 
-const appointmentStore = useAppointmentStore();
+const { data, error } = await useAppointmentQuery({
+  variables: { appointmentId: id },
+});
 
 await appointmentStore.fetch(id);
 if (!appointmentStore.getAppointment) router.replace({ name: 'Appointments' });
@@ -136,8 +141,22 @@ const customerItems = (customerId: number) =>
       appointment.value.items?.filter((i) => i.customerId === customerId) || []
   );
 
+const removeCustomer = async (customer: Customer) => {
+  await removeCustomerFromAppointment.executeMutation({
+    appointmentId: id,
+    customerId: customer.id,
+  });
+};
+
 const pickedCustomers = async (customers: Customer[]) => {
-  await appointmentStore.saveCustomersToAppointment(customers);
+  await Promise.all(
+    customers.map((c) =>
+      addCustomerToAppointment.executeMutation({
+        appointmentId: id,
+        customerId: c.id,
+      })
+    )
+  );
 };
 
 const newTransaction = async (transaction: Transaction, customerId: number) => {
@@ -145,7 +164,9 @@ const newTransaction = async (transaction: Transaction, customerId: number) => {
 };
 
 const editAppointment = async (appointment: Appointment) => {
-  await appointmentStore.updateAppointment(appointment);
+  await updateAppointment.executeMutation({
+    appointment,
+  });
 };
 
 const removeCustomer = async (customer: Customer) => {

@@ -1,0 +1,35 @@
+query Appointment($appointmentId: Int!) {
+  appointment(appointmentId: $appointmentId) {
+    id
+    title
+    scheduledAt
+    customers {
+      fullName
+      id
+      transactions {
+        id
+        appointmentId
+        total
+        isPaid
+        scheduledAt
+        customerId
+        invoiceId
+        type
+      }
+    }
+    transactions {
+      id
+      total
+      isPaid
+      scheduledAt
+      customerId
+      type
+    }
+    items {
+      id
+      title
+      total
+      customerId
+    }
+  }
+}

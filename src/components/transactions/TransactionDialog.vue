@@ -14,12 +14,9 @@ import BaseModal from '@/components/base/BaseModal.vue';
 import useModal from '@/hooks/useModal';
 import BaseButton from '@/components/base/BaseButton.vue';
 import TransactionForm from './TransactionForm.vue';
-import { Transaction } from '@/services/TransactionService';
-import { Customer } from '@/services/CustomerService';
-import { Appointment } from '@/services/AppointmentService';
+import { Transaction, TransactionType } from '@/services/TransactionService';
 import moment from 'moment';
 import { useAttrs } from 'vue';
-import { Invoice } from '@/services/InvoiceService';
 
 const emit = defineEmits(['submit']);
 
@@ -37,6 +34,7 @@ const props = withDefaults(defineProps<Props>(), {
       total: 0.0,
       scheduledAt: moment().toISOString(),
       isPaid: false,
+      type: TransactionType.In,
     };
   },
 });

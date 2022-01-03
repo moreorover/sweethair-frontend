@@ -1,0 +1,7 @@
+mutation UpdateAppointment($appointment: AppointmentUpdate!) {
+  updateAppointment(appointment: $appointment) {
+    id
+    title
+    scheduledAt
+  }
+}

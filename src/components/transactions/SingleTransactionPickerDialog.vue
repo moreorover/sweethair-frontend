@@ -14,6 +14,7 @@
           v-if="selection"
           class="flex flex-col border-gray-400 border-solid border-2 px-4"
         >
+          <div>ID: {{ selection?.id }}</div>
           <div>Scheduled At: {{ selection?.scheduledAt }}</div>
           <div>Total: {{ selection?.total }}</div>
           <div>Is paid: {{ selection?.isPaid }}</div>
@@ -32,6 +33,7 @@
           class="flex flex-col border-gray-400 border-solid border-2 px-4 my-2"
           v-for="transaction in transactions"
         >
+          <div>ID: {{ transaction.id }}</div>
           <div>Scheduled At: {{ transaction.scheduledAt }}</div>
           <div>Total: {{ transaction.total }}</div>
           <div>Is paid: {{ transaction.isPaid }}</div>

@@ -1,0 +1,12 @@
+mutation CreateTransaction($transaction: TransactionCreate!) {
+  createTransaction(transaction: $transaction) {
+    id
+    total
+    isPaid
+    scheduledAt
+    type
+    customerId
+    appointmentId
+    invoiceId
+  }
+}

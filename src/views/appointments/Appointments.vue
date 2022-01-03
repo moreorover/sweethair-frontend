@@ -13,33 +13,24 @@
       </div>
       <div class="flex justify-between">
         <div class="text-center lg:text-left text-gray-700 font-bold py-2">
-          Showing {{ appointments.length }} out of
-          {{ appointmentsStore.getAll.length }} records.
+          Showing {{ appointmentsFiltered.length }} out of
+          {{ appointments.length }} records.
         </div>
       </div>
 
-      <BaseCardGrid>
-        <AppointmentCard
-          v-for="appointment in appointments"
-          :key="appointment.id"
-          :appointment="appointment"
-        />
-      </BaseCardGrid>
+      <AppointmentsTable :appointments="appointmentsFiltered" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import BaseCardGrid from '@/components/base/BaseCardGrid.vue';
-import { useAppointmentsStore } from '@/store/appointmentsStore';
 import AppointmentDialog from '@/components/appointments/AppointmentDialog.vue';
 import AppointmentCard from '@/components/appointments/AppointmentCard.vue';
 import { Appointment } from '@/services/AppointmentService';
 import router from '@/router';
 
-const appointmentsStore = useAppointmentsStore();
-if (appointmentsStore.shouldLoadState) await appointmentsStore.fetchAll();
+const { data, error } = await useAppointmentsQuery();
 
 const appointments = computed(() => appointmentsStore.getAll);
 
