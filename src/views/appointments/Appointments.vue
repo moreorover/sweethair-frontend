@@ -15,7 +15,6 @@
           Showing {{ appointments.length }} out of
           {{ appointmentsStore.getAll.length }} records.
         </div>
-        <WeekToolBar />
       </div>
 
       <BaseCardGrid>
@@ -35,18 +34,9 @@ import BaseCardGrid from '@/components/base/BaseCardGrid.vue';
 import { useAppointmentsStore } from '@/store/appointmentsStore';
 import AppointmentDialog from '@/components/appointments/AppointmentDialog.vue';
 import AppointmentCard from '@/components/appointments/AppointmentCard.vue';
-import moment from 'moment';
-import { useWeek } from '@/hooks/useWeek';
-import WeekToolBar from '@/components/WeekToolBar.vue';
-
-const { weekNumber } = useWeek();
 
 const appointmentsStore = useAppointmentsStore();
 if (appointmentsStore.shouldLoadState) await appointmentsStore.fetchAll();
 
-const appointments = computed(() =>
-  appointmentsStore.getAll.filter(
-    (a) => moment(a.scheduledAt).week() == weekNumber.value
-  )
-);
+const appointments = computed(() => appointmentsStore.getAll);
 </script>
