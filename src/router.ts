@@ -15,8 +15,6 @@ import ShowCustomers from './views/customers/ShowCustomers.vue';
 import ShowCustomer from './views/customers/ShowCustomer.vue';
 import ShowAppointments from './views/appointments/ShowAppointments.vue';
 import ShowAppointment from './views/appointments/ShowAppointment.vue';
-import ShowTransactions from './views/transactions/ShowTransactions.vue';
-import ShowTransaction from './views/transactions/ShowTransaction.vue';
 import ShowInvoice from './views/invoices/ShowInvoice.vue';
 import ShowInvoices from './views/invoices/ShowInvoices.vue';
 
@@ -91,18 +89,6 @@ const routes: RouteRecordRaw[] = [
     path: '/appointments/:id',
     name: 'Appointment',
     component: ShowAppointment,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/transactions',
-    name: 'Transactions',
-    component: ShowTransactions,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/transactions/:id',
-    name: 'Transaction',
-    component: ShowTransaction,
     meta: { requiresAuth: true },
   },
   {
