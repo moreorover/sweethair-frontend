@@ -6,8 +6,7 @@
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview",
     "format": "prettier .  --write",
-    "test": "jest src",
-    "gengraph": "graphql-codegen --config codegen.yml"
+    "test": "jest src"
   },
   "dependencies": {
     "@tailwindcss/aspect-ratio": "^0.2.0",
