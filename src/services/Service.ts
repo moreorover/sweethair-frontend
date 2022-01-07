@@ -26,7 +26,7 @@ export default abstract class Service<T extends DataEntity> {
     return this.apiClient.post<T>(`${this.apiEndpoint}`, data);
   }
 
-  update(data: T): Promise<AxiosResponse<T>> {
+  update(data: Partial<T>): Promise<AxiosResponse<T>> {
     return this.apiClient.patch<T>(`${this.apiEndpoint}/${data.id}`, data);
   }
 
