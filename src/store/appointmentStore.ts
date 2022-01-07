@@ -1,3 +1,4 @@
+import ItemService, { Item } from '@/services/ItemService';
 import { Transaction } from '@/services/TransactionService';
 import AppointmentService, { Appointment } from '@/services/AppointmentService';
 import { defineStore } from 'pinia';
@@ -8,6 +9,7 @@ export const useAppointmentStore = defineStore({
   state: () => ({
     appointment: {} as Appointment,
     customersBase: [] as Partial<Customer>[],
+    availableItems: [] as Partial<Item>[],
   }),
   getters: {
     getAppointment(state): Appointment {
@@ -15,6 +17,9 @@ export const useAppointmentStore = defineStore({
     },
     getCustomerBase(state): Partial<Customer>[] {
       return state.customersBase;
+    },
+    getAvailableItems(state): Partial<Item>[] {
+      return state.availableItems;
     },
   },
   actions: {
@@ -89,12 +94,38 @@ export const useAppointmentStore = defineStore({
         console.log({ error });
       }
     },
+    async fetchAllAvailableItems() {
+      try {
+        const { data } = await ItemService.fetchAvailableItems();
+        this.availableItems = data;
+      } catch (error) {
+        console.log('Not loaded, something went wrong loading all Items');
+        console.log({ error });
+      }
+    },
     async updateAppointment(appointment: Appointment) {
       try {
         const { data } = await AppointmentService.update(appointment);
         this.appointment = data;
       } catch (error) {
         console.log('Not loaded, something went wrong updating Appointment');
+        console.log({ error });
+      }
+    },
+    async updateItems(items: Item[], customer: Customer) {
+      try {
+        Promise.all(
+          items.map((i) =>
+            ItemService.update({
+              id: i.id,
+              appointmentId: this.appointment.id,
+              customerId: customer.id,
+            })
+          )
+        );
+        this.fetch(this.appointment.id);
+      } catch (error) {
+        console.log('Not loaded, something went wrong updating Items');
         console.log({ error });
       }
     },

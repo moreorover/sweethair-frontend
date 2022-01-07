@@ -74,14 +74,14 @@
               <span class="font-semibold text-md text-black">Items</span>
             </div>
             <div class="flex items-center">
-              <!-- <MultipleItemPickerDialog
+              <MultipleItemPickerDialog
                 :selection="[]"
                 :items="allItems"
                 header="Pick Items"
                 label="Pick Items"
                 class="btn btn-small"
                 @submit="pickedItems($event, customer)"
-              /> -->
+              />
             </div>
           </div>
           <ItemsTable :items="customerItems(customer.id).value" />
@@ -104,6 +104,7 @@ import TransactionDialog from '@/components/transactions/TransactionDialog.vue';
 import TransactionsTable from '@/components/transactions/TransactionsTable.vue';
 import TransactionActions from '@/components/transactions/TransactionActions.vue';
 import ItemsTable from '@/components/items/ItemsTable.vue';
+import MultipleItemPickerDialog from '@/components/items/MultipleItemPickerDialog.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -114,6 +115,7 @@ const appointmentStore = useAppointmentStore();
 await appointmentStore.fetch(id);
 if (!appointmentStore.getAppointment) router.replace({ name: 'Appointments' });
 appointmentStore.fetchAllCustomersBase();
+appointmentStore.fetchAllAvailableItems();
 
 const appointment = computed<Appointment>(
   () => appointmentStore.getAppointment
@@ -121,6 +123,10 @@ const appointment = computed<Appointment>(
 
 const allCustomers = computed<Partial<Customer>[]>(
   () => appointmentStore.getCustomerBase
+);
+
+const allItems = computed<Partial<Item>[]>(
+  () => appointmentStore.getAvailableItems
 );
 
 const customerTransactions = (customerId: number) =>
@@ -151,5 +157,9 @@ const editAppointment = async (appointment: Appointment) => {
 
 const removeCustomer = async (customer: Customer) => {
   await appointmentStore.removeCustomerFromAppointment(customer);
+};
+
+const pickedItems = async (items: Item[], customer: Customer) => {
+  await appointmentStore.updateItems(items, customer);
 };
 </script>
