@@ -16,6 +16,9 @@ import EmptyLayout from './components/EmptyLayout.vue';
 import BaseComponents from './components/base';
 import PrimeVue from '@/components/primevue';
 
+// import '@formkit/themes/genesis';
+import { plugin, defaultConfig } from '@formkit/vue';
+
 const app = createApp(App);
 
 BaseComponents.register(app);
@@ -26,4 +29,5 @@ app.component('empty-layout', EmptyLayout);
 
 app.use(router);
 app.use(createPinia());
+app.use(plugin, defaultConfig);
 app.mount('#app');

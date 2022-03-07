@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
-import { useLoggedInUserStore } from '@/store/loggedInUser';
-
 import Dashboard from './views/Dashboard.vue';
 import Forms from './views/Forms.vue';
 import Tables from './views/Tables.vue';
@@ -10,13 +8,6 @@ import Login from './views/Login.vue';
 import Modal from './views/Modal.vue';
 import Card from './views/Card.vue';
 import Blank from './views/Blank.vue';
-
-import ShowCustomers from './views/customers/ShowCustomers.vue';
-import ShowCustomer from './views/customers/ShowCustomer.vue';
-import ShowAppointments from './views/appointments/ShowAppointments.vue';
-import ShowAppointment from './views/appointments/ShowAppointment.vue';
-import ShowInvoice from './views/invoices/ShowInvoice.vue';
-import ShowInvoices from './views/invoices/ShowInvoices.vue';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -70,63 +61,62 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/customers',
     name: 'Customers',
-    component: ShowCustomers,
+    component: () => import('./views/customers/ShowCustomers.vue'),
     meta: { requiresAuth: true },
   },
   {
     path: '/customers/:id',
     name: 'Customer',
-    component: ShowCustomer,
+    component: () => import('./views/customers/ShowCustomer.vue'),
     meta: { requiresAuth: true },
   },
   {
     path: '/appointments',
     name: 'Appointments',
-    component: ShowAppointments,
+    component: () => import('./views/appointments/ShowAppointments.vue'),
     meta: { requiresAuth: true },
   },
   {
     path: '/appointments/:id',
     name: 'Appointment',
-    component: ShowAppointment,
+    component: () => import('./views/appointments/ShowAppointment.vue'),
     meta: { requiresAuth: true },
   },
   {
     path: '/invoices',
     name: 'Invoices',
-    component: ShowInvoices,
+    component: () => import('./views/invoices/ShowInvoices.vue'),
     meta: { requiresAuth: true },
   },
   {
     path: '/invoices/:id',
     name: 'Invoice',
-    component: ShowInvoice,
+    component: () => import('./views/invoices/ShowInvoice.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/purchases/new',
+    name: 'New Purchase',
+    component: () => import('./views/purchases/NewPurchase.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/purchases/:id/edit',
+    name: 'Edit Purchase',
+    component: () => import('./views/purchases/ShowEditPurchase.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/purchases',
+    name: 'Purchases',
+    component: () => import('./views/purchases/ShowPurchases.vue'),
     meta: { requiresAuth: true },
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: routes,
-});
-
-router.beforeEach(async (to, from, next) => {
-  const store = useLoggedInUserStore();
-
-  await store.me();
-
-  if (!to.meta.requiresAuth) {
-    next();
-    return;
-  }
-
-  if (to.meta.requiresAuth && store.getIsLoggedIn) {
-    return next();
-  } else {
-    return next({
-      path: '/',
-    });
-  }
+  routes,
 });
 
 export default router;
