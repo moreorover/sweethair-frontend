@@ -99,39 +99,46 @@
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
               <tr v-for="purchase in props.purchases" :key="purchase.id">
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-6 whitespace-nowrap">
                   <div class="text-sm text-gray-500">
                     {{ purchase.id }}
                   </div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-6 whitespace-nowrap">
                   <div class="text-sm text-gray-500">
                     {{ formatDate(purchase.orderedAt) }}
                   </div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-6 whitespace-nowrap">
                   <div class="text-sm text-gray-500">
                     {{ formatDate(purchase.arrivesAt) }}
                   </div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-6 whitespace-nowrap">
                   <div class="text-sm text-gray-500">
                     {{ purchase.arrived }}
                   </div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-6 whitespace-nowrap">
                   <div class="text-sm text-gray-500">
                     {{ purchase.supplier?.id }}
                   </div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-500">{{ purchase.total }}</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-6 whitespace-nowrap">
                   <div class="text-sm text-gray-500">
-                    <FormKit type="button" @click="editPurchase(purchase.id)"
-                      >Edit</FormKit
-                    >
+                    £ {{ purchase.total }}
+                  </div>
+                </td>
+                <td class="px-6 flex flex-nowrap whitespace-nowrap">
+                  <div class="text-sm text-gray-500">
+                    <FormKit type="button" @click="editPurchase(purchase.id)">
+                      Edit
+                    </FormKit>
+                  </div>
+                  <div class="text-sm text-gray-500">
+                    <FormKit type="button" @click="viewPurchase(purchase.id)">
+                      View
+                    </FormKit>
                   </div>
                 </td>
               </tr>
@@ -160,5 +167,9 @@ const { formatDate } = useDate();
 
 const editPurchase = (purchaseId: number) => {
   router.push({ name: 'Edit Purchase', params: { id: purchaseId } });
+};
+
+const viewPurchase = (purchaseId: number) => {
+  router.push({ name: 'View Purchase', params: { id: purchaseId } });
 };
 </script>
