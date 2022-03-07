@@ -112,6 +112,24 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./views/purchases/ShowPurchases.vue'),
     meta: { requiresAuth: true },
   },
+  {
+    path: '/suppliers/new',
+    name: 'New Supplier',
+    component: () => import('./views/suppliers/NewSupplier.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/suppliers/:id/edit',
+    name: 'Edit Supplier',
+    component: () => import('./views/suppliers/ShowEditSupplier.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/suppliers',
+    name: 'Suppliers',
+    component: () => import('./views/suppliers/ShowSuppliers.vue'),
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = createRouter({

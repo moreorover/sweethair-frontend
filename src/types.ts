@@ -10,4 +10,12 @@ export type Purchase = {
 
 export type Supplier = {
   id: number;
+  fullName: string;
+  location: string | null;
+  about: string | null;
+  email: string | null;
+  instagram: string | null;
+  url: string | null;
+
+  purchases?: Purchase[];
 };
