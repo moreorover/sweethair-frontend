@@ -23,7 +23,8 @@ export default abstract class Service<T extends DataEntity> {
   }
 
   create(data: T): Promise<AxiosResponse<T>> {
-    return this.apiClient.post<T>(`${this.apiEndpoint}`, data);
+    const { id, ...d } = data;
+    return this.apiClient.post<T>(this.apiEndpoint, d);
   }
 
   update(data: T): Promise<AxiosResponse<T>> {

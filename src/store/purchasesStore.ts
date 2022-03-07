@@ -58,23 +58,31 @@ export const usePurchasesStore = defineStore({
         console.log({ error });
       }
     },
-    async create(Purchase: Purchase): Promise<Purchase | void> {
+    async create(purchase: Purchase): Promise<Purchase | void> {
       try {
-        const { data } = await PurchaseService.create(Purchase);
+        const { data } = await PurchaseService.create(purchase);
         this.all[data.id] = data;
         this.ids.push(data.id);
         return data;
       } catch (error) {
-        console.log('Failed to create Purchase', { Purchase }, { error });
+        console.log(
+          'Failed to create Purchase',
+          { Purchase: purchase },
+          { error }
+        );
       }
     },
-    async update(Purchase: Purchase): Promise<Purchase | void> {
+    async update(purchase: Purchase): Promise<Purchase | void> {
       try {
-        const { data } = await PurchaseService.update(Purchase);
+        const { data } = await PurchaseService.update(purchase);
         this.all[data.id] = data;
         return data;
       } catch (error) {
-        console.log('Failed to update Purchase', { Purchase }, { error });
+        console.log(
+          'Failed to update Purchase',
+          { Purchase: purchase },
+          { error }
+        );
       }
     },
   },

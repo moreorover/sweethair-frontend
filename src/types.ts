@@ -4,4 +4,10 @@ export type Purchase = {
   arrivesAt: Date | string;
   arrived: boolean;
   total: number;
+  supplierId?: number | null;
+  supplier?: Supplier | undefined;
+};
+
+export type Supplier = {
+  id: number;
 };

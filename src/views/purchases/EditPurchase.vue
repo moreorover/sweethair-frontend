@@ -19,7 +19,6 @@ if (!purchaseStore.isLoaded) await purchaseStore.fetchAll();
 const purchase = purchaseStore.getRaw[id];
 
 const updatePurchase = async (purchase: any) => {
-  console.log({ purchase });
   purchaseStore.update(purchase);
 
   router.back();

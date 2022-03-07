@@ -1,14 +1,30 @@
 <template>
-  <div class="container mx-auto"><PurchaseForm @submit="createPurchase" /></div>
+  <div class="container mx-auto">
+    <PurchaseForm :purchase="newPurchase" @submit="createPurchase" />
+  </div>
 </template>
 
 <script setup lang="ts">
 import PurchaseForm from '@/components/purchases/PurchaseForm.vue';
 import router from '@/router';
-import { useFetch } from '@vueuse/core';
+import { Purchase } from '@/types';
+import { useDate } from '@/hooks/useDate';
+import { usePurchasesStore } from '@/store/purchasesStore';
+
+const { formatDate } = useDate();
+
+const purchaseStore = usePurchasesStore();
+
+const newPurchase: Purchase = {
+  id: -1,
+  arrived: false,
+  arrivesAt: formatDate(new Date()),
+  orderedAt: formatDate(new Date()),
+  total: 0,
+};
 
 const createPurchase = async (purchase: any) => {
-  useFetch('http://127.0.0.1:3000/purchases').post(purchase);
+  purchaseStore.create(purchase);
 
   router.back();
 };
