@@ -119,6 +119,12 @@ const routes: RouteRecordRaw[] = [
     meta: { requiresAuth: true },
   },
   {
+    path: '/suppliers/:id',
+    name: 'Supplier',
+    component: () => import('./views/suppliers/ShowSupplier.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
     path: '/suppliers/:id/edit',
     name: 'Edit Supplier',
     component: () => import('./views/suppliers/ShowEditSupplier.vue'),
