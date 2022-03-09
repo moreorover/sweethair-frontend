@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto">
-    <PurchaseForm @submit="updatePurchase" :purchase="purchase" />
+    <PurchaseForm @submit="updatePurchase($event)" :purchase="purchase" />
   </div>
 </template>
 
@@ -8,6 +8,7 @@
 import PurchaseForm from '@/components/purchases/PurchaseForm.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { usePurchasesStore } from '@/store/purchasesStore';
+import { Purchase } from '@/types';
 
 const purchaseStore = usePurchasesStore();
 const route = useRoute();
@@ -18,7 +19,7 @@ if (!purchaseStore.isLoaded) await purchaseStore.fetchAll();
 
 const purchase = purchaseStore.getRaw[id];
 
-const updatePurchase = async (purchase: any) => {
+const updatePurchase = async (purchase: Purchase) => {
   purchaseStore.update(purchase);
 
   router.back();
