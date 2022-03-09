@@ -72,10 +72,15 @@
                     {{ supplier.location }}
                   </div>
                 </td>
-                <td class="px-6 whitespace-nowrap">
+                <td class="px-6 flex flex-nowrap whitespace-nowrap">
                   <div class="text-sm text-gray-500">
                     <FormKit type="button" @click="editSupplier(supplier.id)"
                       >Edit</FormKit
+                    >
+                  </div>
+                  <div class="text-sm text-gray-500">
+                    <FormKit type="button" @click="viewSupplier(supplier.id)"
+                      >View</FormKit
                     >
                   </div>
                 </td>
@@ -102,5 +107,9 @@ const props = defineProps<Props>();
 
 const editSupplier = (supplierId: number) => {
   router.push({ name: 'Edit Supplier', params: { id: supplierId } });
+};
+
+const viewSupplier = (supplierId: number) => {
+  router.push({ name: 'Supplier', params: { id: supplierId } });
 };
 </script>
