@@ -121,7 +121,7 @@
                 </td>
                 <td class="px-6 whitespace-nowrap">
                   <div class="text-sm text-gray-500">
-                    {{ purchase.supplier?.id }}
+                    {{ purchase.supplier?.fullName }}
                   </div>
                 </td>
                 <td class="px-6 whitespace-nowrap">
