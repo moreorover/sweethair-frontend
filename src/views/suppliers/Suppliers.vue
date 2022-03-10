@@ -1,8 +1,9 @@
 <template>
-  <h3 class="text-3xl font-medium text-gray-700 pb-4">Suppliers</h3>
-
   <Toolbar class="mb-4">
     <template #start>
+      <span class="font-medium text-2xl text-900">Suppliers</span>
+    </template>
+    <template #end>
       <SupplierFormDialog />
     </template>
   </Toolbar>
