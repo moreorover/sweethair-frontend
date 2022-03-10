@@ -9,6 +9,7 @@ import { createPinia } from 'pinia';
 import 'primevue/resources/primevue.min.css';
 import 'primevue/resources/themes/saga-purple/theme.css';
 import 'primeicons/primeicons.css';
+import 'primeflex/primeflex.css';
 
 import DashboardLayout from './components/DashboardLayout.vue';
 import EmptyLayout from './components/EmptyLayout.vue';
