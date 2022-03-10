@@ -78,8 +78,11 @@ import { computed, ref } from 'vue';
 import { useSuppliersStore } from '@/store/suppliersStore';
 import SupplierFormDialog from '@/components/suppliers/SupplierFormDialog.vue';
 import { FilterMatchMode } from 'primevue/api';
+import { Supplier } from '@/types';
+import { useRouter } from 'vue-router';
 
 const store = useSuppliersStore();
+const router = useRouter();
 
 await store.fetchAll();
 
@@ -93,6 +96,10 @@ const filters = ref<{
 }>({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
 });
+
+const viewSupplier = (supplier: Supplier) => {
+  router.push({ name: 'Supplier', params: { id: supplier.id } });
+};
 </script>
 
 <style lang="scss" scoped>
