@@ -60,14 +60,22 @@
     </Column>
     <Column :exportable="false" style="min-width: 8rem">
       <template #body="slotProps">
-        <SupplierFormDialog
-          :supplier="slotProps.data"
-          :button="{
-            class: 'p-button-rounded p-button-success mr-2',
-            icon: 'pi pi-pencil',
-            label: 'Edit',
-          }"
-        />
+        <div class="flex flex-nowrap justify-start space-x-4">
+          <Button
+            label=""
+            icon="pi pi-search"
+            class="p-button-rounded p-button-success p-button-outlined"
+            @click="viewSupplier(slotProps.data)"
+          />
+          <SupplierFormDialog
+            :supplier="slotProps.data"
+            :button="{
+              class: 'p-button-rounded p-button-success mr-2 pr-2',
+              icon: 'pi pi-pencil',
+              label: 'Edit',
+            }"
+          />
+        </div>
       </template>
     </Column>
   </DataTable>
