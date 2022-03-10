@@ -1,22 +1,23 @@
 <template>
   <header
     class="
-      flex
-      items-center
-      justify-between
-      px-6
-      py-4
-      bg-white
-      border-b-4 border-indigo-600
+      tw-flex
+      tw-items-center
+      tw-justify-between
+      tw-px-6
+      tw-py-4
+      tw-bg-white
+      tw-border-b-4
+      border-indigo-600
     "
   >
-    <div class="flex items-center">
+    <div class="tw-flex tw-items-center">
       <button
         @click="isOpen = true"
-        class="text-gray-500 focus:outline-none lg:hidden"
+        class="tw-text-gray-500 focus:tw-outline-none lg:tw-hidden"
       >
         <svg
-          class="w-6 h-6"
+          class="tw-w-6 tw-h-6"
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -32,33 +33,33 @@
       </button>
     </div>
 
-    <div class="flex items-center">
+    <div class="tw-flex tw-items-center">
       <div class="relative">
-        <div class="relative z-10 block h-8">
+        <div class="tw-relative tw-z-10 tw-block h-8">
           <div>{{ user?.firstName }} {{ user?.lastName }}</div>
         </div>
       </div>
-      <div class="relative">
+      <div class="tw-relative">
         <!-- Menu toggle button -->
         <button
           @click="dropdownOpen = !dropdownOpen"
           class="
-            relative
-            z-10
-            block
-            p-2
-            mx-2
-            transition-colors
-            duration-200
-            transform
-            bg-indigo-600
-            rounded-md
-            hover:bg-indigo-500
-            focus:outline-none focus:bg-indigo-500
+            tw-relative
+            tw-z-10
+            tw-block
+            tw-p-2
+            tw-mx-2
+            tw-transition-colors
+            tw-duration-200
+            tw-transform
+            tw-bg-indigo-600
+            tw-rounded-md
+            hover:tw-bg-indigo-500
+            focus:tw-outline-none focus:tw-bg-indigo-500
           "
         >
           <svg
-            class="w-6 h-6 text-white"
+            class="tw-w-6 tw-h-6 tw-text-white"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -76,77 +77,71 @@
         <!-- Menu list -->
         <div
           class="
-            absolute
-            right-0
-            z-20
-            w-48
-            mt-2
-            overflow-hidden
-            bg-white
-            rounded-md
-            shadow-xl
-            dark:bg-gray-700
+            tw-absolute
+            tw-right-0
+            tw-z-20
+            tw-w-48
+            tw-mt-2
+            tw-overflow-hidden
+            tw-bg-white
+            tw-rounded-md
+            tw-shadow-xl
+            dark:tw-bg-gray-700
           "
         ></div>
 
         <div
           v-show="dropdownOpen"
           @click="dropdownOpen = false"
-          class="fixed inset-0 z-10 w-full h-full"
+          class="tw-fixed tw-inset-0 tw-z-10 tw-w-full tw-h-full"
         ></div>
 
         <transition
-          enter-active-class="transition duration-150 ease-out transform"
-          enter-from-class="scale-95 opacity-0"
-          enter-to-class="scale-100 opacity-100"
-          leave-active-class="transition duration-150 ease-in transform"
-          leave-from-class="scale-100 opacity-100"
-          leave-to-class="scale-95 opacity-0"
+          enter-active-class="tw-transition tw-duration-150 tw-ease-out tw-transform"
+          enter-from-class="tw-scale-95 tw-opacity-0"
+          enter-to-class="tw-scale-100 tw-opacity-100"
+          leave-active-class="tw-transition tw-duration-150 tw-ease-in tw-transform"
+          leave-from-class="tw-scale-100 tw-opacity-100"
+          leave-to-class="tw-scale-95 tw-opacity-0"
         >
           <div
             v-show="dropdownOpen"
             class="
-              absolute
-              right-0
-              z-20
-              w-48
-              py-2
-              mt-2
-              bg-white
-              rounded-md
-              shadow-xl
+              tw-absolute
+              tw-right-0
+              tw-z-20
+              tw-w-48
+              tw-py-2
+              tw-mt-2
+              tw-bg-white
+              tw-rounded-md
+              tw-shadow-xl
             "
           >
             <a
               href="#"
               class="
-                block
-                px-4
-                py-2
-                text-sm text-gray-700
-                hover:bg-indigo-600 hover:text-white
+                tw-block tw-px-4 tw-py-2 tw-text-sm
+                text-gray-700
+                tw-hover:bg-indigo-600
+                hover:text-white
               "
               >Profile</a
             >
             <a
               href="#"
               class="
-                block
-                px-4
-                py-2
-                text-sm text-gray-700
-                hover:bg-indigo-600 hover:text-white
+                tw-block tw-px-4 tw-py-2 tw-text-sm
+                text-gray-700
+                hover:tw-bg-indigo-600 hover:tw-text-white
               "
               >Products</a
             >
             <a
               @click="logOut()"
               class="
-                block
-                px-4
-                py-2
-                text-sm text-gray-700
-                hover:bg-indigo-600 hover:text-white
+                tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700
+                hover:tw-bg-indigo-600 hover:tw-text-white
               "
               >Log out</a
             >

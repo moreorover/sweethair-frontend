@@ -1,41 +1,43 @@
 <template>
-  <div class="flex">
+  <div class="tw-flex">
     <!-- Backdrop -->
     <div
-      :class="isOpen ? 'block' : 'hidden'"
+      :class="isOpen ? 'tw-block' : 'tw-hidden'"
       @click="isOpen = false"
       class="
-        fixed
-        inset-0
-        z-20
-        transition-opacity
-        bg-black
-        opacity-50
-        lg:hidden
+        tw-fixed
+        tw-inset-0
+        tw-z-20
+        tw-transition-opacity
+        tw-bg-black
+        tw-opacity-50
+        tw-lg:hidden
       "
     ></div>
     <!-- End Backdrop -->
 
     <div
-      :class="isOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'"
+      :class="
+        isOpen ? 'tw-translate-x-0 ease-out' : 'tw--translate-x-full tw-ease-in'
+      "
       class="
-        fixed
-        inset-y-0
-        left-0
-        z-30
-        w-64
-        overflow-y-auto
-        transition
-        duration-300
-        transform
-        bg-gray-900
-        lg:translate-x-0 lg:static lg:inset-0
+        tw-fixed
+        tw-inset-y-0
+        tw-left-0
+        tw-z-30
+        tw-w-64
+        tw-overflow-y-auto
+        tw-transition
+        tw-duration-300
+        tw-transform
+        tw-bg-gray-900
+        lg:tw-translate-x-0 lg:tw-static lg:tw-inset-0
       "
     >
-      <div class="flex items-center justify-center mt-8">
-        <div class="flex items-center">
+      <div class="tw-flex tw-items-center tw-justify-center tw-mt-8">
+        <div class="tw-flex tw-items-center">
           <svg
-            class="w-12 h-12"
+            class="tw-w-12 tw-h-12"
             viewBox="0 0 512 512"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -54,87 +56,135 @@
             />
           </svg>
 
-          <span class="mx-2 text-2xl font-semibold text-white"
+          <span class="tw-mx-2 tw-text-2xl tw-font-semibold tw-text-white"
             >Hair Manager</span
           >
         </div>
       </div>
 
-      <nav class="mt-10">
+      <nav class="tw-mt-10">
         <router-link
-          class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
+          class="
+            tw-flex
+            tw-items-center
+            tw-px-6
+            tw-py-2
+            tw-mt-4
+            tw-duration-200
+            tw-border-l-4
+          "
           :class="[$route.name === 'Customers' ? activeClass : inactiveClass]"
           to="/customers"
         >
           <svg
-            class="w-5 h-5"
+            class="tw-w-5 tw-h-5"
             viewBox="0 0 20 20"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           ></svg>
-          <span class="mx-4">Customers</span>
+          <span class="tw-mx-4">Customers</span>
         </router-link>
         <router-link
-          class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
+          class="
+            tw-flex
+            tw-items-center
+            tw-px-6
+            tw-py-2
+            tw-mt-4
+            tw-duration-200
+            tw-border-l-4
+          "
           :class="[
             $route.name === 'Appointments' ? activeClass : inactiveClass,
           ]"
           to="/appointments"
         >
           <svg
-            class="w-5 h-5"
+            class="tw-w-5 tw-h-5"
             viewBox="0 0 20 20"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           ></svg>
-          <span class="mx-4">Appointments</span>
+          <span class="tw-mx-4">Appointments</span>
         </router-link>
         <router-link
-          class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
+          class="
+            tw-flex
+            tw-items-center
+            tw-px-6
+            tw-py-2
+            tw-mt-4
+            tw-duration-200
+            tw-border-l-4
+          "
           :class="[$route.name === 'Invoices' ? activeClass : inactiveClass]"
           to="/invoices"
         >
           <svg
-            class="w-5 h-5"
+            class="tw-w-5 tw-h-5"
             viewBox="0 0 20 20"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           ></svg>
-          <span class="mx-4">Invoices</span>
+          <span class="tw-mx-4">Invoices</span>
         </router-link>
         <router-link
-          class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
+          class="
+            tw-flex
+            tw-items-center
+            tw-px-6
+            tw-py-2
+            tw-mt-4
+            tw-duration-200
+            tw-border-l-4
+          "
           :class="[$route.name === 'Purchases' ? activeClass : inactiveClass]"
           to="/purchases"
         >
           <svg
-            class="w-5 h-5"
+            class="tw-w-5 tw-h-5"
             viewBox="0 0 20 20"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           ></svg>
-          <span class="mx-4">Purchases</span>
+          <span class="tw-mx-4">Purchases</span>
         </router-link>
         <router-link
-          class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
+          class="
+            tw-flex
+            tw-items-center
+            tw-px-6
+            tw-py-2
+            tw-mt-4
+            tw-duration-200
+            tw-border-l-4
+          "
           :class="[$route.name === 'Suppliers' ? activeClass : inactiveClass]"
           to="/suppliers"
         >
           <svg
-            class="w-5 h-5"
+            class="tw-w-5 tw-h-5"
             viewBox="0 0 20 20"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           ></svg>
-          <span class="mx-4">Suppliers</span>
+          <span class="tw-mx-4">Suppliers</span>
         </router-link>
         <router-link
-          class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
+          class="
+            tw-flex
+            tw-items-center
+            tw-px-6
+            tw-py-2
+            tw-mt-4
+            tw-duration-200
+            tw-border-l-4
+          "
           :class="[$route.name === 'Dashboard' ? activeClass : inactiveClass]"
           to="/dashboard"
         >
           <svg
-            class="w-5 h-5"
+            class="tw-w-5 tw-h-5"
             viewBox="0 0 20 20"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -149,16 +199,24 @@
             />
           </svg>
 
-          <span class="mx-4">Dashboard</span>
+          <span class="tw-mx-4">Dashboard</span>
         </router-link>
 
         <router-link
-          class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
+          class="
+            tw-flex
+            tw-items-center
+            tw-px-6
+            tw-py-2
+            tw-mt-4
+            tw-duration-200
+            tw-border-l-4
+          "
           :class="[$route.name === 'UIElements' ? activeClass : inactiveClass]"
           to="/ui-elements"
         >
           <svg
-            class="w-5 h-5"
+            class="tw-w-5 tw-h-5"
             viewBox="0 0 20 20"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -181,16 +239,24 @@
             />
           </svg>
 
-          <span class="mx-4">UI Elements</span>
+          <span class="tw-mx-4">UI Elements</span>
         </router-link>
 
         <router-link
-          class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
+          class="
+            tw-flex
+            tw-items-center
+            tw-px-6
+            tw-py-2
+            tw-mt-4
+            tw-duration-200
+            tw-border-l-4
+          "
           :class="[$route.name === 'Tables' ? activeClass : inactiveClass]"
           to="/tables"
         >
           <svg
-            class="w-5 h-5"
+            class="tw-w-5 tw-h-5"
             viewBox="0 0 20 20"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -209,15 +275,23 @@
             />
           </svg>
 
-          <span class="mx-4">Tables</span>
+          <span class="tw-mx-4">Tables</span>
         </router-link>
 
         <router-link
-          class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
+          class="
+            tw-flex
+            tw-items-center
+            tw-px-6
+            tw-py-2
+            tw-mt-4
+            tw-duration-200
+            tw-border-l-4
+          "
           :class="[$route.name === 'Forms' ? activeClass : inactiveClass]"
           to="/forms"
         >
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <svg class="tw-w-5 tw-h-5" fill="currentColor" viewBox="0 0 20 20">
             <path
               d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"
             />
@@ -228,17 +302,25 @@
             />
           </svg>
 
-          <span class="mx-4">Forms</span>
+          <span class="tw-mx-4">Forms</span>
         </router-link>
 
         <router-link
-          class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
+          class="
+            tw-flex
+            tw-items-center
+            tw-px-6
+            tw-py-2
+            tw-mt-4
+            tw-duration-200
+            tw-border-l-4
+          "
           :class="[$route.name === 'Cards' ? activeClass : inactiveClass]"
           to="/cards"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="w-5 h-5"
+            class="tw-w-5 tw-h-5"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -250,17 +332,25 @@
             />
           </svg>
 
-          <span class="mx-4">Cards</span>
+          <span class="tw-mx-4">Cards</span>
         </router-link>
 
         <router-link
-          class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
+          class="
+            tw-flex
+            tw-items-center
+            tw-px-6
+            tw-py-2
+            tw-mt-4
+            tw-duration-200
+            tw-border-l-4
+          "
           :class="[$route.name === 'Modal' ? activeClass : inactiveClass]"
           to="/modal"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="w-5 h-5"
+            class="tw-w-5 tw-h-5"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -275,21 +365,29 @@
             />
           </svg>
 
-          <span class="mx-4">Modal</span>
+          <span class="tw-mx-4">Modal</span>
         </router-link>
 
         <router-link
-          class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
+          class="
+            tw-flex
+            tw-items-center
+            tw-px-6
+            tw-py-2
+            tw-mt-4
+            tw-duration-200
+            tw-border-l-4
+          "
           :class="[$route.name === 'Blank' ? activeClass : inactiveClass]"
           to="/blank"
         >
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <svg class="tw-w-5 tw-h-5" fill="currentColor" viewBox="0 0 20 20">
             <path
               d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"
             />
           </svg>
 
-          <span class="mx-4">Blank</span>
+          <span class="tw-mx-4">Blank</span>
         </router-link>
       </nav>
     </div>
@@ -302,9 +400,9 @@ import { useSidebar } from '../hooks/useSidebar';
 
 const { isOpen } = useSidebar();
 const activeClass = ref(
-  'bg-gray-600 bg-opacity-25 text-gray-100 border-gray-100'
+  'tw-bg-gray-600 tw-bg-opacity-25 tw-text-gray-100 tw-border-gray-100'
 );
 const inactiveClass = ref(
-  'border-gray-900 text-gray-500 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100'
+  'tw-border-gray-900 tw-text-gray-500 hover:tw-bg-gray-600 hover:tw-bg-opacity-25 hover:tw-text-gray-100'
 );
 </script>

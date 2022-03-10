@@ -1,12 +1,14 @@
 <template>
-  <div class="flex h-screen bg-gray-200 font-roboto">
+  <div class="tw-flex tw-h-screen tw-bg-gray-200 tw-font-roboto">
     <Sidebar />
 
-    <div class="flex-1 flex flex-col overflow-hidden">
+    <div class="tw-flex-1 tw-flex tw-flex-col tw-overflow-hidden">
       <Header />
 
-      <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
-        <div class="container mx-auto px-6 py-8">
+      <main
+        class="tw-flex-1 tw-overflow-x-hidden tw-overflow-y-auto tw-bg-gray-200"
+      >
+        <div class="tw-container tw-mx-auto tw-px-6 tw-py-8">
           <slot />
         </div>
       </main>
