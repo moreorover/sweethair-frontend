@@ -19,6 +19,7 @@ whitelist = [
 
 module.exports = {
   mode: 'jit',
+  prefix: 'tw-',
   purge: {
     content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
     options: {
