@@ -70,7 +70,6 @@
         @click="submit"
       />
     </template>
-    {{ supplier }}
   </Dialog>
 </template>
 
