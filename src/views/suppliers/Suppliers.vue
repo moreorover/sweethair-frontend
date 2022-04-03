@@ -60,17 +60,17 @@
     </Column>
     <Column :exportable="false" style="min-width: 8rem">
       <template #body="slotProps">
-        <div class="flex flex-nowrap justify-start space-x-4">
+        <div class="flex flex-nowrap justify-content-start space-x-4">
           <Button
             label=""
             icon="pi pi-search"
-            class="p-button-rounded p-button-success p-button-outlined"
+            class="p-button-rounded p-button-success p-button-outlined m-2"
             @click="viewSupplier(slotProps.data)"
           />
           <SupplierFormDialog
             :supplier="slotProps.data"
             :button="{
-              class: 'p-button-rounded p-button-success mr-2 pr-2',
+              class: 'p-button-rounded p-button-success mr-2 pr-2 m-2',
               icon: 'pi pi-pencil',
               label: 'Edit',
             }"
