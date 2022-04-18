@@ -1,52 +1,31 @@
+<script setup lang="ts">
+import Sidebar from './components/navigation/Sidebar.vue';
+</script>
 <template>
-  <header class="body-font text-gray-600">
+  <div class="flex h-screen flex-row">
     <div
-      class="container mx-auto flex flex-col flex-wrap items-center p-5 md:flex-row"
+      class="flex h-full w-40 flex-col items-center overflow-hidden rounded bg-gray-100 text-gray-700"
     >
-      <a
-        class="title-font mb-4 flex items-center font-medium text-gray-900 md:mb-0"
-      >
+      <router-link class="mt-3 flex w-full items-center px-3" to="/">
         <svg
+          class="h-8 w-8 fill-current"
           xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          class="h-10 w-10 rounded-full bg-indigo-500 p-2 text-white"
-          viewBox="0 0 24 24"
+          viewBox="0 0 20 20"
+          fill="currentColor"
         >
           <path
-            d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
+            d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z"
           ></path>
         </svg>
-        <span class="ml-3 text-xl">Tailwind Snippets</span>
-      </a>
-      <nav
-        class="flex flex-wrap items-center justify-center text-base md:ml-auto md:mr-auto"
-      >
-        <a class="mr-5 hover:text-gray-900">First Link</a>
-        <a class="mr-5 hover:text-gray-900">Second Link</a>
-        <a class="mr-5 hover:text-gray-900">Third Link</a>
-        <a class="mr-5 hover:text-gray-900">Fourth Link</a>
-      </nav>
-      <button
-        class="mt-4 inline-flex items-center rounded border-0 bg-gray-100 py-1 px-3 text-base hover:bg-gray-200 focus:outline-none md:mt-0"
-      >
-        Button
-        <svg
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          class="ml-1 h-4 w-4"
-          viewBox="0 0 24 24"
-        >
-          <path d="M5 12h14M12 5l7 7-7 7"></path>
-        </svg>
-      </button>
+        <span class="ml-2 text-sm font-bold">Salooner</span>
+      </router-link>
+      <Sidebar />
     </div>
-  </header>
-  <router-view />
+
+    <div class="flex-auto bg-gray-200">
+      <div class="container p-8">
+        <router-view />
+      </div>
+    </div>
+  </div>
 </template>
