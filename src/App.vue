@@ -12,7 +12,7 @@ import Sidebar from './components/navigation/Sidebar.vue';
         <Sidebar />
       </div>
       <div class="flex w-full flex-col bg-gray-100">
-        <div class="container p-8">
+        <div class="p-8">
           <router-view />
         </div>
       </div>
