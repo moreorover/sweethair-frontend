@@ -1,21 +1,14 @@
 <script setup lang="ts">
-import Header from './components/navigation/Header.vue';
-import Sidebar from './components/navigation/Sidebar.vue';
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+const defaultLayout = 'default';
+const { currentRoute } = useRouter();
+const layout = computed(
+  () => `${currentRoute.value.meta.layout || defaultLayout}-layout`
+);
 </script>
 <template>
-  <div class="flex h-screen flex-col">
-    <div class="h-16">
-      <Header />
-    </div>
-    <div class="flex h-full flex-row">
-      <div class="hidden w-40 flex-col bg-gray-50 md:flex">
-        <Sidebar />
-      </div>
-      <div class="flex w-full flex-col bg-gray-100">
-        <div class="p-8">
-          <router-view />
-        </div>
-      </div>
-    </div>
-  </div>
+  <component :is="layout">
+    <router-view />
+  </component>
 </template>
