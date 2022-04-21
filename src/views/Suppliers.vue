@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import SupplierForm from '../components/suppliers/SupplierForm.vue';
 import SupplierFormDialog from '../components/suppliers/SupplierFormDialog.vue';
 import SuppliersTable from '../components/suppliers/SuppliersTable.vue';
 import { useSuppliers } from '../store/suppliersStore';
@@ -8,6 +9,16 @@ const suppliersStore = useSuppliers();
 const suppliers = computed(() => suppliersStore.getAll);
 const records = computed(() => suppliersStore.getRecords);
 const ids = computed(() => suppliersStore.getIds);
+
+const testSupplier = ref({
+  id: -1,
+  fullName: 'Test Full Name',
+  location: '',
+  about: '',
+  email: '',
+  instagram: '',
+  url: '',
+});
 
 suppliersStore.fetchAll();
 </script>
@@ -21,6 +32,14 @@ suppliersStore.fetchAll();
       <div>Search</div>
       <SupplierFormDialog />
     </div>
+  </div>
+
+  <div class="mt-4">
+    <SupplierForm :supplier="testSupplier" />
+  </div>
+
+  <div class="mt-4">
+    {{ testSupplier }}
   </div>
 
   <div class="mt-4">

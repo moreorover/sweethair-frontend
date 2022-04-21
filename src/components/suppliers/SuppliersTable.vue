@@ -69,21 +69,20 @@ const viewSupplier = (supplierId: number) => {
                 </div>
               </td>
               <td class="flex flex-nowrap space-x-4 whitespace-nowrap px-6">
-                <div class="text-sm text-gray-500">
-                  <SupplierFormDialog
-                    :supplier="supplier"
-                    :button="{
-                      class: 'p-button-warning',
-                      icon: 'pi pi-pencil',
-                      label: 'Edit',
-                    }"
-                  />
-                </div>
-                <div class="text-sm text-gray-500">
-                  <FormKit type="button" @click="viewSupplier(supplier.id)"
-                    >View</FormKit
-                  >
-                </div>
+                <SupplierFormDialog
+                  :supplier="supplier"
+                  :button="{
+                    class: ' p-button-warning p-button-text p-button-sm',
+                    icon: 'pi pi-pencil',
+                    label: 'Edit',
+                  }"
+                />
+                <Button
+                  label="View"
+                  icon="pi pi-search"
+                  class="p-button-secondary p-button-text p-button-sm"
+                  @click="viewSupplier(supplier.id)"
+                />
               </td>
             </tr>
           </tbody>

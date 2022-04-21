@@ -2,6 +2,7 @@
 import { reactive, ref } from 'vue';
 import { Supplier } from '../../services/SuppliersService';
 import { useSuppliers } from '../../store/suppliersStore';
+
 type Props = {
   supplier?: Supplier;
   button?: {
@@ -10,6 +11,7 @@ type Props = {
     icon: string;
   };
 };
+
 const store = useSuppliers();
 const showDialog = ref(false);
 const props = withDefaults(defineProps<Props>(), {
@@ -32,6 +34,7 @@ const props = withDefaults(defineProps<Props>(), {
     };
   },
 });
+
 const submitted = ref(false);
 const supplier = reactive<Supplier>({
   ...props.supplier,
@@ -46,24 +49,11 @@ const submit = async () => {
     }
     showDialog.value = false;
     supplier.id = -1;
-    supplier.fullName = '';
-    supplier.location = '';
-    supplier.about = '';
-    supplier.email = '';
-    supplier.instagram = '';
-    supplier.url = '';
   }
 };
 const closeDialog = () => {
   submitted.value = false;
   showDialog.value = false;
-  supplier.id = -1;
-  supplier.fullName = '';
-  supplier.location = '';
-  supplier.about = '';
-  supplier.email = '';
-  supplier.instagram = '';
-  supplier.url = '';
 };
 </script>
 <template>
@@ -75,6 +65,7 @@ const closeDialog = () => {
   />
   <Dialog
     v-model:visible="showDialog"
+    :breakpoints="{ '960px': '75vw', '640px': '100vw' }"
     :style="{ width: '450px' }"
     header="Supplier Details"
     :modal="true"
