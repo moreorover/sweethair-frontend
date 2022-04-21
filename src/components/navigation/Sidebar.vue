@@ -3,10 +3,10 @@ import { ref } from 'vue';
 import { useSidebar } from '../../hooks/useSidebar';
 
 const activeClass = ref(
-  'bg-gray-600 bg-opacity-25 text-gray-100 border-gray-100'
+  'tw-bg-gray-600 tw-bg-opacity-25 tw-text-gray-100 tw-border-gray-100'
 );
 const inactiveClass = ref(
-  'border-gray-900 text-gray-500 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100'
+  'tw-border-gray-900 tw-text-gray-500 hover:tw-bg-gray-600 hover:tw-bg-opacity-25 hover:tw-text-gray-100'
 );
 
 const { isOpen } = useSidebar();
@@ -21,23 +21,27 @@ const routes = [
 </script>
 
 <template>
-  <div class="flex">
+  <div class="tw-flex">
     <!-- Backdrop -->
     <div
-      :class="isOpen ? 'block' : 'hidden'"
+      :class="isOpen ? 'tw-block' : 'tw-hidden'"
       @click="isOpen = false"
-      class="fixed inset-0 z-20 bg-black opacity-50 transition-opacity lg:hidden"
+      class="tw-fixed tw-inset-0 tw-z-20 tw-bg-black tw-opacity-50 tw-transition-opacity lg:tw-hidden"
     ></div>
     <!-- End Backdrop -->
 
     <div
-      :class="isOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'"
-      class="fixed inset-y-0 left-0 z-30 w-64 transform overflow-y-auto bg-gray-900 transition duration-300 lg:static lg:inset-0 lg:translate-x-0"
+      :class="
+        isOpen
+          ? 'tw-translate-x-0 tw-ease-out'
+          : 'tw--translate-x-full tw-ease-in'
+      "
+      class="tw-fixed tw-inset-y-0 tw-left-0 tw-z-30 tw-w-64 tw-transform tw-overflow-y-auto tw-bg-gray-900 tw-transition tw-duration-300 lg:tw-static lg:tw-inset-0 lg:tw-translate-x-0"
     >
-      <div class="mt-8 flex items-center justify-center">
-        <div class="flex items-center">
+      <div class="tw-mt-8 tw-flex tw-items-center tw-justify-center">
+        <div class="tw-flex tw-items-center">
           <svg
-            class="h-12 w-12"
+            class="tw-h-12 tw-w-12"
             viewBox="0 0 512 512"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -56,18 +60,20 @@ const routes = [
             />
           </svg>
 
-          <span class="mx-2 text-2xl font-semibold text-white">Salooner</span>
+          <span class="tw-mx-2 tw-text-2xl tw-font-semibold tw-text-white"
+            >Salooner</span
+          >
         </div>
       </div>
 
-      <nav class="mt-10">
+      <nav class="tw-mt-10">
         <router-link
           v-for="route of routes"
-          class="mt-4 flex items-center border-l-4 px-6 py-2 duration-200"
+          class="tw-mt-4 tw-flex tw-items-center tw-border-l-4 tw-px-6 tw-py-2 tw-duration-200"
           :class="[$route.name === route.title ? activeClass : inactiveClass]"
           :to="route.link"
         >
-          <span class="mx-4">{{ route.title }}</span>
+          <span class="tw-mx-4">{{ route.title }}</span>
         </router-link>
       </nav>
     </div>

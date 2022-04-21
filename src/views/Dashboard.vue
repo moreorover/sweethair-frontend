@@ -23,17 +23,19 @@ const users = ref<User[]>([...Array(10).keys()].map(() => testUser));
 </script>
 <template>
   <div>
-    <h3 class="text-3xl font-medium text-gray-700">Dashboard</h3>
+    <h3 class="tw-text-3xl tw-font-medium tw-text-gray-700">Dashboard</h3>
 
-    <div class="mt-4">
-      <div class="-mx-6 flex flex-wrap">
-        <div class="w-full px-6 sm:w-1/2 xl:w-1/3">
+    <div class="tw-mt-4">
+      <div class="tw-mx-6 tw-flex tw-flex-wrap">
+        <div class="tw-sm:w-1/2 tw-xl:w-1/3 tw-w-full tw-px-6">
           <div
-            class="flex items-center rounded-md bg-white px-5 py-6 shadow-sm"
+            class="tw-flex tw-items-center tw-rounded-md tw-bg-white tw-px-5 tw-py-6 tw-shadow-sm"
           >
-            <div class="rounded-full bg-indigo-600 bg-opacity-75 p-3">
+            <div
+              class="tw-rounded-full tw-bg-indigo-600 tw-bg-opacity-75 tw-p-3"
+            >
               <svg
-                class="h-8 w-8 text-white"
+                class="tw-h-8 tw-w-8 tw-text-white"
                 viewBox="0 0 28 30"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -65,20 +67,24 @@ const users = ref<User[]>([...Array(10).keys()].map(() => testUser));
               </svg>
             </div>
 
-            <div class="mx-5">
-              <h4 class="text-2xl font-semibold text-gray-700">8,282</h4>
-              <div class="text-gray-500">New Users</div>
+            <div class="tw-mx-5">
+              <h4 class="tw-text-2xl tw-font-semibold tw-text-gray-700">
+                8,282
+              </h4>
+              <div class="tw-text-gray-500">New Users</div>
             </div>
           </div>
         </div>
 
-        <div class="mt-6 w-full px-6 sm:mt-0 sm:w-1/2 xl:w-1/3">
+        <div
+          class="tw-sm:mt-0 tw-sm:w-1/2 tw-xl:w-1/3 tw-mt-6 tw-w-full tw-px-6"
+        >
           <div
-            class="flex items-center rounded-md bg-white px-5 py-6 shadow-sm"
+            class="tw-tw-bg-white px-5 tw-flex tw-items-center tw-rounded-md tw-py-6 tw-shadow-sm"
           >
-            <div class="rounded-full bg-blue-600 bg-opacity-75 p-3">
+            <div class="tw-rounded-full tw-bg-blue-600 tw-bg-opacity-75 tw-p-3">
               <svg
-                class="h-8 w-8 text-white"
+                class="tw-h-8 tw-w-8 tw-text-white"
                 viewBox="0 0 28 28"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -98,20 +104,22 @@ const users = ref<User[]>([...Array(10).keys()].map(() => testUser));
               </svg>
             </div>
 
-            <div class="mx-5">
-              <h4 class="text-2xl font-semibold text-gray-700">200,521</h4>
-              <div class="text-gray-500">Total Orders</div>
+            <div class="tw-mx-5">
+              <h4 class="tw-text-2xl tw-font-semibold tw-text-gray-700">
+                200,521
+              </h4>
+              <div class="tw-text-gray-500">Total Orders</div>
             </div>
           </div>
         </div>
 
-        <div class="mt-6 w-full px-6 sm:w-1/2 xl:mt-0 xl:w-1/3">
+        <div class="tw-sm:w-1/2 tw-xl:mt-0 xl:w-1/3 tw-mt-6 tw-w-full tw-px-6">
           <div
-            class="flex items-center rounded-md bg-white px-5 py-6 shadow-sm"
+            class="tw-flex tw-items-center tw-rounded-md tw-bg-white tw-px-5 tw-py-6 tw-shadow-sm"
           >
-            <div class="rounded-full bg-pink-600 bg-opacity-75 p-3">
+            <div class="tw-rounded-full tw-bg-pink-600 tw-bg-opacity-75 tw-p-3">
               <svg
-                class="h-8 w-8 text-white"
+                class="tw-h-8 tw-w-8 tw-text-white"
                 viewBox="0 0 28 28"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -131,21 +139,25 @@ const users = ref<User[]>([...Array(10).keys()].map(() => testUser));
               </svg>
             </div>
 
-            <div class="mx-5">
-              <h4 class="text-2xl font-semibold text-gray-700">215,542</h4>
-              <div class="text-gray-500">Available Products</div>
+            <div class="tw-mx-5">
+              <h4 class="tw-text-2xl tw-font-semibold tw-text-gray-700">
+                215,542
+              </h4>
+              <div class="tw-text-gray-500">Available Products</div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="mt-8"></div>
+    <div class="tw-mt-8"></div>
 
-    <div class="mt-8 flex flex-col">
-      <div class="-my-2 overflow-x-auto py-2 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+    <div class="tw-mt-8 tw-flex tw-flex-col">
+      <div
+        class="tw-sm:-mx-6 tw-sm:px-6 tw-lg:-mx-8 tw-lg:px-8 tw-my-2 tw-overflow-x-auto tw-py-2"
+      >
         <div
-          class="inline-block min-w-full overflow-hidden border-b border-gray-200 align-middle shadow sm:rounded-lg"
+          class="tw-sm:rounded-lg tw-inline-block tw-min-w-full tw-overflow-hidden tw-border-b tw-border-gray-200 tw-align-middle tw-shadow"
         >
           <table class="min-w-full">
             <thead>

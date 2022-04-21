@@ -7,8 +7,7 @@ import router from './router';
 import DashboardLayout from './components/DashboardLayout.vue';
 import EmptyLayout from './components/EmptyLayout.vue';
 
-import { defaultConfig, plugin } from '@formkit/vue';
-
+import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
 import 'primevue/resources/primevue.min.css';
 import 'primevue/resources/themes/saga-purple/theme.css';
@@ -20,7 +19,6 @@ app.component('default-layout', DashboardLayout);
 app.component('empty-layout', EmptyLayout);
 
 PrimeVue.register(app);
-app.use(plugin, defaultConfig);
 app.use(router);
 app.use(createPinia());
 app.mount('#app');

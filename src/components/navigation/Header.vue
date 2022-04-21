@@ -6,15 +6,15 @@ const { isOpen } = useSidebar();
 </script>
 <template>
   <header
-    class="flex items-center justify-between border-b-4 border-indigo-600 bg-white px-6 py-4"
+    class="tw-flex tw-items-center tw-justify-between tw-border-b-4 tw-border-indigo-600 tw-bg-white tw-px-6 tw-py-4"
   >
-    <div class="flex items-center">
+    <div class="tw-flex tw-items-center">
       <button
         @click="isOpen = true"
-        class="text-gray-500 focus:outline-none lg:hidden"
+        class="tw-text-gray-500 focus:tw-outline-none lg:tw-hidden"
       >
         <svg
-          class="h-6 w-6"
+          class="tw-h-6 tw-w-6"
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -29,9 +29,15 @@ const { isOpen } = useSidebar();
         </svg>
       </button>
 
-      <div class="relative mx-4 lg:mx-0">
-        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-          <svg class="h-5 w-5 text-gray-500" viewBox="0 0 24 24" fill="none">
+      <div class="tw-relative tw-mx-4 lg:tw-mx-0">
+        <span
+          class="tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-items-center tw-pl-3"
+        >
+          <svg
+            class="tw-h-5 tw-w-5 tw-text-gray-500"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
             <path
               d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
               stroke="currentColor"
@@ -43,17 +49,17 @@ const { isOpen } = useSidebar();
         </span>
 
         <input
-          class="w-32 rounded-md border-gray-200 pl-10 pr-4 text-indigo-600 focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-40 sm:w-64"
+          class="tw-w-32 tw-rounded-md tw-border-gray-200 tw-pl-10 tw-pr-4 tw-text-indigo-600 focus:tw-border-indigo-600 focus:tw-ring focus:tw-ring-indigo-500 focus:tw-ring-opacity-40 sm:tw-w-64"
           type="text"
           placeholder="Search"
         />
       </div>
     </div>
 
-    <div class="flex items-center">
-      <button class="mx-4 flex text-gray-600 focus:outline-none">
+    <div class="tw-flex tw-items-center">
+      <button class="tw-mx-4 tw-flex tw-text-gray-600 focus:tw-outline-none">
         <svg
-          class="h-6 w-6"
+          class="tw-h-6 tw-w-6"
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -68,45 +74,45 @@ const { isOpen } = useSidebar();
         </svg>
       </button>
 
-      <div class="relative">
+      <div class="tw-relative">
         <button
           @click="dropdownOpen = !dropdownOpen"
-          class="relative z-10 block h-8 w-8 overflow-hidden rounded-full shadow focus:outline-none"
+          class="tw-relative tw-z-10 tw-block tw-h-8 tw-w-8 tw-overflow-hidden tw-rounded-full tw-shadow focus:tw-outline-none"
         >
-          <div class="h-full w-full bg-gray-600 object-cover" />
+          <div class="tw-h-full tw-w-full tw-bg-gray-600 tw-object-cover" />
         </button>
 
         <div
           v-show="dropdownOpen"
           @click="dropdownOpen = false"
-          class="fixed inset-0 z-10 h-full w-full"
+          class="tw-fixed tw-inset-0 tw-z-10 tw-h-full tw-w-full"
         ></div>
 
         <transition
-          enter-active-class="transition duration-150 ease-out transform"
-          enter-from-class="scale-95 opacity-0"
-          enter-to-class="scale-100 opacity-100"
-          leave-active-class="transition duration-150 ease-in transform"
-          leave-from-class="scale-100 opacity-100"
-          leave-to-class="scale-95 opacity-0"
+          enter-active-class="tw-transition tw-duration-150 tw-ease-out tw-transform"
+          enter-from-class="tw-scale-95 tw-opacity-0"
+          enter-to-class="tw-scale-100 tw-opacity-100"
+          leave-active-class="tw-transition tw-duration-150 tw-ease-in tw-transform"
+          leave-from-class="tw-scale-100 tw-opacity-100"
+          leave-to-class="tw-scale-95 tw-opacity-0"
         >
           <div
             v-show="dropdownOpen"
-            class="absolute right-0 z-20 mt-2 w-48 rounded-md bg-white py-2 shadow-xl"
+            class="tw-absolute tw-right-0 tw-z-20 tw-mt-2 tw-w-48 tw-rounded-md tw-bg-white tw-py-2 tw-shadow-xl"
           >
             <a
               href="#"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
+              class="tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 hover:tw-bg-indigo-600 hover:tw-text-white"
               >Profile</a
             >
             <a
               href="#"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
+              class="tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 hover:tw-bg-indigo-600 hover:tw-text-white"
               >Products</a
             >
             <router-link
               to="/"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
+              class="tw-block tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700 hover:tw-bg-indigo-600 hover:tw-text-white"
               >Log out</router-link
             >
           </div>
