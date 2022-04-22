@@ -57,8 +57,6 @@ const hideDialog = () => {
 };
 
 const saveSupplier = async () => {
-  console.log('save supplier: ', { ...supplier.value });
-
   const result = await v$.value.$validate();
 
   if (!result) {
@@ -256,44 +254,6 @@ suppliersStore.fetchAll();
       </template>
     </Dialog>
   </div>
-
-  <!-- <div class="mt-4">
-    <div
-      class="flex items-center justify-end space-x-4 rounded-md bg-white px-4 py-4"
-    >
-      <div>Search</div>
-      <Button
-        label="New"
-        class="p-button-success"
-        @click="showNewSupplierDialog"
-        icon="pi pi-plus"
-      />
-    </div>
-  </div>
-
-  <div class="mt-4">
-    <SuppliersTable :suppliers="suppliers" />
-  </div>
-
-  <div class="mt-4">
-    <div
-      class="flex items-center justify-end space-x-4 rounded-md bg-white px-4 py-4"
-    >
-      Suppliers <br />
-      {{ suppliers }} <br />
-      <br />
-      Records <br />
-      {{ records }} <br />
-      <br />
-      ids <br />
-      {{ ids }}
-    </div>
-  </div>
-
-  <SupplierFormDialog
-    v-model:visible="supplierDialogVisible"
-    @submit="createNewSupplier($event)"
-  /> -->
 </template>
 
 <style lang="scss" scoped>
