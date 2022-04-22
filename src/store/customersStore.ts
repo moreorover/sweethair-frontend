@@ -35,6 +35,15 @@ export const useCustomers = defineStore('customers', {
       const { data, status } = await CustomersService.create(customer);
       if (status < 400) {
         this.all.push(data);
+        this.records[data.id] = data;
+      }
+    },
+    async update(customer: Customer) {
+      const { data, status } = await CustomersService.update(customer);
+      if (status < 400) {
+        this.records[data.id] = data;
+        this.all = this.all.filter((a) => a.id !== data.id);
+        this.all.push(data);
       }
     },
   },
