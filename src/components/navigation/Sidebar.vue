@@ -17,6 +17,7 @@ const routes = [
   { title: 'Dashboard', link: '/dashboard' },
   { title: 'Customers', link: '/customers' },
   { title: 'Suppliers', link: '/suppliers' },
+  { title: 'Purchases', link: '/purchases' },
 ];
 </script>
 
