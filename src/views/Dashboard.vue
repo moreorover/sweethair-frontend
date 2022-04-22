@@ -27,7 +27,7 @@ const users = ref<User[]>([...Array(10).keys()].map(() => testUser));
 
     <div class="tw-mt-4">
       <div class="tw-mx-6 tw-flex tw-flex-wrap">
-        <div class="tw-sm:w-1/2 tw-xl:w-1/3 tw-w-full tw-px-6">
+        <div class="tw-w-full tw-px-6 sm:tw-w-1/2 xl:tw-w-1/3">
           <div
             class="tw-flex tw-items-center tw-rounded-md tw-bg-white tw-px-5 tw-py-6 tw-shadow-sm"
           >
@@ -77,10 +77,10 @@ const users = ref<User[]>([...Array(10).keys()].map(() => testUser));
         </div>
 
         <div
-          class="tw-sm:mt-0 tw-sm:w-1/2 tw-xl:w-1/3 tw-mt-6 tw-w-full tw-px-6"
+          class="tw-mt-6 tw-w-full tw-px-6 sm:tw-mt-0 sm:tw-w-1/2 xl:tw-w-1/3"
         >
           <div
-            class="tw-tw-bg-white px-5 tw-flex tw-items-center tw-rounded-md tw-py-6 tw-shadow-sm"
+            class="tw-flex tw-items-center tw-rounded-md tw-bg-white tw-px-5 tw-py-6 tw-shadow-sm"
           >
             <div class="tw-rounded-full tw-bg-blue-600 tw-bg-opacity-75 tw-p-3">
               <svg
@@ -113,7 +113,9 @@ const users = ref<User[]>([...Array(10).keys()].map(() => testUser));
           </div>
         </div>
 
-        <div class="tw-sm:w-1/2 tw-xl:mt-0 xl:w-1/3 tw-mt-6 tw-w-full tw-px-6">
+        <div
+          class="tw-mt-6 tw-w-full tw-px-6 sm:tw-w-1/2 xl:tw-mt-0 xl:tw-w-1/3"
+        >
           <div
             class="tw-flex tw-items-center tw-rounded-md tw-bg-white tw-px-5 tw-py-6 tw-shadow-sm"
           >
@@ -154,57 +156,61 @@ const users = ref<User[]>([...Array(10).keys()].map(() => testUser));
 
     <div class="tw-mt-8 tw-flex tw-flex-col">
       <div
-        class="tw-sm:-mx-6 tw-sm:px-6 tw-lg:-mx-8 tw-lg:px-8 tw-my-2 tw-overflow-x-auto tw-py-2"
+        class="tw-lg:tw--mx-8 tw-lg:tw-px-8 tw-my-2 tw-overflow-x-auto tw-py-2 sm:tw--mx-6 sm:tw-px-6"
       >
         <div
-          class="tw-sm:rounded-lg tw-inline-block tw-min-w-full tw-overflow-hidden tw-border-b tw-border-gray-200 tw-align-middle tw-shadow"
+          class="tw-inline-block tw-min-w-full tw-overflow-hidden tw-border-b tw-border-gray-200 tw-align-middle tw-shadow sm:tw-rounded-lg"
         >
-          <table class="min-w-full">
+          <table class="tw-min-w-full">
             <thead>
               <tr>
                 <th
-                  class="border-b border-gray-200 bg-gray-50 px-6 py-3 text-left text-xs font-medium uppercase leading-4 tracking-wider text-gray-500"
+                  class="tw-border-b tw-border-gray-200 tw-bg-gray-50 tw-px-6 tw-py-3 tw-text-left tw-text-xs tw-font-medium tw-uppercase tw-leading-4 tw-tracking-wider tw-text-gray-500"
                 >
                   Name
                 </th>
                 <th
-                  class="border-b border-gray-200 bg-gray-50 px-6 py-3 text-left text-xs font-medium uppercase leading-4 tracking-wider text-gray-500"
+                  class="tw-border-b tw-border-gray-200 tw-bg-gray-50 tw-px-6 tw-py-3 tw-text-left tw-text-xs tw-font-medium tw-uppercase tw-leading-4 tw-tracking-wider tw-text-gray-500"
                 >
                   Title
                 </th>
                 <th
-                  class="border-b border-gray-200 bg-gray-50 px-6 py-3 text-left text-xs font-medium uppercase leading-4 tracking-wider text-gray-500"
+                  class="tw-border-b tw-border-gray-200 tw-bg-gray-50 tw-px-6 tw-py-3 tw-text-left tw-text-xs tw-font-medium tw-uppercase tw-leading-4 tw-tracking-wider tw-text-gray-500"
                 >
                   Status
                 </th>
                 <th
-                  class="border-b border-gray-200 bg-gray-50 px-6 py-3 text-left text-xs font-medium uppercase leading-4 tracking-wider text-gray-500"
+                  class="tw-border-b tw-border-gray-200 tw-bg-gray-50 tw-px-6 tw-py-3 tw-text-left tw-text-xs tw-font-medium tw-uppercase tw-leading-4 tw-tracking-wider tw-text-gray-500"
                 >
                   Role
                 </th>
-                <th class="border-b border-gray-200 bg-gray-50 px-6 py-3"></th>
+                <th
+                  class="tw-border-b tw-border-gray-200 tw-bg-gray-50 tw-px-6 tw-py-3"
+                ></th>
               </tr>
             </thead>
 
-            <tbody class="bg-white">
+            <tbody class="tw-bg-white">
               <tr v-for="(u, index) in users" :key="index">
                 <td
-                  class="whitespace-nowrap border-b border-gray-200 px-6 py-4"
+                  class="tw-whitespace-nowrap tw-border-b tw-border-gray-200 tw-px-6 tw-py-4"
                 >
-                  <div class="flex items-center">
-                    <div class="h-10 w-10 flex-shrink-0">
+                  <div class="tw-flex tw-items-center">
+                    <div class="tw-h-10 tw-w-10 tw-flex-shrink-0">
                       <img
-                        class="h-10 w-10 rounded-full"
+                        class="tw-h-10 tw-w-10 tw-rounded-full"
                         src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                         alt=""
                       />
                     </div>
 
-                    <div class="ml-4">
-                      <div class="text-sm font-medium leading-5 text-gray-900">
+                    <div class="tw-ml-4">
+                      <div
+                        class="tw-text-sm tw-font-medium tw-leading-5 tw-text-gray-900"
+                      >
                         {{ u.name }}
                       </div>
-                      <div class="text-sm leading-5 text-gray-500">
+                      <div class="tw-text-sm tw-leading-5 tw-text-gray-500">
                         {{ u.email }}
                       </div>
                     </div>
@@ -212,35 +218,37 @@ const users = ref<User[]>([...Array(10).keys()].map(() => testUser));
                 </td>
 
                 <td
-                  class="whitespace-nowrap border-b border-gray-200 px-6 py-4"
+                  class="tw-whitespace-nowrap tw-border-b tw-border-gray-200 tw-px-6 tw-py-4"
                 >
-                  <div class="text-sm leading-5 text-gray-900">
+                  <div class="tw-text-sm tw-leading-5 tw-text-gray-900">
                     {{ u.title }}
                   </div>
-                  <div class="text-sm leading-5 text-gray-500">
+                  <div class="tw-text-sm tw-leading-5 tw-text-gray-500">
                     {{ u.title2 }}
                   </div>
                 </td>
 
                 <td
-                  class="whitespace-nowrap border-b border-gray-200 px-6 py-4"
+                  class="tw-whitespace-nowrap tw-border-b tw-border-gray-200 tw-px-6 tw-py-4"
                 >
                   <span
-                    class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800"
+                    class="tw-inline-flex tw-rounded-full tw-bg-green-100 tw-px-2 tw-text-xs tw-font-semibold tw-leading-5 tw-text-green-800"
                     >{{ u.status }}</span
                   >
                 </td>
 
                 <td
-                  class="whitespace-nowrap border-b border-gray-200 px-6 py-4 text-sm leading-5 text-gray-500"
+                  class="tw-whitespace-nowrap tw-border-b tw-border-gray-200 tw-px-6 tw-py-4 tw-text-sm tw-leading-5 tw-text-gray-500"
                 >
                   {{ u.role }}
                 </td>
 
                 <td
-                  class="whitespace-nowrap border-b border-gray-200 px-6 py-4 text-right text-sm font-medium leading-5"
+                  class="tw-whitespace-nowrap tw-border-b tw-border-gray-200 tw-px-6 tw-py-4 tw-text-right tw-text-sm tw-font-medium tw-leading-5"
                 >
-                  <a href="#" class="text-indigo-600 hover:text-indigo-900"
+                  <a
+                    href="#"
+                    class="tw-text-indigo-600 hover:tw-text-indigo-900"
                     >Edit</a
                   >
                 </td>
