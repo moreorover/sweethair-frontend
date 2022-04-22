@@ -172,7 +172,7 @@ customersStore.fetchAll();
     <Dialog
       v-model:visible="customerDialog"
       :style="{ width: '450px' }"
-      header="Supplier Details"
+      header="Customer Details"
       :modal="true"
       class="p-fluid"
     >
