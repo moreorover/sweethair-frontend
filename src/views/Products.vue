@@ -19,7 +19,7 @@ const blankProduct: Product = {
   canReorder: false,
   currentStock: 0,
   startingStock: 0,
-  measurement: 'UNIT',
+  measurement: 'G',
 };
 
 const product = ref<Product>({ ...blankProduct });
@@ -188,7 +188,6 @@ productsStore.fetchAll();
       :modal="true"
       class="p-fluid"
     >
-      {{ product }}
       <div class="field">
         <label for="name">Title</label>
         <InputText
@@ -218,7 +217,7 @@ productsStore.fetchAll();
         <InputSwitch v-model="product.canReorder" />
       </div>
 
-      <div class="field">
+      <!-- <div class="field">
         <label for="about">Starting stock</label>
         <InputNumber
           id="startingStock"
@@ -236,20 +235,20 @@ productsStore.fetchAll();
           mode="decimal"
           :useGrouping="false"
         />
-      </div>
+      </div> -->
 
       <div class="field">
         <label for="about">Unit Measurement</label>
         <Dropdown
           v-model="product.measurement"
           :options="[
-            { name: 'KG' },
-            { name: 'G' },
-            { name: 'L' },
-            { name: 'ML' },
-            { name: 'UNIT' },
+            { name: 'KG', title: 'Kilogram' },
+            { name: 'G', title: 'Grams' },
+            { name: 'L', title: 'Litres' },
+            { name: 'ML', title: 'Millilitres' },
+            { name: 'UNIT', title: 'Units' },
           ]"
-          optionLabel="name"
+          optionLabel="title"
           optionValue="name"
           placeholder="Select a Measurement"
         />
