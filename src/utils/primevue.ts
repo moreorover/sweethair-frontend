@@ -8,6 +8,7 @@ import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import Dialog from 'primevue/dialog';
 import Dropdown from 'primevue/dropdown';
+import InputNumber from 'primevue/inputnumber';
 import InputSwitch from 'primevue/inputswitch';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
@@ -20,6 +21,7 @@ const register = (app: App<Element>): void => {
   app.component('Calendar', Calendar);
   app.component('Dialog', Dialog);
   app.component('Dropdown', Dropdown);
+  app.component('InputNumber', InputNumber);
   app.component('InputSwitch', InputSwitch);
   app.component('InputText', InputText);
   app.component('Toolbar', Toolbar);
