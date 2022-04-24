@@ -25,6 +25,15 @@ class PurchaseService extends BaseService<Purchase> {
       d
     );
   }
+
+  deletePurchaseDetail(
+    purchaseId: number,
+    purchaseDetailId: number
+  ): Promise<AxiosResponse<PurchaseDetail>> {
+    return this.apiClient.delete<PurchaseDetail>(
+      `${this.apiEndpoint}/${purchaseId}/purchaseDetails/${purchaseDetailId}`
+    );
+  }
 }
 
 export default new PurchaseService('purchases');

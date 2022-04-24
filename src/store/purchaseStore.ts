@@ -41,6 +41,16 @@ export const usePurchase = defineStore('purchase', {
         }
       }
     },
+    async deletePurchaseDetail(purchaseDetail: PurchaseDetail) {
+      const { data, status } = await PurchasesService.deletePurchaseDetail(
+        this.id,
+        purchaseDetail.id
+      );
+
+      if (status < 400) {
+        this.fetchPurchase();
+      }
+    },
     async update(purchase: Purchase) {
       const { data, status } = await PurchasesService.update(purchase);
       if (status < 400) {

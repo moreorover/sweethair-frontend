@@ -40,9 +40,16 @@ const openNew = () => {
   optionMade.value = false;
 };
 
-const editPurchaseDetail = (c: PurchaseDetail) => {
+const deletePurchaseDetailDialog = ref(false);
+
+const confirmDeletePurchaseDetail = (c: PurchaseDetail) => {
   purchaseDetail.value = { ...c };
-  purchaseDetailDialog.value = true;
+  deletePurchaseDetailDialog.value = true;
+};
+
+const deletePurchaseDetail = async () => {
+  await purchaseStore.deletePurchaseDetail(purchaseDetail.value);
+  deletePurchaseDetailDialog.value = false;
 };
 
 const rules = {
@@ -86,11 +93,6 @@ const savePurchaseDetail = async () => {
       purchaseDetailDialog.value = false;
     }
   }
-
-  //   if (purchaseDetail.value.id > 0) {
-  //     await productsStore.update(purchaseDetail.value);
-  //     purchaseDetailDialog.value = false;
-  //   }
 };
 
 const v$ = useVuelidate(rules, purchaseDetail);
@@ -127,12 +129,16 @@ const productRules = {
 
 const vProduct$ = useVuelidate(productRules, product);
 
+const productById = (id: number) =>
+  computed(
+    () => products.value.length > 0 && products.value.find((p) => p.id === id)
+  );
+
 purchaseStore.fetchPurchase();
 productsStore.fetchAll();
 </script>
 <template>
   <h3 class="tw-pb-4 tw-text-3xl tw-font-medium tw-text-gray-700">Purchase</h3>
-  Purchase id: {{ $route.params.id }} {{ purchase }}
   <div>
     <div class="card">
       <Toolbar class="mb-4">
@@ -185,7 +191,12 @@ productsStore.fetchAll();
           header="Product"
           :sortable="true"
           style="min-width: 4rem"
-        ></Column>
+        >
+          <template #body="slotProps">
+            {{ slotProps.data.productId }} -
+            {{ productById(slotProps.data.productId).value.title }}
+          </template>
+        </Column>
         <Column
           field="quantity"
           header="Quantity"
@@ -202,9 +213,9 @@ productsStore.fetchAll();
         <Column :exportable="false" style="min-width: 8rem">
           <template #body="slotProps">
             <Button
-              icon="pi pi-pencil"
-              class="p-button-rounded p-button-success mr-2"
-              @click="editPurchaseDetail(slotProps.data)"
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-danger mr-2"
+              @click="confirmDeletePurchaseDetail(slotProps.data)"
             />
           </template>
         </Column>
@@ -331,6 +342,35 @@ productsStore.fetchAll();
           icon="pi pi-check"
           class="p-button-text"
           @click="savePurchaseDetail"
+        />
+      </template>
+    </Dialog>
+
+    <Dialog
+      v-model:visible="deletePurchaseDetailDialog"
+      :style="{ width: '450px' }"
+      header="Confirm"
+      :modal="true"
+    >
+      <div class="confirmation-content">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
+        <span v-if="product"
+          >Are you sure you want to delete <b>{{ purchaseDetail.id }}</b
+          >?</span
+        >
+      </div>
+      <template #footer>
+        <Button
+          label="No"
+          icon="pi pi-times"
+          class="p-button-text"
+          @click="deletePurchaseDetailDialog = false"
+        />
+        <Button
+          label="Yes"
+          icon="pi pi-check"
+          class="p-button-text"
+          @click="deletePurchaseDetail"
         />
       </template>
     </Dialog>
