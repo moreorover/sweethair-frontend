@@ -31,15 +31,15 @@ export const usePurchases = defineStore('purchases', {
         });
       }
     },
-    async create(supplier: Purchase) {
-      const { data, status } = await PurchasesService.create(supplier);
+    async create(purchase: Purchase) {
+      const { data, status } = await PurchasesService.create(purchase);
       if (status < 400) {
         this.all.push(data);
         this.records[data.id] = data;
       }
     },
-    async update(supplier: Purchase) {
-      const { data, status } = await PurchasesService.update(supplier);
+    async update(purchase: Purchase) {
+      const { data, status } = await PurchasesService.update(purchase);
       if (status < 400) {
         this.records[data.id] = data;
         this.all = this.all.filter((a) => a.id !== data.id);

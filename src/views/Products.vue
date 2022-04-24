@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
-import { email, minLength, required } from '@vuelidate/validators';
+import { minLength, required } from '@vuelidate/validators';
 import { FilterMatchMode } from 'primevue/api';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -16,7 +16,7 @@ const blankProduct: Product = {
   id: -1,
   title: '',
   description: '',
-  canReorder: false,
+  unique: false,
   currentStock: 0,
   startingStock: 0,
   measurement: 'G',
@@ -138,7 +138,7 @@ productsStore.fetchAll();
         >
         </Column>
         <Column
-          field="canReorder"
+          field="unique"
           header="Unique?"
           :sortable="true"
           style="min-width: 6rem"
@@ -214,7 +214,7 @@ productsStore.fetchAll();
 
       <div class="field">
         <label for="about" class="tw-mr-4">Can be reordered?</label>
-        <InputSwitch v-model="product.canReorder" />
+        <InputSwitch v-model="product.unique" />
       </div>
 
       <!-- <div class="field">

@@ -31,12 +31,14 @@ export const useProducts = defineStore('products', {
         });
       }
     },
-    async create(product: Product) {
+    async create(product: Product): Promise<Product | null> {
       const { data, status } = await ProductsService.create(product);
       if (status < 400) {
         this.all.push(data);
         this.records[data.id] = data;
+        return data;
       }
+      return null;
     },
     async update(product: Product) {
       const { data, status } = await ProductsService.update(product);

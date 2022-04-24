@@ -11,7 +11,7 @@ export type ProductMeasurement = {
 export interface Product extends BaseDataEntity {
   title: string;
   description: string;
-  canReorder: boolean;
+  unique: boolean;
   startingStock: number;
   currentStock: number;
   measurement: 'KG' | 'G' | 'L' | 'ML' | 'UNIT';
