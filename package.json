@@ -11,7 +11,8 @@
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
-		"format": "prettier --write --plugin-search-dir=. ."
+		"format": "prettier --write --plugin-search-dir=. .",
+		"postinstall": "postinstall"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.22.2",
@@ -32,6 +33,8 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"postinstall": "^0.7.4",
 		"sk-auth": "^0.4.1"
-	}
+	},
+	"postinstall": "sed -i 's/http:\\/\\/\\${host}/https:\\/\\/\\${host}/' ./node_modules/sk-auth/dist/auth.js"
 }
